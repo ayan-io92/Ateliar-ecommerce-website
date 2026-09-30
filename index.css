@@ -1,0 +1,275 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+
+body {
+    margin: 0;
+    background: #f8f7f4;
+    color: #171717;
+}
+
+.auth-page {
+    min-height: 100vh;
+}
+
+.image-side {
+    position: relative;
+    min-height: 100vh;
+    padding: 38px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    color: white;
+    background-image: url("https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1400&q=85");
+    background-size: cover;
+    background-position: center;
+}
+
+.image-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.38);
+}
+
+.store-name,
+.image-content,
+.season-info {
+    position: relative;
+    z-index: 2;
+}
+
+.store-name {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+.image-content {
+    margin-top: auto;
+    margin-bottom: 100px;
+}
+
+.collection-text {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+}
+
+.image-content h1 {
+    font-size: 54px;
+    line-height: 0.98;
+    font-weight: 400;
+    letter-spacing: -2px;
+    margin-bottom: 22px;
+}
+
+.image-content p {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.season-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: Arial, sans-serif;
+    font-size: 8px;
+    letter-spacing: 2px;
+}
+
+.season-line {
+    width: 45px;
+    height: 1px;
+    background: white;
+}
+
+.form-side {
+    min-height: 100vh;
+    background: #faf9f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.form-box {
+    width: 100%;
+    max-width: 375px;
+}
+
+.join-text {
+    font-family: Arial, sans-serif;
+    color: #999;
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+}
+
+.form-box h2 {
+    font-size: 43px;
+    font-weight: 400;
+    line-height: 0.98;
+    letter-spacing: -1.5px;
+    margin-bottom: 17px;
+}
+
+.description {
+    font-family: Arial, sans-serif;
+    color: #888;
+    font-size: 11px;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 17px;
+}
+
+.form-group label {
+    display: block;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.form-control {
+    height: 37px;
+    border: 1px solid #dedbd6;
+    border-radius: 0;
+    background: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    padding: 8px 12px;
+}
+
+.form-control::placeholder {
+    color: #aaa;
+}
+
+.form-control:focus {
+    border-color: #777;
+    box-shadow: none;
+}
+
+.password-box {
+    position: relative;
+}
+
+.password-box .form-control {
+    padding-right: 50px;
+}
+
+.show-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #777;
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    padding: 0;
+}
+
+.show-password:hover {
+    color: #111;
+}
+
+.create-account {
+    width: 100%;
+    height: 40px;
+    border: none;
+    background: #171717;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.create-account:hover {
+    background: #333;
+}
+
+.signin-text {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: #999;
+    font-size: 10px;
+    margin-top: 38px;
+}
+
+.signin-text a,
+.forgot-link a {
+    color: #222;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.forgot-link {
+    text-align: right;
+    margin-top: -5px;
+    margin-bottom: 17px;
+}
+
+.forgot-link a {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+}
+
+#signupMessage,
+#loginMessage,
+#forgotMessage {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    text-align: center;
+    margin-top: 12px;
+}
+
+@media (max-width: 991px) {
+
+    .image-side {
+        min-height: 450px;
+    }
+
+    .form-side {
+        min-height: 650px;
+    }
+
+}
+
+@media (max-width: 576px) {
+
+    .image-side {
+        min-height: 400px;
+        padding: 25px;
+    }
+
+    .image-content {
+        margin-bottom: 60px;
+    }
+
+    .image-content h1 {
+        font-size: 39px;
+    }
+
+    .form-side {
+        padding: 45px 25px;
+    }
+
+    .form-box h2 {
+        font-size: 36px;
+    }
+
+}
