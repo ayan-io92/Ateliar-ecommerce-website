@@ -1,0 +1,338 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair:opsz,wght@5..1200,400;5..1200,500;5..1200,600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
+
+body {
+    margin: 0;
+    background: #f8f7f4;
+    color: #171717;
+    font-family: "Source Sans 3", sans-serif;
+}
+
+.navbar {
+    padding: 18px 0;
+}
+
+.navbar-brand {
+    font-family: "Playfair", serif;
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.nav-link {
+    margin: 0 10px;
+    color: #333;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #000;
+}
+
+.cart-btn,
+.user-btn {
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    position: relative;
+}
+
+.cart-btn span {
+    position: absolute;
+    top: -9px;
+    right: -10px;
+    background: #171717;
+    color: white;
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero {
+    padding: 90px 0;
+}
+
+.small-title {
+    font-size: 12px;
+    letter-spacing: 3px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-family: "Playfair", serif;
+    font-size: 62px;
+    line-height: 1.05;
+    margin-bottom: 25px;
+}
+
+.hero h1 span {
+    font-style: italic;
+}
+
+.hero-text {
+    color: #666;
+    font-size: 17px;
+    line-height: 1.7;
+    max-width: 500px;
+    margin-bottom: 30px;
+}
+
+.shop-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    background: #171717;
+    color: white;
+    text-decoration: none;
+    padding: 14px 25px;
+}
+
+.shop-btn:hover {
+    background: #333;
+    color: white;
+}
+
+.hero-image {
+    height: 520px;
+    overflow: hidden;
+}
+
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.products-section {
+    padding: 80px 0;
+    background: white;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 35px;
+}
+
+.section-heading h2 {
+    font-family: "Playfair", serif;
+    font-size: 42px;
+}
+
+.search-box {
+    border-bottom: 1px solid #999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 260px;
+    padding: 8px 0;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    width: 100%;
+}
+
+.category-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+}
+
+.category-btn {
+    background: transparent;
+    border: 1px solid #ddd;
+    padding: 9px 20px;
+    cursor: pointer;
+}
+
+.category-btn:hover,
+.category-btn.active {
+    background: #171717;
+    color: white;
+    border-color: #171717;
+}
+
+.product-card {
+    height: 100%;
+    border: none;
+    background: #f8f7f4;
+    transition: 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-image {
+    height: 270px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.product-info {
+    padding: 20px;
+}
+
+.product-category {
+    font-size: 12px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.product-title {
+    font-family: "Playfair", serif;
+    font-size: 20px;
+    margin: 8px 0;
+}
+
+.product-price {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.rating {
+    color: #d49b30;
+    font-size: 14px;
+}
+
+.view-btn {
+    width: 100%;
+    border: 1px solid #171717;
+    background: transparent;
+    padding: 10px;
+    margin-top: 15px;
+}
+
+.view-btn:hover {
+    background: #171717;
+    color: white;
+}
+
+.modal-product-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+
+.modal-content {
+    border: none;
+    border-radius: 0;
+}
+
+.modal-product-image+div {
+    padding: 20px;
+}
+
+#modalTitle {
+    font-family: "Playfair", serif;
+}
+
+#modalPrice {
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+#modalDescription {
+    color: #666;
+    line-height: 1.7;
+}
+
+.add-cart-btn {
+    border: none;
+    background: #171717;
+    color: white;
+    padding: 13px 25px;
+}
+
+.add-cart-btn:hover {
+    background: #333;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+}
+
+.cart-item img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+}
+
+.cart-item-info {
+    flex: 1;
+}
+
+.cart-item-info h6 {
+    margin: 0;
+}
+
+.remove-btn {
+    border: none;
+    background: transparent;
+    color: #dc3545;
+}
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    font-size: 18px;
+}
+
+.checkout-btn {
+    background: #171717;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+}
+
+footer {
+    background: #171717;
+    color: white;
+    padding: 45px 0;
+}
+
+footer h4 {
+    font-family: "Playfair", serif;
+}
+
+footer p {
+    color: #aaa;
+}
+
+@media (max-width: 991px) {
+
+    .hero {
+        padding: 50px 0;
+    }
+
+    .hero h1 {
+        font-size: 45px;
+    }
+
+    .hero-image {
+        margin-top: 40px;
+        height: 400px;
+    }
+
+    .section-heading {
+        display: block;
+    }
+
+    .search-box {
+        margin-top: 25px;
+        width: 100%;
+    }
+}
