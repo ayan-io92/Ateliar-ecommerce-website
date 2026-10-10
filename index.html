@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Ecommerce Store | Sign Up</title>
+    <title>Ecommerce Store | Authentication</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link
-        href="https://fonts.googleapis.com/css2?family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap"
         rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     <link rel="stylesheet" href="index.css">
@@ -21,9 +21,153 @@
 <body>
 
     <div class="container-fluid p-0">
+        <div class="row g-0 auth-page d-none" id="signupView">
+
+            <div class="col-lg-6 image-side">
+
+                <div class="image-overlay"></div>
+
+                <div class="store-name">
+                    Ecommerce Store
+                </div>
+
+                <div class="image-content">
+
+                    <div class="collection-text">
+                        THE NEW COLLECTION
+                    </div>
+
+                    <h1>
+                        Objects made<br>
+                        for everyday life.
+                    </h1>
+
+                    <p>
+                        Thoughtfully designed essentials, selected for<br>
+                        modern living.
+                    </p>
+
+                </div>
+
+                <div class="season-info">
+                    <span>01</span>
+                    <span class="season-line"></span>
+                    <span>NEW SEASON</span>
+                </div>
+
+            </div>
 
 
-        <div class="row g-0 auth-page" id="signupView">
+            <div class="col-lg-6 form-side">
+
+                <div class="form-box">
+
+                    <div class="join-text">
+                        JOIN ATELIER
+                    </div>
+
+                    <h2>
+                        Create your<br>
+                        account.
+                    </h2>
+
+                    <p class="description">
+                        Save your favourites and keep track of every order.
+                    </p>
+
+                    <form id="signupForm">
+
+                        <div class="form-group">
+
+                            <label for="signupUsername ">
+                                Full name
+                            </label>
+
+                            <input type="text" id="signupUsername" class="form-control" placeholder="John Smith"
+                                required>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="signupEmail">
+                                Email address
+                            </label>
+
+                            <input type="email" id="signupEmail" class="form-control" placeholder="you@example.com"
+                                required>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="signupPassword">
+                                Password
+                            </label>
+
+                            <div class="password-box">
+
+                                <input type="password" id="signupPassword" class="form-control"
+                                    placeholder="Enter your password" required>
+
+                                <button type="button" class="show-password"
+                                    onclick="showPassword('signupPassword', this)">
+                                    Show
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="confirmPassword">
+                                Confirm password
+                            </label>
+
+                            <div class="password-box">
+
+                                <input type="password" id="confirmPassword" class="form-control"
+                                    placeholder="Repeat your password" required>
+
+                                <button type="button" class="show-password"
+                                    onclick="showPassword('confirmPassword', this)">
+                                    Show
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <button type="submit" class="create-account">
+
+                            <span>Create account</span>
+
+                            <span class="arrow">
+                                →
+                            </span>
+
+                        </button>
+
+                        <div id="signupMessage"></div>
+
+                    </form>
+
+                    <p class="signin-text">
+                        Already have an account?
+                        <a href="#" id="showLogin">Sign in</a>
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- LOGIN -->
+
+        <div class="row g-0 auth-page" id="loginView">
 
             <div class="col-lg-6 image-side">
 
@@ -69,151 +213,6 @@
                 <div class="form-box">
 
                     <div class="join-text">
-                        JOIN ATELIER
-                    </div>
-
-                    <h2>
-                        Create your<br>
-                        account.
-                    </h2>
-
-                    <p class="description">
-                        Save your favourites and keep track of every order.
-                    </p>
-
-
-                    <form id="signupForm">
-
-                        <div class="form-group">
-
-                            <label for="signupUsername">
-                                Full name
-                            </label>
-
-                            <input type="text" id="signupUsername" class="form-control" placeholder="John Smith"
-                                required>
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label for="signupEmail">
-                                Email address
-                            </label>
-
-                            <input type="email" id="signupEmail" class="form-control" placeholder="you@example.com"
-                                required>
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label for="signupPassword">
-                                Password
-                            </label>
-
-                            <div class="password-box">
-
-                                <input type="password" id="signupPassword" class="form-control"
-                                    placeholder="At least 6 characters" required>
-
-
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label for="confirmPassword">
-                                Confirm password
-                            </label>
-
-                            <div class="password-box">
-
-                                <input type="password" id="confirmPassword" class="form-control"
-                                    placeholder="Repeat your password" required>
-
-
-
-                            </div>
-
-                        </div>
-
-
-                        <button type="submit" class="create-account">
-                            <span>Create account</span>
-                            <span>→</span>
-                        </button>
-
-                        <div id="signupMessage"></div>
-
-                    </form>
-
-
-                    <p class="signin-text">
-                        Already have an account?
-                        <a href="#" id="showLogin">Sign in</a>
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-
-        <div class="row g-0 auth-page d-none" id="loginView">
-
-            <div class="col-lg-6 image-side">
-
-                <div class="image-overlay"></div>
-
-                <div class="store-name">
-                    Ecommerce Store
-                </div>
-
-                <div class="image-content">
-
-                    <div class="collection-text">
-                        WELCOME BACK
-                    </div>
-
-                    <h1>
-                        Good things<br>
-                        await you.
-                    </h1>
-
-                    <p>
-                        Sign in to continue your journey<br>
-                        with Ecommerce Store.
-                    </p>
-
-                </div>
-
-                <div class="season-info">
-
-                    <span>02</span>
-
-                    <span class="season-line"></span>
-
-                    <span>WELCOME BACK</span>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-lg-6 form-side">
-
-                <div class="form-box">
-
-                    <div class="join-text">
                         WELCOME BACK
                     </div>
 
@@ -223,9 +222,8 @@
                     </h2>
 
                     <p class="description">
-                        Enter your details to access your account.
+                        Access your orders, wishlist and saved items.
                     </p>
-
 
                     <form id="loginForm">
 
@@ -240,45 +238,56 @@
 
                         </div>
 
+                        <div class="form-group password-group">
 
-                        <div class="form-group">
+                            <div class="password-label">
 
-                            <label for="loginPassword">
-                                Password
-                            </label>
+                                <label for="loginPassword">
+                                    Password
+                                </label>
+
+                                <a href="#" id="showForgot">
+                                    Forgot password?
+                                </a>
+
+                            </div>
 
                             <div class="password-box">
 
                                 <input type="password" id="loginPassword" class="form-control"
-                                    placeholder="Your password" required>
+                                    placeholder="Enter your password" required>
 
-
+                                <button type="button" class="show-password"
+                                    onclick="showPassword('loginPassword', this)">
+                                    Show
+                                </button>
 
                             </div>
 
                         </div>
 
-
-                        <div class="forgot-link">
-                            <a href="#" id="showForgot">
-                                Forgot password?
-                            </a>
-                        </div>
-
-
                         <button type="submit" class="create-account">
+
                             <span>Sign in</span>
-                            <span>→</span>
+
+                            <span class="arrow">
+                                →
+                            </span>
+
                         </button>
 
                         <div id="loginMessage"></div>
 
                     </form>
 
-
                     <p class="signin-text">
-                        Don't have an account?
-                        <a href="#" id="showSignup">Create account</a>
+
+                        New to Atelier?
+
+                        <a href="#" id="showSignup">
+                            Create an account
+                        </a>
+
                     </p>
 
                 </div>
@@ -288,6 +297,7 @@
         </div>
 
 
+        <!-- FORGOT PASSWORD -->
 
         <div class="row g-0 auth-page d-none" id="forgotView">
 
@@ -319,7 +329,7 @@
 
                 <div class="season-info">
 
-                    <span>03</span>
+                    <span>02</span>
 
                     <span class="season-line"></span>
 
@@ -347,7 +357,6 @@
                         Enter your email and create a new password.
                     </p>
 
-
                     <form id="forgotForm">
 
                         <div class="form-group">
@@ -361,7 +370,6 @@
 
                         </div>
 
-
                         <div class="form-group">
 
                             <label for="newPassword">
@@ -371,14 +379,15 @@
                             <div class="password-box">
 
                                 <input type="password" id="newPassword" class="form-control"
-                                    placeholder="At least 6 characters" required>
+                                    placeholder="At least 12 characters" required>
 
-
+                                <button type="button" class="show-password" onclick="showPassword('newPassword', this)">
+                                    Show
+                                </button>
 
                             </div>
 
                         </div>
-
 
                         <div class="form-group">
 
@@ -391,26 +400,37 @@
                                 <input type="password" id="confirmNewPassword" class="form-control"
                                     placeholder="Repeat your password" required>
 
-
+                                <button type="button" class="show-password"
+                                    onclick="showPassword('confirmNewPassword', this)">
+                                    Show
+                                </button>
 
                             </div>
 
                         </div>
 
-
                         <button type="submit" class="create-account">
+
                             <span>Reset password</span>
-                            <span>→</span>
+
+                            <span class="arrow">
+                                →
+                            </span>
+
                         </button>
 
                         <div id="forgotMessage"></div>
 
                     </form>
 
-
                     <p class="signin-text">
+
                         Remember your password?
-                        <a href="#" id="backToLogin">Sign in</a>
+
+                        <a href="#" id="backToLogin">
+                            Sign in
+                        </a>
+
                     </p>
 
                 </div>
@@ -420,7 +440,9 @@
         </div>
 
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
 
     <script src="index.js"></script>
 

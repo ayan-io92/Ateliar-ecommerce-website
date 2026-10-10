@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Atelier | Account Settings</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f8f8f4;
+            color: #191919;
+            font-family: "Source Sans 3", sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .settings-container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 22px 0 145px;
+        }
+
+        .page-title {
+            font-family: "Playfair Display", serif;
+            font-size: 54px;
+            font-weight: 400;
+            line-height: 1.2;
+            letter-spacing: -1.5px;
+            margin-bottom: 8px;
+        }
+
+        .page-description {
+            color: #858585;
+            font-size: 15px;
+            margin-bottom: 60px;
+        }
+
+        .settings-section {
+            border-top: 1px solid #e6e5df;
+            padding-top: 36px;
+            margin-top: 0;
+            margin-bottom: 40px;
+        }
+
+        .section-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.6px;
+            margin-bottom: 17px;
+            color: #454545;
+        }
+
+        .section-title {
+            font-family: "Playfair Display", serif;
+            font-size: 27px;
+            font-weight: 400;
+            margin-bottom: 21px;
+        }
+
+        .settings-card {
+            background: #ffffff;
+            border: 1px solid #e8e8e5;
+            padding: 31px;
+        }
+
+        .profile-picture-section {
+            display: flex;
+            align-items: center;
+            gap: 23px;
+            padding-bottom: 29px;
+            border-bottom: 1px solid #e8e8e5;
+            margin-bottom: 12px;
+        }
+
+        .profile-picture {
+            width: 98px;
+            height: 98px;
+            border-radius: 50%;
+            background: #eeede6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+            font-size: 26px;
+            color: #555;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .upload-heading {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .upload-description {
+            color: #858585;
+            font-size: 14px;
+            margin-bottom: 11px;
+        }
+
+        .upload-button {
+            border: 1px solid #333;
+            background: white;
+            color: #222;
+            padding: 8px 15px;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .upload-button:hover {
+            background: #191919;
+            color: white;
+        }
+
+        .profile-input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #eeeeeb;
+            background: transparent;
+            outline: none;
+            padding: 14px 0;
+            color: #333;
+            font-family: "Source Sans 3", sans-serif;
+            font-size: 14px;
+        }
+
+        .profile-input:focus {
+            border-bottom-color: #191919;
+        }
+
+        .profile-input::placeholder {
+            color: #858585;
+            opacity: 1;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 11px;
+        }
+
+        .password-field {
+            position: relative;
+            margin-bottom: 19px;
+        }
+
+        .password-input {
+            width: 100%;
+            height: 46px;
+            background: #f9f9f6;
+            border: 1px solid #deded9;
+            padding: 10px 65px 10px 13px;
+            outline: none;
+            color: #333;
+            font-family: "Source Sans 3", sans-serif;
+            font-size: 14px;
+            border-radius: 0;
+        }
+
+        .password-input:focus {
+            border-color: #777;
+            box-shadow: none;
+        }
+
+        .password-input::placeholder {
+            color: #aaa9a2;
+        }
+
+        .show-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #555;
+            font-family: "Source Sans 3", sans-serif;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .main-button {
+            width: 100%;
+            min-height: 49px;
+            background: #171717;
+            color: #fff;
+            border: 1px solid #171717;
+            padding: 13px 17px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+            font-family: "Source Sans 3", sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .main-button:hover {
+            background: #333;
+            color: #fff;
+        }
+
+        .button-arrow {
+            font-size: 21px;
+            font-weight: 400;
+            line-height: 1;
+        }
+
+        .account-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .logout-button {
+            background: #191919;
+            border: 1px solid #191919;
+            color: white;
+            padding: 11px 21px;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .logout-button:hover {
+            background: #333;
+            color: white;
+        }
+
+        .delete-button {
+            background: transparent;
+            border: 1px solid #d68c8c;
+            color: #b76565;
+            padding: 11px 21px;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .delete-button:hover {
+            background: #b76565;
+            color: white;
+        }
+
+        .status-message {
+            font-size: 13px;
+            margin-top: 14px;
+            margin-bottom: 0;
+        }
+
+        .site-footer {
+            background: #171717;
+            color: #888;
+            padding: 75px 4.5% 17px;
+            min-height: 120px;
+        }
+
+        .footer-line {
+            border-top: 1px solid #292929;
+            padding-top: 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 27px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: #888;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        @media (max-width: 900px) {
+            .settings-container {
+                width: 90%;
+                padding-top: 30px;
+            }
+
+            .page-title {
+                font-size: 45px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .settings-container {
+                width: 92%;
+                padding-top: 25px;
+                padding-bottom: 80px;
+            }
+
+            .page-title {
+                font-size: 36px;
+                letter-spacing: -0.8px;
+            }
+
+            .page-description {
+                margin-bottom: 40px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .settings-card {
+                padding: 20px;
+            }
+
+            .profile-picture-section {
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .profile-picture {
+                width: 75px;
+                height: 75px;
+            }
+
+            .account-actions {
+                align-items: flex-start;
+            }
+
+            .footer-line {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 18px;
+            }
+
+            .site-footer {
+                padding-top: 45px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="settings-container">
+
+        <header>
+            <h1 class="page-title">Account settings.</h1>
+            <p class="page-description">
+                Manage your profile and account security.
+            </p>
+        </header>
+
+        <!-- Profile Section -->
+
+        <section class="settings-section">
+
+            <p class="section-label">PROFILE</p>
+            <h2 class="section-title">Your information</h2>
+
+            <div class="settings-card">
+
+                <div class="profile-picture-section">
+
+                    <div class="profile-picture" id="profilePicture">
+                        <span id="plusIcon">+</span>
+                    </div>
+
+                    <div>
+                        <h3 class="upload-heading">Profile picture</h3>
+
+                        <p class="upload-description">
+                            Upload an image to personalize your account.
+                        </p>
+
+                        <input type="file" id="imageUpload" accept="image/*" class="d-none">
+
+                        <button type="button" class="upload-button"
+                            onclick="document.getElementById('imageUpload').click()">
+                            Upload image
+                        </button>
+                    </div>
+
+                </div>
+
+                <form id="profileForm">
+
+                    <div>
+                        <input type="text" class="profile-input" id="profileName" placeholder="Name" aria-label="Name"
+                            required>
+                    </div>
+
+                    <div>
+                        <input type="email" class="profile-input" id="profileEmail" placeholder="Email"
+                            aria-label="Email" required>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="main-button">
+                            <span>Save changes</span>
+                            <span class="button-arrow">&rarr;</span>
+                        </button>
+                    </div>
+
+                    <p id="profileMessage" class="status-message"></p>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- Security Section -->
+
+        <section class="settings-section">
+
+            <p class="section-label">SECURITY</p>
+            <h2 class="section-title">Change password</h2>
+
+            <div class="settings-card">
+
+                <form id="passwordForm">
+
+                    <div class="password-field">
+
+                        <label for="currentPassword" class="field-label">
+                            Current password
+                        </label>
+
+                        <input type="password" id="currentPassword" class="password-input"
+                            placeholder="Current password" required>
+
+                        <button type="button" class="show-password" onclick="togglePassword('currentPassword', this)">
+                            Show
+                        </button>
+
+                    </div>
+
+                    <div class="password-field">
+
+                        <label for="newPassword" class="field-label">
+                            New password
+                        </label>
+
+                        <input type="password" id="newPassword" class="password-input" placeholder="New password"
+                            required>
+
+                        <button type="button" class="show-password" onclick="togglePassword('newPassword', this)">
+                            Show
+                        </button>
+
+                    </div>
+
+                    <div class="password-field">
+
+                        <label for="confirmPassword" class="field-label">
+                            Confirm new password
+                        </label>
+
+                        <input type="password" id="confirmPassword" class="password-input"
+                            placeholder="Confirm new password" required>
+
+                        <button type="button" class="show-password" onclick="togglePassword('confirmPassword', this)">
+                            Show
+                        </button>
+
+                    </div>
+
+                    <button type="submit" class="main-button mt-3">
+                        <span>Change password</span>
+                        <span class="button-arrow">&rarr;</span>
+                    </button>
+
+                    <p id="passwordMessage" class="status-message"></p>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- Account Actions -->
+
+        <section class="settings-section mb-0">
+
+            <p class="section-label">ACCOUNT</p>
+            <h2 class="section-title">Account actions</h2>
+
+            <div class="account-actions">
+
+                <button type="button" class="logout-button" id="logoutButton">
+                    Logout
+                </button>
+
+                <button type="button" class="delete-button" id="deleteButton">
+                    Delete account
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+
+    <footer class="site-footer">
+
+        <div class="footer-line">
+
+            <p class="mb-0">
+                &copy; 2026 Atelier. All rights reserved.
+            </p>
+
+            <div class="footer-links">
+                <a href="#" onclick="return false;">Privacy</a>
+                <a href="#" onclick="return false;">Terms</a>
+            </div>
+
+        </div>
+
+    </footer>
+
+    <script>
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+
+        let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+        const profileName = document.getElementById("profileName");
+        const profileEmail = document.getElementById("profileEmail");
+        const profilePicture = document.getElementById("profilePicture");
+        const profileMessage = document.getElementById("profileMessage");
+        const passwordMessage = document.getElementById("passwordMessage");
+
+        function getCurrentUser() {
+            users = JSON.parse(localStorage.getItem("users")) || [];
+            loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+            if (!loggedInUser) {
+                return null;
+            }
+
+            return users.find(function (user) {
+                return user.email.toLowerCase() ===
+                    loggedInUser.email.toLowerCase();
+            }) || null;
+        }
+
+        function loadProfile() {
+            const user = getCurrentUser();
+
+            if (!user) {
+                profileName.value = "";
+                profileEmail.value = "";
+                return;
+            }
+
+            profileName.value = user.name || "";
+            profileEmail.value = user.email || "";
+
+            if (user.profilePicture) {
+                profilePicture.innerHTML =
+                    '<img src="' + user.profilePicture +
+                    '" alt="Profile picture">';
+            }
+        }
+
+        function togglePassword(inputId, button) {
+            const input = document.getElementById(inputId);
+
+            if (input.type === "password") {
+                input.type = "text";
+                button.textContent = "Hide";
+            } else {
+                input.type = "password";
+                button.textContent = "Show";
+            }
+        }
+
+        function showMessage(element, message, success) {
+            element.textContent = message;
+            element.style.color = success ? "#32804a" : "#b76565";
+        }
+
+        function updateUser(updatedUser) {
+            users = users.map(function (user) {
+                if (user.email.toLowerCase() ===
+                    loggedInUser.email.toLowerCase()) {
+                    return updatedUser;
+                }
+
+                return user;
+            });
+
+            localStorage.setItem("users", JSON.stringify(users));
+
+            loggedInUser = {
+                name: updatedUser.name,
+                email: updatedUser.email
+            };
+
+            localStorage.setItem(
+                "loggedInUser",
+                JSON.stringify(loggedInUser)
+            );
+        }
+
+        // Upload profile picture
+
+        document.getElementById("imageUpload").addEventListener(
+            "change",
+            function () {
+                const file = this.files[0];
+
+                if (!file) {
+                    return;
+                }
+
+                if (!file.type.startsWith("image/")) {
+                    showMessage(
+                        profileMessage,
+                        "Please select a valid image.",
+                        false
+                    );
+                    return;
+                }
+
+                const reader = new FileReader();
+
+                reader.onload = function (event) {
+                    const user = getCurrentUser();
+
+                    if (!user) {
+                        showMessage(
+                            profileMessage,
+                            "Please log in before updating your profile.",
+                            false
+                        );
+                        return;
+                    }
+
+                    user.profilePicture = event.target.result;
+
+                    updateUser(user);
+
+                    profilePicture.innerHTML =
+                        '<img src="' + event.target.result +
+                        '" alt="Profile picture">';
+
+                    showMessage(
+                        profileMessage,
+                        "Profile picture updated successfully.",
+                        true
+                    );
+                };
+
+                reader.readAsDataURL(file);
+            }
+        );
+
+        // Save profile information
+
+        document.getElementById("profileForm").addEventListener(
+            "submit",
+            function (event) {
+                event.preventDefault();
+
+                const user = getCurrentUser();
+
+                if (!user) {
+                    showMessage(
+                        profileMessage,
+                        "No account is logged in.",
+                        false
+                    );
+                    return;
+                }
+
+                const name = profileName.value.trim();
+                const email = profileEmail.value.trim().toLowerCase();
+
+                if (!name || !email) {
+                    showMessage(
+                        profileMessage,
+                        "Please fill in all fields.",
+                        false
+                    );
+                    return;
+                }
+
+                const emailExists = users.some(function (item) {
+                    return item.email.toLowerCase() === email &&
+                        item.email.toLowerCase() !==
+                        user.email.toLowerCase();
+                });
+
+                if (emailExists) {
+                    showMessage(
+                        profileMessage,
+                        "This email is already registered.",
+                        false
+                    );
+                    return;
+                }
+
+                const oldEmail = user.email;
+
+                user.name = name;
+                user.email = email;
+
+                users = users.map(function (item) {
+                    if (item.email.toLowerCase() ===
+                        oldEmail.toLowerCase()) {
+                        return user;
+                    }
+
+                    return item;
+                });
+
+                localStorage.setItem("users", JSON.stringify(users));
+
+                loggedInUser = {
+                    name: user.name,
+                    email: user.email
+                };
+
+                localStorage.setItem(
+                    "loggedInUser",
+                    JSON.stringify(loggedInUser)
+                );
+
+                showMessage(
+                    profileMessage,
+                    "Your information has been saved.",
+                    true
+                );
+            }
+        );
+
+        // Change password
+
+        document.getElementById("passwordForm").addEventListener(
+            "submit",
+            function (event) {
+                event.preventDefault();
+
+                const user = getCurrentUser();
+
+                if (!user) {
+                    showMessage(
+                        passwordMessage,
+                        "No account is logged in.",
+                        false
+                    );
+                    return;
+                }
+
+                const currentPassword =
+                    document.getElementById("currentPassword").value;
+
+                const newPassword =
+                    document.getElementById("newPassword").value;
+
+                const confirmPassword =
+                    document.getElementById("confirmPassword").value;
+
+                if (currentPassword !== user.password) {
+                    showMessage(
+                        passwordMessage,
+                        "Your current password is incorrect.",
+                        false
+                    );
+                    return;
+                }
+
+                if (newPassword.length < 12 ||
+                    !/[A-Z]/.test(newPassword) ||
+                    !/[a-z]/.test(newPassword) ||
+                    !/[0-9]/.test(newPassword) ||
+                    !/[^A-Za-z0-9]/.test(newPassword)) {
+
+                    showMessage(
+                        passwordMessage,
+                        "Use at least 12 characters, including uppercase, lowercase, a number and a special character.",
+                        false
+                    );
+                    return;
+                }
+
+                if (newPassword === currentPassword) {
+                    showMessage(
+                        passwordMessage,
+                        "Your new password must be different.",
+                        false
+                    );
+                    return;
+                }
+
+                if (newPassword !== confirmPassword) {
+                    showMessage(
+                        passwordMessage,
+                        "The new passwords do not match.",
+                        false
+                    );
+                    return;
+                }
+
+                user.password = newPassword;
+
+                updateUser(user);
+
+                document.getElementById("passwordForm").reset();
+
+                document.querySelectorAll(".show-password").forEach(
+                    function (button) {
+                        button.textContent = "Show";
+                    }
+                );
+
+                showMessage(
+                    passwordMessage,
+                    "Your password has been changed successfully.",
+                    true
+                );
+            }
+        );
+
+        // Logout
+
+        document.getElementById("logoutButton").addEventListener(
+            "click",
+            function () {
+                if (confirm("Are you sure you want to log out?")) {
+                    localStorage.removeItem("loggedInUser");
+
+                    window.location.href = "login.html";
+                }
+            }
+        );
+
+        // Delete account
+
+        document.getElementById("deleteButton").addEventListener(
+            "click",
+            function () {
+                const user = getCurrentUser();
+
+                if (!user) {
+                    alert("No account is logged in.");
+                    return;
+                }
+
+                const confirmed = confirm(
+                    "Are you sure you want to delete your account? This action cannot be undone."
+                );
+
+                if (!confirmed) {
+                    return;
+                }
+
+                users = users.filter(function (item) {
+                    return item.email.toLowerCase() !==
+                        user.email.toLowerCase();
+                });
+
+                localStorage.setItem("users", JSON.stringify(users));
+
+                localStorage.removeItem("loggedInUser");
+
+                alert("Your account has been deleted.");
+
+                window.location.href = "signup.html";
+            }
+        );
+
+
+
+        loadProfile();
+    </script>
+
+</body>
+
+</html>
