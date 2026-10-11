@@ -275,6 +275,7 @@ a {
     position: relative;
     overflow: hidden;
     background: #e5e1d9;
+    cursor: pointer;
 }
 
 .category-card::after {
@@ -324,6 +325,7 @@ a {
 
 .product-card {
     height: 100%;
+    cursor: pointer;
 }
 
 .product-image {
@@ -369,6 +371,7 @@ a {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    z-index: 2;
 }
 
 .icon:hover,
@@ -397,6 +400,37 @@ a {
 .product-price {
     font-size: 12px;
     margin: 0;
+}
+
+/* ADD TO CART BUTTON */
+
+.add-cart-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 36px;
+    margin-top: 10px;
+    padding: 7px 12px;
+    border: 1px solid #777;
+    background: transparent;
+    color: #191919;
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .35px;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease;
+}
+
+.add-cart-btn:hover {
+    background: #191919;
+    color: #fff;
+    border-color: #191919;
+}
+
+.add-cart-btn i {
+    font-size: 13px;
 }
 
 /* ATELIER HOME */
@@ -622,11 +656,6 @@ a {
     color: #222;
 }
 
-.newsletter-input-row input:focus {
-    outline: none;
-    box-shadow: none;
-}
-
 .newsletter-input-row button {
     border: 0;
     background: transparent;
@@ -671,10 +700,6 @@ a {
     font-family: "DM Serif Display", Georgia, serif;
     font-size: 27px;
     margin-bottom: 3px;
-}
-
-.footer-logo:hover {
-    color: #ddd;
 }
 
 .footer-brand p {
@@ -826,6 +851,12 @@ a {
 
     .product-image {
         height: 390px;
+    }
+
+    .add-cart-btn {
+        min-height: 34px;
+        padding: 7px 9px;
+        font-size: 10px;
     }
 
     .atelier-home {
