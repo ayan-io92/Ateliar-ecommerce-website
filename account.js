@@ -1,14 +1,8 @@
-const signupView = document.getElementById("signupView");
-const loginView = document.getElementById("loginView");
-const forgotView = document.getElementById("forgotView");
-
-const signupForm = document.getElementById("signupForm");
-const loginForm = document.getElementById("loginForm");
-const forgotForm = document.getElementById("forgotForm");
-
-const signupMessage = document.getElementById("signupMessage");
-const loginMessage = document.getElementById("loginMessage");
-const forgotMessage = document.getElementById("forgotMessage");
+const profileName = document.getElementById("profileName");
+const profileEmail = document.getElementById("profileEmail");
+const profilePicture = document.getElementById("profilePicture");
+const profileMessage = document.getElementById("profileMessage");
+const passwordMessage = document.getElementById("passwordMessage");
 
 let users = getUsers();
 
@@ -30,36 +24,80 @@ function saveUsers() {
   }
 }
 
-function showForm(formName) {
-  signupView.classList.add("d-none");
-  loginView.classList.add("d-none");
-  forgotView.classList.add("d-none");
-
-  if (formName === "signup") {
-    signupView.classList.remove("d-none");
-    signupForm.reset();
-    clearMessage(signupMessage);
-  } else if (formName === "login") {
-    loginView.classList.remove("d-none");
-    loginForm.reset();
-    clearMessage(loginMessage);
-  } else if (formName === "forgot") {
-    forgotView.classList.remove("d-none");
-    forgotForm.reset();
-    clearMessage(forgotMessage);
-  }
-
-  document.querySelectorAll(".show-password").forEach(function (button) {
-    button.textContent = "Show";
-  });
-
-  document.querySelectorAll(".password-box input").forEach(function (input) {
-    input.type = "password";
-  });
+function showMessage(element, message, success) {
+  element.textContent = message;
+  element.style.color = success ? "#32804a" : "#b76565";
 }
 
-function showPassword(inputId, button) {
+function getCurrentUser() {
+  users = getUsers();
+
+  let loggedInUser;
+
+  try {
+    loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+  } catch (error) {
+    loggedInUser = null;
+  }
+
+  if (!loggedInUser || !loggedInUser.email) {
+    return null;
+  }
+
+  return (
+    users.find(function (user) {
+      return user.email.toLowerCase() === loggedInUser.email.toLowerCase();
+    }) || null
+  );
+}
+
+function updateLoggedInUser(user) {
+  try {
+    localStorage.setItem(
+      "loggedInUser",
+      JSON.stringify({
+        username: user.username || user.name,
+        name: user.name || user.username,
+        email: user.email,
+      }),
+    );
+
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+function loadProfile() {
+  const user = getCurrentUser();
+
+  if (!user) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  profileName.value = user.name || user.username || "";
+  profileEmail.value = user.email || "";
+
+  profilePicture.replaceChildren();
+
+  if (user.profilePicture) {
+    const image = document.createElement("img");
+    image.src = user.profilePicture;
+    image.alt = "Profile picture";
+    profilePicture.appendChild(image);
+  } else {
+    const plusIcon = document.createElement("span");
+    plusIcon.id = "plusIcon";
+    plusIcon.textContent = "+";
+    profilePicture.appendChild(plusIcon);
+  }
+}
+
+function togglePassword(inputId, button) {
   const input = document.getElementById(inputId);
+
+  if (!input) return;
 
   if (input.type === "password") {
     input.type = "text";
@@ -76,250 +114,244 @@ function validPassword(password) {
   );
 }
 
-function validName(name) {
-  return /^[\p{L}][\p{L}\s'-]*$/u.test(name.trim());
-}
-function deleteAccount() {
-  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+// Upload profile picture
 
-  if (!loggedInUser) {
+document.getElementById("imageUpload").addEventListener("change", function () {
+  const file = this.files[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    showMessage(profileMessage, "Please select a valid image.", false);
+    this.value = "";
+    return;
+  }
+
+  if (file.size > 2 * 1024 * 1024) {
+    showMessage(
+      profileMessage,
+      "Please select an image smaller than 2 MB.",
+      false,
+    );
+    this.value = "";
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function (event) {
+    const user = getCurrentUser();
+
+    if (!user) {
+      showMessage(profileMessage, "Please log in again.", false);
+      return;
+    }
+
+    const oldPicture = user.profilePicture;
+    user.profilePicture = event.target.result;
+
+    if (!saveUsers()) {
+      user.profilePicture = oldPicture;
+      showMessage(
+        profileMessage,
+        "Unable to save the image. Try a smaller image.",
+        false,
+      );
+      return;
+    }
+
+    loadProfile();
+    showMessage(profileMessage, "Profile picture updated successfully.", true);
+  };
+
+  reader.onerror = function () {
+    showMessage(profileMessage, "Unable to read this image.", false);
+  };
+
+  reader.readAsDataURL(file);
+});
+
+// Save profile information
+
+document
+  .getElementById("profileForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const user = getCurrentUser();
+
+    if (!user) {
+      window.location.href = "index.html";
+      return;
+    }
+
+    const name = profileName.value.trim();
+    const email = profileEmail.value.trim().toLowerCase();
+
+    if (!name || !email) {
+      showMessage(profileMessage, "Please fill in all fields.", false);
+      return;
+    }
+
+    if (!/^[\p{L}][\p{L}\s'-]*$/u.test(name)) {
+      showMessage(profileMessage, "Please enter a valid name.", false);
+      return;
+    }
+
+    const emailExists = users.some(function (item) {
+      return (
+        item.email.toLowerCase() === email &&
+        item.email.toLowerCase() !== user.email.toLowerCase()
+      );
+    });
+
+    if (emailExists) {
+      showMessage(profileMessage, "This email is already registered.", false);
+      return;
+    }
+
+    const oldUsers = JSON.stringify(users);
+    const oldEmail = user.email;
+
+    user.name = name;
+    user.username = name;
+    user.email = email;
+
+    if (!saveUsers()) {
+      users = JSON.parse(oldUsers);
+      showMessage(profileMessage, "Unable to save your changes.", false);
+      return;
+    }
+
+    if (!updateLoggedInUser(user)) {
+      users = JSON.parse(oldUsers);
+      localStorage.setItem("users", oldUsers);
+      showMessage(profileMessage, "Unable to update your session.", false);
+      return;
+    }
+
+    showMessage(profileMessage, "Your information has been saved.", true);
+  });
+
+// Change password
+
+document
+  .getElementById("passwordForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const user = getCurrentUser();
+
+    if (!user) {
+      window.location.href = "index.html";
+      return;
+    }
+
+    const currentPassword = document.getElementById("currentPassword").value;
+    const newPassword = document.getElementById("newPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if (currentPassword !== user.password) {
+      showMessage(
+        passwordMessage,
+        "Your current password is incorrect.",
+        false,
+      );
+      return;
+    }
+
+    if (!validPassword(newPassword)) {
+      showMessage(
+        passwordMessage,
+        "Use at least 12 characters, including uppercase, lowercase, a number and a special character.",
+        false,
+      );
+      return;
+    }
+
+    if (newPassword === currentPassword) {
+      showMessage(
+        passwordMessage,
+        "Your new password must be different.",
+        false,
+      );
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      showMessage(passwordMessage, "The new passwords do not match.", false);
+      return;
+    }
+
+    const oldPassword = user.password;
+    user.password = newPassword;
+
+    if (!saveUsers()) {
+      user.password = oldPassword;
+      showMessage(passwordMessage, "Unable to change your password.", false);
+      return;
+    }
+
+    document.getElementById("passwordForm").reset();
+
+    document.querySelectorAll(".show-password").forEach(function (button) {
+      button.textContent = "Show";
+    });
+
+    document.querySelectorAll(".password-input").forEach(function (input) {
+      input.type = "password";
+    });
+
+    showMessage(
+      passwordMessage,
+      "Your password has been changed successfully.",
+      true,
+    );
+  });
+
+// Logout
+
+document.getElementById("logoutButton").addEventListener("click", function () {
+  if (confirm("Are you sure you want to log out?")) {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "index.html";
+  }
+});
+
+// Delete account
+
+document.getElementById("deleteButton").addEventListener("click", function () {
+  const user = getCurrentUser();
+
+  if (!user) {
+    localStorage.removeItem("loggedInUser");
     window.location.href = "index.html";
     return;
   }
 
-  users = getUsers();
+  const confirmed = confirm(
+    "Are you sure you want to delete your account? This action cannot be undone.",
+  );
 
-  users = users.filter(function (user) {
-    return user.email !== loggedInUser.email;
+  if (!confirmed) return;
+
+  const oldUsers = JSON.stringify(users);
+
+  users = users.filter(function (item) {
+    return item.email.toLowerCase() !== user.email.toLowerCase();
   });
 
-  localStorage.setItem("users", JSON.stringify(users));
+  if (!saveUsers()) {
+    users = JSON.parse(oldUsers);
+    alert("Unable to delete your account. Please try again.");
+    return;
+  }
+
   localStorage.removeItem("loggedInUser");
 
+  alert("Your account has been deleted successfully.");
+
   window.location.href = "index.html";
-}
-
-document
-  .getElementById("showLogin")
-  .addEventListener("click", function (event) {
-    event.preventDefault();
-    showForm("login");
-  });
-
-document
-  .getElementById("showSignup")
-  .addEventListener("click", function (event) {
-    event.preventDefault();
-    showForm("signup");
-  });
-
-document
-  .getElementById("showForgot")
-  .addEventListener("click", function (event) {
-    event.preventDefault();
-    showForm("forgot");
-  });
-
-document
-  .getElementById("backToLogin")
-  .addEventListener("click", function (event) {
-    event.preventDefault();
-    showForm("login");
-  });
-
-signupForm.addEventListener("submit", function (event) {
-  event.preventDefault();
-
-  users = getUsers();
-
-  const username = document.getElementById("signupUsername").value.trim();
-  const email = document
-    .getElementById("signupEmail")
-    .value.trim()
-    .toLowerCase();
-  const password = document.getElementById("signupPassword").value;
-  const confirmPassword = document.getElementById("confirmPassword").value;
-
-  if (!validName(username)) {
-    displayMessage(signupMessage, "Please enter a valid full name.", "error");
-    return;
-  }
-
-  if (
-    users.some(function (user) {
-      return user.email.toLowerCase() === email;
-    })
-  ) {
-    displayMessage(
-      signupMessage,
-      "An account with this email already exists.",
-      "error",
-    );
-    return;
-  }
-
-  if (!validPassword(password)) {
-    displayMessage(
-      signupMessage,
-      "Password must be at least 12 characters and include uppercase, lowercase, a number, and a special character.",
-      "error",
-    );
-    return;
-  }
-
-  if (password !== confirmPassword) {
-    displayMessage(signupMessage, "Passwords do not match.", "error");
-    return;
-  }
-
-  users.push({
-    username: username,
-    email: email,
-    password: password,
-  });
-
-  if (!saveUsers()) {
-    users.pop();
-    displayMessage(
-      signupMessage,
-      "Unable to save your account. Please try again.",
-      "error",
-    );
-    return;
-  }
-
-  signupForm.reset();
-
-  displayMessage(
-    signupMessage,
-    "Account created successfully! You can now sign in.",
-    "success",
-  );
 });
 
-loginForm.addEventListener("submit", function (event) {
-  event.preventDefault();
-
-  users = getUsers();
-
-  const email = document
-    .getElementById("loginEmail")
-    .value.trim()
-    .toLowerCase();
-  const password = document.getElementById("loginPassword").value;
-
-  const user = users.find(function (item) {
-    return item.email.toLowerCase() === email && item.password === password;
-  });
-
-  if (!user) {
-    displayMessage(loginMessage, "Incorrect email or password.", "error");
-    return;
-  }
-
-  try {
-    localStorage.setItem(
-      "loggedInUser",
-      JSON.stringify({
-        username: user.username,
-        email: user.email,
-      }),
-    );
-  } catch (error) {
-    displayMessage(
-      loginMessage,
-      "Unable to sign in. Please try again.",
-      "error",
-    );
-    return;
-  }
-
-  displayMessage(
-    loginMessage,
-    "Welcome back, " + user.username + "!",
-    "success",
-  );
-
-  loginForm.reset();
-
-  setTimeout(function () {
-    window.location.href = "home.html";
-  }, 1000);
-});
-
-forgotForm.addEventListener("submit", function (event) {
-  event.preventDefault();
-
-  users = getUsers();
-
-  const email = document
-    .getElementById("forgotEmail")
-    .value.trim()
-    .toLowerCase();
-  const newPassword = document.getElementById("newPassword").value;
-  const confirmNewPassword =
-    document.getElementById("confirmNewPassword").value;
-
-  const userIndex = users.findIndex(function (user) {
-    return user.email.toLowerCase() === email;
-  });
-
-  if (userIndex === -1) {
-    displayMessage(
-      forgotMessage,
-      "No account found with this email address.",
-      "error",
-    );
-    return;
-  }
-
-  if (!validPassword(newPassword)) {
-    displayMessage(
-      forgotMessage,
-      "Password must be at least 12 characters and include uppercase, lowercase, a number, and a special character.",
-      "error",
-    );
-    return;
-  }
-
-  if (newPassword !== confirmNewPassword) {
-    displayMessage(forgotMessage, "Passwords do not match.", "error");
-    return;
-  }
-
-  if (users[userIndex].password === newPassword) {
-    displayMessage(
-      forgotMessage,
-      "Please choose a different password.",
-      "error",
-    );
-    return;
-  }
-
-  const oldPassword = users[userIndex].password;
-  users[userIndex].password = newPassword;
-
-  if (!saveUsers()) {
-    users[userIndex].password = oldPassword;
-    displayMessage(
-      forgotMessage,
-      "Unable to reset your password. Please try again.",
-      "error",
-    );
-    return;
-  }
-
-  forgotForm.reset();
-
-  displayMessage(
-    forgotMessage,
-    "Password reset successfully! You can now sign in.",
-    "success",
-  );
-
-  setTimeout(function () {
-    showForm("login");
-  }, 1500);
-});
-
-showForm("login");
+loadProfile();
