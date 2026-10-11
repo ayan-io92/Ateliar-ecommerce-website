@@ -70,17 +70,6 @@ function showPassword(inputId, button) {
   }
 }
 
-function displayMessage(element, message, type) {
-  element.textContent = message;
-  element.className =
-    type === "success" ? "text-success mt-3" : "text-danger mt-3";
-}
-
-function clearMessage(element) {
-  element.textContent = "";
-  element.className = "";
-}
-
 function validPassword(password) {
   return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s])\S{12,}$/.test(
     password,
@@ -89,6 +78,25 @@ function validPassword(password) {
 
 function validName(name) {
   return /^[\p{L}][\p{L}\s'-]*$/u.test(name.trim());
+}
+function deleteAccount() {
+  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+  if (!loggedInUser) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  users = getUsers();
+
+  users = users.filter(function (user) {
+    return user.email !== loggedInUser.email;
+  });
+
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.removeItem("loggedInUser");
+
+  window.location.href = "index.html";
 }
 
 document
