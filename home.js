@@ -2,53 +2,56 @@ const icons = document.querySelectorAll(".icon");
 const searchLinks = document.querySelectorAll(".nav-link");
 const productCards = document.querySelectorAll(".product-card");
 const categoryCards = document.querySelectorAll(".category-card");
-const viewLinks = document.querySelectorAll(".view-link");
 
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+// Shopping cart
 
-function saveCart() {
-  localStorage.setItem("cart", JSON.stringify(cart));
-  updateCartCount();
+let cart = [];
+
+try {
+  cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  if (!Array.isArray(cart)) {
+    cart = [];
+  }
+} catch (error) {
+  cart = [];
 }
 
-function updateCartCount() {
-  const cartCount = document.getElementById("cartCount");
-
-  if (cartCount) {
-    const totalItems = cart.reduce(function (total, item) {
-      return total + Number(item.quantity || 0);
-    }, 0);
-
-    cartCount.textContent = totalItems;
+function saveCart() {
+  try {
+    localStorage.setItem("cart", JSON.stringify(cart));
+    return true;
+  } catch (error) {
+    alert("Unable to save your cart. Please try again.");
+    return false;
   }
 }
 
-updateCartCount();
+// Wishlist icons
 
-// Wishlist buttons
 icons.forEach(function (button) {
   button.addEventListener("click", function (event) {
+    event.preventDefault();
     event.stopPropagation();
 
-    const heart = button.querySelector("i");
+    const icon = button.querySelector("i");
 
-    if (!heart) {
-      return;
-    }
+    if (!icon) return;
 
-    if (heart.classList.contains("fa-regular")) {
-      heart.classList.remove("fa-regular");
-      heart.classList.add("fa-solid");
+    if (icon.classList.contains("fa-regular")) {
+      icon.classList.remove("fa-regular");
+      icon.classList.add("fa-solid");
       button.classList.add("active");
     } else {
-      heart.classList.remove("fa-solid");
-      heart.classList.add("fa-regular");
+      icon.classList.remove("fa-solid");
+      icon.classList.add("fa-regular");
       button.classList.remove("active");
     }
   });
 });
 
 // Product card click
+
 productCards.forEach(function (card) {
   card.addEventListener("click", function (event) {
     if (
@@ -70,37 +73,33 @@ productCards.forEach(function (card) {
   });
 });
 
-// Add Add to Cart buttons
+// Add to Cart buttons
+
 productCards.forEach(function (card) {
   const productDetails = card.querySelector(".product-details");
 
-  if (!productDetails) {
-    return;
-  }
+  if (!productDetails) return;
 
-  if (productDetails.querySelector(".add-cart-btn")) {
-    return;
-  }
+  let button = productDetails.querySelector(".add-cart-btn");
 
-  const button = document.createElement("button");
+  if (!button) {
+    button = document.createElement("button");
+    button.type = "button";
+    button.className = "add-cart-btn";
+    productDetails.appendChild(button);
+  }
 
   button.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> ADD TO CART';
 
-  button.className = "add-cart-btn";
-  button.type = "button";
-
-  productDetails.appendChild(button);
-
   button.addEventListener("click", function (event) {
+    event.preventDefault();
     event.stopPropagation();
 
     const nameElement = card.querySelector(".product-name");
     const priceElement = card.querySelector(".product-price");
     const imageElement = card.querySelector(".product-image img");
 
-    if (!nameElement || !priceElement) {
-      return;
-    }
+    if (!nameElement || !priceElement) return;
 
     const productName = nameElement.textContent.trim();
     const productPrice = priceElement.textContent.trim();
@@ -121,7 +120,9 @@ productCards.forEach(function (card) {
       });
     }
 
-    saveCart();
+    if (!saveCart()) {
+      return;
+    }
 
     button.innerHTML = '<i class="fa-solid fa-check"></i> ADDED';
 
@@ -133,6 +134,7 @@ productCards.forEach(function (card) {
 });
 
 // Category cards
+
 categoryCards.forEach(function (card) {
   card.addEventListener("click", function () {
     const categoryName = card.querySelector(".category-name");
@@ -143,7 +145,8 @@ categoryCards.forEach(function (card) {
   });
 });
 
-// Shop and explore buttons
+// Shop and Explore buttons
+
 const shopButtons = document.querySelectorAll(
   ".shop-btn, .explore-btn, .dark-btn",
 );
@@ -166,16 +169,25 @@ shopButtons.forEach(function (button) {
   });
 });
 
-// Account navigation
+// Account link - open account.html
+
 const accountLink = Array.from(searchLinks).find(function (link) {
   return link.textContent.trim().toUpperCase().includes("ACCOUNT");
 });
 
 if (accountLink) {
   accountLink.setAttribute("href", "account.html");
+
+  accountLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    window.location.href = "account.html";
+  });
 }
 
 // View All and Shop All links
+
+const viewLinks = document.querySelectorAll(".view-link");
+
 viewLinks.forEach(function (link) {
   link.addEventListener("click", function (event) {
     const text = link.textContent.trim().toUpperCase();
@@ -193,20 +205,3 @@ viewLinks.forEach(function (link) {
     }
   });
 });
-
-// Newsletter
-const newsletterForm = document.getElementById("newsletterForm");
-
-if (newsletterForm) {
-  newsletterForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    const emailInput = document.getElementById("newsletterEmail");
-    const message = document.getElementById("newsletterMessage");
-
-    if (emailInput && message) {
-      message.textContent = "Thank you for subscribing!";
-      newsletterForm.reset();
-    }
-  });
-}
