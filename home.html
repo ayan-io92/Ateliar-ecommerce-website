@@ -4,39 +4,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Atelier | Objects Made for Everyday Life</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap"
         rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
     <link rel="stylesheet" href="home.css">
 </head>
 
 <body>
 
-    <section class="hero">
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
         <div class="overlay"></div>
 
         <nav class="navbar navbar-expand-lg hero-navbar">
             <div class="container-fluid px-4 px-md-5">
-                <a href="#" class="navbar-brand logo">Atelier</a>
+
+                <a href="index.html" class="navbar-brand logo">Atelier</a>
 
                 <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#mainNav">
+                    data-bs-target="#mainNav" aria-label="Toggle navigation">
                     <i class="fa-solid fa-bars"></i>
                 </button>
 
                 <div class="collapse navbar-collapse" id="mainNav">
                     <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4">
-                        <li class="nav-item"><a href="#products" class="nav-link">NEW ARRIVALS</a></li>
-                        <li class="nav-item"><a href="#categories" class="nav-link">COLLECTIONS</a></li>
-                        <li class="nav-item"><a href="#products" class="nav-link">BEST SELLERS</a></li>
-                        <li class="nav-item"><a href="#about" class="nav-link">ABOUT</a></li>
-                        <li class="nav-item"><a href="#products" class="nav-link">SEARCH</a></li>
-                        <li class="nav-item"><a href="#account.html" class="nav-link">ACCOUNT</a></li>
-                        <li class="nav-item"><a href="" class="nav-link">CART</a></li>
+
+                        <li class="nav-item">
+                            <a href="#products" class="nav-link">PRODUCTS</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#categories" class="nav-link">COLLECTIONS</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#about" class="nav-link">ABOUT</a>
+                        </li>
+
+                        <!-- SEARCH BUTTON AND MODAL -->
+                        <li class="nav-item search-nav-item">
+
+                            <button type="button" class="nav-link search-toggle" id="searchToggle" aria-expanded="false"
+                                aria-controls="searchModal">
+
+                                SEARCH
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+
+                            <div class="search-modal" id="searchModal" hidden>
+
+                                <form id="searchForm" role="search">
+
+                                    <label for="siteSearchInput">
+                                        SEARCH ATELIER
+                                    </label>
+
+                                    <div class="search-input-row">
+
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                                        <input type="search" id="siteSearchInput"
+                                            placeholder="Search products, categories..." autocomplete="off">
+
+                                        <button type="button" id="closeSearch" aria-label="Close search">
+
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </button>
+
+                                    </div>
+                                </form>
+
+                                <div id="searchResults" class="search-results" aria-live="polite">
+
+                                    <p>Search for something you love.</p>
+
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="account.html" class="nav-link">ACCOUNT</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="cart.html" class="nav-link" id="cartLink">
+                                CART (<span id="cartCount">0</span>)
+                            </a>
+                        </li>
+
                     </ul>
                 </div>
             </div>
@@ -44,13 +107,29 @@
 
         <div class="hero-content container-fluid">
             <div class="content-box">
+
                 <p class="small-title">THE NEW COLLECTION</p>
-                <h1>Objects made<br>for everyday<br>life.</h1>
-                <p class="description">Thoughtfully designed essentials, selected for modern living.</p>
+
+                <h1>
+                    Objects made<br>
+                    for everyday<br>
+                    life.
+                </h1>
+
+                <p class="description">
+                    Thoughtfully designed essentials, selected for modern living.
+                </p>
 
                 <div class="hero-buttons">
-                    <a href="#products" class="shop-btn">SHOP COLLECTION <span>→</span></a>
-                    <a href="#categories" class="explore-btn">EXPLORE</a>
+
+                    <a href="#products" class="shop-btn">
+                        SHOP COLLECTION <span>→</span>
+                    </a>
+
+                    <a href="#categories" class="explore-btn">
+                        EXPLORE
+                    </a>
+
                 </div>
             </div>
         </div>
@@ -62,249 +141,394 @@
         </div>
     </section>
 
+    <!-- INTRO SECTION -->
     <section class="intro" id="about">
         <div class="intro-content">
+
             <p class="section-label">ATELIER EDIT</p>
-            <h2>Considered pieces<br>for considered spaces.</h2>
-            <p>We believe the objects around us should be useful, beautiful and made to last.<br>
-                Our collection brings together timeless essentials for everyday living.</p>
+
+            <h2>
+                Considered pieces<br>
+                for considered spaces.
+            </h2>
+
+            <p>
+                We believe the objects around us should be useful, beautiful and made to last.<br>
+                Our collection brings together timeless essentials for everyday living.
+            </p>
+
         </div>
     </section>
 
+    <!-- CATEGORY SECTION -->
     <section class="categories" id="categories">
+
         <div class="section-top">
+
             <div>
                 <p class="section-label mb-2">SHOP BY CATEGORY</p>
                 <h2>Find your essentials.</h2>
             </div>
-            <a href="#categories" class="view-link">VIEW ALL →</a>
+
+            <a href="#products" class="view-link">VIEW ALL →</a>
+
         </div>
 
         <div class="row g-3">
+
             <div class="col-lg-3 col-md-6">
-                <div class="category-card">
+                <a class="category-card" href="#products" data-category="furniture">
+
                     <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=80"
                         alt="Furniture">
-                    <div class="category-info"><span class="category-number">01</span><span
-                            class="category-name">Furniture</span></div>
-                </div>
+
+                    <div class="category-info">
+                        <span class="category-number">01</span>
+                        <span class="category-name">Furniture</span>
+                    </div>
+
+                </a>
             </div>
+
             <div class="col-lg-3 col-md-6">
-                <div class="category-card">
+                <a class="category-card" href="#products" data-category="objects">
+
                     <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=80"
                         alt="Objects">
-                    <div class="category-info"><span class="category-number">02</span><span
-                            class="category-name">Objects</span></div>
-                </div>
+
+                    <div class="category-info">
+                        <span class="category-number">02</span>
+                        <span class="category-name">Objects</span>
+                    </div>
+
+                </a>
             </div>
+
             <div class="col-lg-3 col-md-6">
-                <div class="category-card">
+                <a class="category-card" href="#products" data-category="home">
+
                     <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80"
                         alt="Home">
-                    <div class="category-info"><span class="category-number">03</span><span
-                            class="category-name">Home</span></div>
-                </div>
+
+                    <div class="category-info">
+                        <span class="category-number">03</span>
+                        <span class="category-name">Home</span>
+                    </div>
+
+                </a>
             </div>
+
             <div class="col-lg-3 col-md-6">
-                <div class="category-card">
+                <a class="category-card" href="#products" data-category="accessories">
+
                     <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=800&q=80"
                         alt="Accessories">
-                    <div class="category-info"><span class="category-number">04</span><span
-                            class="category-name">Accessories</span></div>
-                </div>
+
+                    <div class="category-info">
+                        <span class="category-number">04</span>
+                        <span class="category-name">Accessories</span>
+                    </div>
+
+                </a>
             </div>
+
         </div>
     </section>
 
     <section class="products" id="products">
+
         <div class="section-top">
+
             <div>
                 <p class="section-label mb-2">JUST IN</p>
-                <h2>New arrivals.</h2>
+                <h2>PRODUCTS</h2>
             </div>
-            <a href="#products" class="view-link">SHOP ALL →</a>
+
+            <a href="cart.html" class="text-black">
+                CART
+            </a>
+
         </div>
 
-        <div class="row g-3">
-            <div class="col-lg-3 col-md-6">
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80"
-                            alt="Linen Lounge Chair">
-                        <span class="new-label">NEW</span>
-                        <button class="icon" aria-label="Add to favorites"><i class="fa-regular fa-heart"></i></button>
-                    </div>
-                    <div class="product-details">
-                        <p class="product-category">FURNITURE</p>
-                        <h3 class="product-name">Linen Lounge Chair</h3>
-                        <p class="product-price">$420</p>
-                    </div>
-                </div>
+        <div class="row g-3" id="products-container">
+
+            <div class="col-12 text-center py-5">
+                Loading products...
             </div>
 
-            <div class="col-lg-3 col-md-6">
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=80"
-                            alt="Handmade Ceramic">
-                        <span class="new-label">NEW</span>
-                        <button class="icon" aria-label="Add to favorites"><i class="fa-regular fa-heart"></i></button>
-                    </div>
-                    <div class="product-details">
-                        <p class="product-category">OBJECTS</p>
-                        <h3 class="product-name">Handmade Ceramic</h3>
-                        <p class="product-price">$86</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=800&q=80"
-                            alt="Oak Side Table">
-                        <button class="icon" aria-label="Add to favorites"><i class="fa-regular fa-heart"></i></button>
-                    </div>
-                    <div class="product-details">
-                        <p class="product-category">FURNITURE</p>
-                        <h3 class="product-name">Oak Side Table</h3>
-                        <p class="product-price">$290</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80"
-                            alt="Forma Table Lamp">
-                        <button class="icon" aria-label="Add to favorites"><i class="fa-regular fa-heart"></i></button>
-                    </div>
-                    <div class="product-details">
-                        <p class="product-category">LIGHTING</p>
-                        <h3 class="product-name">Forma Table Lamp</h3>
-                        <p class="product-price">$145</p>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
-    <section class="atelier-home">
+    <section class="atelier-home" id="atelierHome">
+
         <div class="home-image">
+
             <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85"
-                alt="Modern interior">
+                alt="Modern interior" loading="lazy">
+
         </div>
+
         <div class="home-content">
+
             <div class="home-content-box">
+
                 <p class="section-label">THE ATELIER HOME</p>
-                <h2>A quieter way<br>to live.</h2>
-                <p>Natural materials, honest forms and thoughtful details. Discover a collection designed to bring calm
-                    and character into everyday spaces.</p>
-                <a href="#categories" class="dark-btn">EXPLORE THE COLLECTION <span>→</span></a>
+
+                <h2>
+                    A quieter way<br>
+                    to live.
+                </h2>
+
+                <p>
+                    Natural materials, honest forms and thoughtful details.
+                    Discover a collection designed to bring calm and character
+                    into everyday spaces.
+                </p>
+
+                <a href="#categories" class="dark-btn">
+                    EXPLORE THE COLLECTION <span>→</span>
+                </a>
+
             </div>
         </div>
     </section>
 
+    <!-- CUSTOMER REVIEWS -->
     <section class="customer-reviews" id="reviews">
+
         <div class="reviews-inner">
+
             <div class="reviews-heading">
+
                 <div>
                     <p class="section-label">CUSTOMER REVIEWS</p>
                     <h2>Loved by our customers.</h2>
                 </div>
-                <div class="overall-rating"><span>★★★★★</span><small>4.9 / 5</small></div>
+
+                <div class="overall-rating">
+                    <span>★★★★★</span>
+                    <small>4.9 / 5</small>
+                </div>
+
             </div>
 
             <div class="row g-4 review-grid">
+
                 <div class="col-lg-4 col-md-6">
                     <article class="review-card">
+
                         <div class="review-stars">★★★★★</div>
-                        <p class="review-quote">“Beautifully made and even better in person. The quality and attention
-                            to detail are exceptional.”</p>
-                        <div class="review-customer"><span class="customer-avatar">EM</span>
-                            <div><strong>Emma M.</strong><small>Verified customer</small></div>
+
+                        <p class="review-quote">
+                            “Beautifully made and even better in person.
+                            The quality and attention to detail are exceptional.”
+                        </p>
+
+                        <div class="review-customer">
+                            <span class="customer-avatar">EM</span>
+
+                            <div>
+                                <strong>Emma M.</strong>
+                                <small>Verified customer</small>
+                            </div>
                         </div>
+
                     </article>
                 </div>
+
                 <div class="col-lg-4 col-md-6">
                     <article class="review-card">
+
                         <div class="review-stars">★★★★★</div>
-                        <p class="review-quote">“The perfect addition to our living room. Minimal, comfortable and
-                            exactly what we were looking for.”</p>
-                        <div class="review-customer"><span class="customer-avatar">JA</span>
-                            <div><strong>James A.</strong><small>Verified customer</small></div>
+
+                        <p class="review-quote">
+                            “The perfect addition to our living room.
+                            Minimal, comfortable and exactly what we were looking for.”
+                        </p>
+
+                        <div class="review-customer">
+                            <span class="customer-avatar">JA</span>
+
+                            <div>
+                                <strong>James A.</strong>
+                                <small>Verified customer</small>
+                            </div>
                         </div>
+
                     </article>
                 </div>
+
                 <div class="col-lg-4 col-md-6">
                     <article class="review-card">
+
                         <div class="review-stars">★★★★★</div>
-                        <p class="review-quote">“I love the whole Atelier aesthetic. Everything feels thoughtfully
-                            designed and incredibly well made.”</p>
-                        <div class="review-customer"><span class="customer-avatar">SO</span>
-                            <div><strong>Sofia O.</strong><small>Verified customer</small></div>
+
+                        <p class="review-quote">
+                            “I love the whole Atelier aesthetic.
+                            Everything feels thoughtfully designed and incredibly well made.”
+                        </p>
+
+                        <div class="review-customer">
+                            <span class="customer-avatar">SO</span>
+
+                            <div>
+                                <strong>Sofia O.</strong>
+                                <small>Verified customer</small>
+                            </div>
                         </div>
+
                     </article>
                 </div>
+
             </div>
         </div>
     </section>
 
+    <!-- NEWSLETTER SECTION -->
     <section class="newsletter" id="newsletter">
+
         <div class="newsletter-inner">
+
             <div class="newsletter-copy">
+
                 <p class="section-label">STAY IN THE KNOW</p>
+
                 <h2>Notes from Atelier.</h2>
-                <p>New collections, thoughtful objects and occasional inspiration. Straight to your inbox.</p>
+
+                <p>
+                    New collections, thoughtful objects and occasional inspiration.
+                    Straight to your inbox.
+                </p>
+
             </div>
+
             <form class="newsletter-form" id="newsletterForm">
+
                 <label for="newsletterEmail">EMAIL ADDRESS</label>
+
                 <div class="newsletter-input-row">
+
                     <input type="email" id="newsletterEmail" placeholder="you@example.com" required>
-                    <button type="submit">SUBSCRIBE <span>→</span></button>
+
+                    <button type="submit">
+                        SUBSCRIBE <span>→</span>
+                    </button>
+
                 </div>
-                <p class="newsletter-message" id="newsletterMessage" aria-live="polite"></p>
+
+                <p class="newsletter-message" id="newsletterMessage" aria-live="polite">
+                </p>
+
             </form>
         </div>
     </section>
 
-    <footer class="site-footer">
+    <!-- FOOTER -->
+    <footer class="site-footer" id="footer">
+
         <div class="footer-main">
+
             <div class="footer-brand">
-                <a href="#" class="footer-logo">Atelier</a>
-                <p>Thoughtfully designed essentials for<br>modern living.</p>
+
+                <a href="index.html" class="footer-logo">Atelier</a>
+
+                <p>
+                    Thoughtfully designed essentials for<br>
+                    modern living.
+                </p>
+
             </div>
+
             <div class="footer-column">
+
                 <h3>SHOP</h3>
-                <a href="#products">New Arrivals</a>
+
+                <a href="#products">PRODUCTS</a>
                 <a href="#categories">Collections</a>
                 <a href="#products">Best Sellers</a>
                 <a href="#newsletter">Gift Cards</a>
+
             </div>
+
             <div class="footer-column">
+
                 <h3>HELP</h3>
+
                 <a href="#newsletter">Contact</a>
                 <a href="#newsletter">Shipping</a>
                 <a href="#newsletter">Returns</a>
                 <a href="#newsletter">FAQ</a>
+
             </div>
+
             <div class="footer-column">
+
                 <h3>COMPANY</h3>
+
                 <a href="#about">About Atelier</a>
                 <a href="#about">Journal</a>
                 <a href="https://www.instagram.com/">Instagram</a>
                 <a href="https://www.pinterest.com/">Pinterest</a>
+
             </div>
+
         </div>
+
         <div class="footer-bottom">
+
             <p>© 2026 Atelier. All rights reserved.</p>
-            <div><a href="#privacy">Privacy</a><a href="#terms">Terms</a></div>
+
+            <div>
+                <a href="#footer">Privacy</a>
+                <a href="#footer">Terms</a>
+            </div>
+
         </div>
     </footer>
 
-    <script src="home.js"></script>
+    <!-- CART OVERLAY -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+
+    <!-- RIGHT SIDE CART DRAWER -->
+    <aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-labelledby="cartDrawerTitle"
+        aria-hidden="true">
+
+        <div class="cart-drawer-header">
+            <div>
+                <p class="cart-eyebrow">YOUR SELECTION</p>
+                <h2 id="cartDrawerTitle">
+                    Your Cart <span id="drawerItemCount">(0)</span>
+                </h2>
+            </div>
+
+            <button type="button" class="cart-close" id="closeCartDrawer" aria-label="Close cart">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="cart-drawer-items" id="cartDrawerItems">
+            <p class="cart-empty">Your cart is empty.</p>
+        </div>
+
+        <div class="cart-drawer-footer">
+            <div class="cart-subtotal-row">
+                <span>Subtotal</span>
+                <strong id="drawerSubtotal">$0.00</strong>
+            </div>
+
+            <p class="cart-shipping-note">
+                Shipping and taxes calculated at checkout.
+            </p>
+
+            <a class="cart-checkout-btn" id="drawerCheckoutButton">
+                Continue to checkout <span>→</span>
+            </a>
+        </div>
+    </aside>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="home.js"></script>
+
 </body>
 
 </html>
