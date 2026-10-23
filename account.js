@@ -439,6 +439,436 @@ function initializeProfile() {
           user.email.toLowerCase() !== loggedInUser.email.toLowerCase()
         );
       });
+      ("use strict");
+
+      // Get saved users
+      function getUsers() {
+        try {
+          const savedUsers = JSON.parse(localStorage.getItem("users")) || [];
+          return Array.isArray(savedUsers) ? savedUsers : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      // Save users
+      function saveUsers() {
+        try {
+          localStorage.setItem("users", JSON.stringify(users));
+          return true;
+        } catch (error) {
+          return false;
+        }
+      }
+
+      // Get HTML elements
+      const profileForm = document.getElementById("profileForm");
+      const profileName = document.getElementById("profileName");
+      const profileEmail = document.getElementById("profileEmail");
+      const profilePicture = document.getElementById("profilePicture");
+      const imageUpload = document.getElementById("imageUpload");
+      const profileMessage = document.getElementById("profileMessage");
+
+      const passwordForm = document.getElementById("passwordForm");
+      const currentPassword = document.getElementById("currentPassword");
+      const newPassword = document.getElementById("newPassword");
+      const confirmPassword = document.getElementById("confirmPassword");
+      const passwordMessage = document.getElementById("passwordMessage");
+
+      const logoutButton = document.getElementById("logoutButton");
+      const deleteButton = document.getElementById("deleteButton");
+
+      const deleteModal = document.getElementById("deleteModal");
+      const cancelDeleteButton = document.getElementById("cancelDeleteButton");
+      const confirmDeleteButton = document.getElementById(
+        "confirmDeleteButton",
+      );
+
+      // Load users and logged-in user
+      let users = getUsers();
+      let loggedInUser = null;
+
+      try {
+        loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+      } catch (error) {
+        loggedInUser = null;
+      }
+
+      // Check whether a user is logged in
+      if (!loggedInUser || !loggedInUser.email) {
+        window.location.href = "index.html";
+      }
+
+      // Find the current user
+      function getCurrentUser() {
+        return users.find(function (user) {
+          return (
+            user &&
+            user.email &&
+            user.email.toLowerCase() === loggedInUser.email.toLowerCase()
+          );
+        });
+      }
+
+      let currentUser = getCurrentUser();
+
+      // If the saved account does not exist, return to login
+      if (!currentUser) {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "index.html";
+      }
+
+      // Display a message
+      function displayMessage(element, message, color) {
+        if (!element) {
+          return;
+        }
+
+        element.textContent = message;
+        element.style.color = color;
+      }
+
+      // Check password strength
+      function validPassword(password) {
+        const passwordPattern =
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s])\S{12,}$/;
+
+        return passwordPattern.test(password);
+      }
+
+      // Update the saved login information
+      function updateLoggedInUser() {
+        const sessionUser = {
+          username: currentUser.username,
+          email: currentUser.email,
+        };
+
+        if (currentUser.profilePicture) {
+          sessionUser.profilePicture = currentUser.profilePicture;
+        }
+
+        localStorage.setItem("loggedInUser", JSON.stringify(sessionUser));
+      }
+
+      // Show or hide a password
+      function togglePassword(inputId, button) {
+        const passwordInput = document.getElementById(inputId);
+
+        if (!passwordInput || !button) {
+          return;
+        }
+
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          button.textContent = "Hide";
+        } else {
+          passwordInput.type = "password";
+          button.textContent = "Show";
+        }
+      }
+
+      // Make the function available to the HTML Show buttons
+      window.togglePassword = togglePassword;
+
+      // Load profile information
+      function loadProfile() {
+        if (!currentUser) {
+          return;
+        }
+
+        if (profileName) {
+          profileName.value = currentUser.username || currentUser.name || "";
+        }
+
+        if (profileEmail) {
+          profileEmail.value = currentUser.email || "";
+        }
+
+        if (currentUser.profilePicture && profilePicture) {
+          profilePicture.style.backgroundImage =
+            'url("' + currentUser.profilePicture + '")';
+
+          profilePicture.style.backgroundSize = "cover";
+          profilePicture.style.backgroundPosition = "center";
+
+          const plusIcon = document.getElementById("plusIcon");
+
+          if (plusIcon) {
+            plusIcon.style.display = "none";
+          }
+        }
+      }
+
+      loadProfile();
+
+      // Save profile changes
+      if (profileForm) {
+        profileForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const name = profileName.value.trim();
+          const email = profileEmail.value.trim().toLowerCase();
+
+          if (!name || !email) {
+            displayMessage(
+              profileMessage,
+              "Please enter your name and email.",
+              "#b76565",
+            );
+            return;
+          }
+
+          const emailExists = users.some(function (user) {
+            return (
+              user &&
+              user.email &&
+              user.email.toLowerCase() === email &&
+              user.email.toLowerCase() !== currentUser.email.toLowerCase()
+            );
+          });
+
+          if (emailExists) {
+            displayMessage(
+              profileMessage,
+              "This email is already used by another account.",
+              "#b76565",
+            );
+            return;
+          }
+
+          currentUser.username = name;
+          currentUser.name = name;
+          currentUser.email = email;
+
+          if (!saveUsers()) {
+            displayMessage(
+              profileMessage,
+              "Unable to save your changes. Please try again.",
+              "#b76565",
+            );
+            return;
+          }
+
+          loggedInUser = {
+            username: name,
+            email: email,
+          };
+
+          updateLoggedInUser();
+
+          displayMessage(
+            profileMessage,
+            "Your profile has been updated successfully.",
+            "#467653",
+          );
+        });
+      }
+
+      // Upload profile picture
+      if (imageUpload) {
+        imageUpload.addEventListener("change", function () {
+          const file = imageUpload.files[0];
+
+          if (!file) {
+            return;
+          }
+
+          if (!file.type.startsWith("image/")) {
+            displayMessage(
+              profileMessage,
+              "Please choose an image file.",
+              "#b76565",
+            );
+            imageUpload.value = "";
+            return;
+          }
+
+          const reader = new FileReader();
+
+          reader.onload = function (event) {
+            currentUser.profilePicture = event.target.result;
+
+            if (!saveUsers()) {
+              displayMessage(
+                profileMessage,
+                "Unable to save the profile picture.",
+                "#b76565",
+              );
+              return;
+            }
+
+            updateLoggedInUser();
+
+            if (profilePicture) {
+              profilePicture.style.backgroundImage =
+                'url("' + event.target.result + '")';
+
+              profilePicture.style.backgroundSize = "cover";
+              profilePicture.style.backgroundPosition = "center";
+            }
+
+            const plusIcon = document.getElementById("plusIcon");
+
+            if (plusIcon) {
+              plusIcon.style.display = "none";
+            }
+
+            displayMessage(
+              profileMessage,
+              "Profile picture updated successfully.",
+              "#467653",
+            );
+          };
+
+          reader.onerror = function () {
+            displayMessage(
+              profileMessage,
+              "Unable to read this image. Please try another one.",
+              "#b76565",
+            );
+          };
+
+          reader.readAsDataURL(file);
+        });
+      }
+
+      // Change password
+      if (passwordForm) {
+        passwordForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const oldPassword = currentPassword.value;
+          const newPass = newPassword.value;
+          const confirmPass = confirmPassword.value;
+
+          if (oldPassword !== currentUser.password) {
+            displayMessage(
+              passwordMessage,
+              "Your current password is incorrect.",
+              "#b76565",
+            );
+            return;
+          }
+
+          if (!validPassword(newPass)) {
+            displayMessage(
+              passwordMessage,
+              "Use at least 12 characters, including uppercase, lowercase, a number and a special character. Do not use spaces.",
+              "#b76565",
+            );
+            return;
+          }
+
+          if (newPass !== confirmPass) {
+            displayMessage(
+              passwordMessage,
+              "The new passwords do not match.",
+              "#b76565",
+            );
+            return;
+          }
+
+          if (oldPassword === newPass) {
+            displayMessage(
+              passwordMessage,
+              "Your new password must be different.",
+              "#b76565",
+            );
+            return;
+          }
+
+          currentUser.password = newPass;
+
+          if (!saveUsers()) {
+            currentUser.password = oldPassword;
+
+            displayMessage(
+              passwordMessage,
+              "Unable to change your password. Please try again.",
+              "#b76565",
+            );
+            return;
+          }
+
+          passwordForm.reset();
+
+          displayMessage(
+            passwordMessage,
+            "Your password has been changed successfully.",
+            "#467653",
+          );
+        });
+      }
+
+      // Log out
+      if (logoutButton) {
+        logoutButton.addEventListener("click", function () {
+          localStorage.removeItem("loggedInUser");
+          window.location.href = "index.html";
+        });
+      }
+
+      // Open the delete account modal
+      if (deleteButton && deleteModal) {
+        deleteButton.addEventListener("click", function () {
+          deleteModal.hidden = false;
+
+          if (cancelDeleteButton) {
+            cancelDeleteButton.focus();
+          }
+        });
+      }
+
+      // Close modal with Cancel
+      if (cancelDeleteButton && deleteModal) {
+        cancelDeleteButton.addEventListener("click", function () {
+          deleteModal.hidden = true;
+          deleteButton.focus();
+        });
+      }
+
+      // Close modal by clicking outside it
+      if (deleteModal) {
+        deleteModal.addEventListener("click", function (event) {
+          if (event.target === deleteModal) {
+            deleteModal.hidden = true;
+
+            if (deleteButton) {
+              deleteButton.focus();
+            }
+          }
+        });
+      }
+
+      // Confirm account deletion
+      if (confirmDeleteButton && deleteModal) {
+        confirmDeleteButton.addEventListener("click", function () {
+          users = getUsers();
+
+          const updatedUsers = users.filter(function (user) {
+            return (
+              user &&
+              typeof user.email === "string" &&
+              user.email.toLowerCase() !== loggedInUser.email.toLowerCase()
+            );
+          });
+
+          try {
+            localStorage.setItem("users", JSON.stringify(updatedUsers));
+            localStorage.removeItem("loggedInUser");
+
+            window.location.href = "index.html";
+          } catch (error) {
+            deleteModal.hidden = true;
+
+            displayMessage(
+              profileMessage,
+              "Unable to delete your account. Please try again.",
+              "#b76565",
+            );
+          }
+        });
+      }
 
       try {
         localStorage.setItem("users", JSON.stringify(updatedUsers));

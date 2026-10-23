@@ -20,8 +20,9 @@
 
 <body>
 
-    <!-- HERO SECTION -->
+    <!-- Hero and Navigation -->
     <section class="hero" id="home">
+
         <div class="overlay"></div>
 
         <nav class="navbar navbar-expand-lg hero-navbar">
@@ -30,11 +31,13 @@
                 <a href="index.html" class="navbar-brand logo">Atelier</a>
 
                 <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#mainNav" aria-label="Toggle navigation">
+                    data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false"
+                    aria-label="Toggle navigation">
                     <i class="fa-solid fa-bars"></i>
                 </button>
 
                 <div class="collapse navbar-collapse" id="mainNav">
+
                     <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4">
 
                         <li class="nav-item">
@@ -49,7 +52,7 @@
                             <a href="#about" class="nav-link">ABOUT</a>
                         </li>
 
-                        <!-- SEARCH BUTTON AND MODAL -->
+                        <!-- Search -->
                         <li class="nav-item search-nav-item">
 
                             <button type="button" class="nav-link search-toggle" id="searchToggle" aria-expanded="false"
@@ -63,9 +66,7 @@
 
                                 <form id="searchForm" role="search">
 
-                                    <label for="siteSearchInput">
-                                        SEARCH ATELIER
-                                    </label>
+                                    <label for="siteSearchInput">SEARCH ATELIER</label>
 
                                     <div class="search-input-row">
 
@@ -75,19 +76,19 @@
                                             placeholder="Search products, categories..." autocomplete="off">
 
                                         <button type="button" id="closeSearch" aria-label="Close search">
-
                                             <i class="fa-solid fa-xmark"></i>
                                         </button>
 
                                     </div>
+
                                 </form>
 
                                 <div id="searchResults" class="search-results" aria-live="polite">
-
                                     <p>Search for something you love.</p>
-
                                 </div>
+
                             </div>
+
                         </li>
 
                         <li class="nav-item">
@@ -95,17 +96,21 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="cart.html" class="nav-link" id="cartLink">
+                            <a href="" class="nav-link" id="cartLink" aria-expanded="false">
                                 CART (<span id="cartCount">0</span>)
                             </a>
                         </li>
 
                     </ul>
+
                 </div>
+
             </div>
         </nav>
 
+        <!-- Hero Content -->
         <div class="hero-content container-fluid">
+
             <div class="content-box">
 
                 <p class="small-title">THE NEW COLLECTION</p>
@@ -131,7 +136,9 @@
                     </a>
 
                 </div>
+
             </div>
+
         </div>
 
         <div class="bottom-left">
@@ -139,10 +146,12 @@
             <span class="line"></span>
             <span class="season">NEW SEASON</span>
         </div>
+
     </section>
 
-    <!-- INTRO SECTION -->
+    <!-- Introduction -->
     <section class="intro" id="about">
+
         <div class="intro-content">
 
             <p class="section-label">ATELIER EDIT</p>
@@ -153,14 +162,15 @@
             </h2>
 
             <p>
-                We believe the objects around us should be useful, beautiful and made to last.<br>
+                We believe the objects around us should be useful, beautiful and made to last.
                 Our collection brings together timeless essentials for everyday living.
             </p>
 
         </div>
+
     </section>
 
-    <!-- CATEGORY SECTION -->
+    <!-- Categories -->
     <section class="categories" id="categories">
 
         <div class="section-top">
@@ -177,10 +187,11 @@
         <div class="row g-3">
 
             <div class="col-lg-3 col-md-6">
+
                 <a class="category-card" href="#products" data-category="furniture">
 
                     <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=80"
-                        alt="Furniture">
+                        alt="Furniture collection" loading="lazy">
 
                     <div class="category-info">
                         <span class="category-number">01</span>
@@ -188,13 +199,15 @@
                     </div>
 
                 </a>
+
             </div>
 
             <div class="col-lg-3 col-md-6">
+
                 <a class="category-card" href="#products" data-category="objects">
 
                     <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=80"
-                        alt="Objects">
+                        alt="Decorative objects" loading="lazy">
 
                     <div class="category-info">
                         <span class="category-number">02</span>
@@ -202,13 +215,15 @@
                     </div>
 
                 </a>
+
             </div>
 
             <div class="col-lg-3 col-md-6">
+
                 <a class="category-card" href="#products" data-category="home">
 
                     <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80"
-                        alt="Home">
+                        alt="Home collection" loading="lazy">
 
                     <div class="category-info">
                         <span class="category-number">03</span>
@@ -216,13 +231,15 @@
                     </div>
 
                 </a>
+
             </div>
 
             <div class="col-lg-3 col-md-6">
+
                 <a class="category-card" href="#products" data-category="accessories">
 
                     <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=800&q=80"
-                        alt="Accessories">
+                        alt="Accessories collection" loading="lazy">
 
                     <div class="category-info">
                         <span class="category-number">04</span>
@@ -230,33 +247,39 @@
                     </div>
 
                 </a>
+
             </div>
 
         </div>
+
     </section>
 
+    <!-- Products -->
     <section class="products" id="products">
 
         <div class="section-top">
 
             <div>
                 <p class="section-label mb-2">JUST IN</p>
-                <h2>PRODUCTS</h2>
+                <h2>Our Products</h2>
+                <p class="products-description">
+                    Everyday essentials for thoughtful living.
+                </p>
             </div>
 
-            <a href="cart.html" class="text-black">
-                CART
-            </a>
+            <a href="products.html" class="view-link">VIEW ALL →</a>
 
         </div>
 
-        <div class="row g-3" id="products-container">
+        <!-- home.js displays 8 products here -->
+        <div class="row g-4" id="products-container">
 
             <div class="col-12 text-center py-5">
                 Loading products...
             </div>
 
         </div>
+
     </section>
 
     <section class="atelier-home" id="atelierHome">
@@ -264,7 +287,7 @@
         <div class="home-image">
 
             <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85"
-                alt="Modern interior" loading="lazy">
+                alt="Calm modern living room" loading="lazy">
 
         </div>
 
@@ -290,101 +313,49 @@
                 </a>
 
             </div>
+
         </div>
+
     </section>
 
-    <!-- CUSTOMER REVIEWS -->
-    <section class="customer-reviews" id="reviews">
 
-        <div class="reviews-inner">
+    <section class="reviews-section" id="customer-reviews">
+        <div class="container-fluid px-4 px-md-5">
 
             <div class="reviews-heading">
-
                 <div>
                     <p class="section-label">CUSTOMER REVIEWS</p>
-                    <h2>Loved by our customers.</h2>
+                    <h1>Loved by our customers.</h1>
                 </div>
 
                 <div class="overall-rating">
-                    <span>★★★★★</span>
-                    <small>4.9 / 5</small>
+                    <div class="stars">★★★★★</div>
+                    <p>4.9 / 5</p>
                 </div>
-
             </div>
 
-            <div class="row g-4 review-grid">
+            <div id="reviewsCarousel" class="carousel slide">
+                <div class="carousel-inner" id="reviewsContainer"></div>
 
-                <div class="col-lg-4 col-md-6">
-                    <article class="review-card">
+                <div class="carousel-controls">
+                    <button class="carousel-control-btn" type="button" data-bs-target="#reviewsCarousel"
+                        data-bs-slide="prev" aria-label="Previous reviews">
+                        <span>&larr;</span>
+                    </button>
 
-                        <div class="review-stars">★★★★★</div>
+                    <span id="slideNumber">01 / 02</span>
 
-                        <p class="review-quote">
-                            “Beautifully made and even better in person.
-                            The quality and attention to detail are exceptional.”
-                        </p>
-
-                        <div class="review-customer">
-                            <span class="customer-avatar">EM</span>
-
-                            <div>
-                                <strong>Emma M.</strong>
-                                <small>Verified customer</small>
-                            </div>
-                        </div>
-
-                    </article>
+                    <button class="carousel-control-btn" type="button" data-bs-target="#reviewsCarousel"
+                        data-bs-slide="next" aria-label="Next reviews">
+                        <span>&rarr;</span>
+                    </button>
                 </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <article class="review-card">
-
-                        <div class="review-stars">★★★★★</div>
-
-                        <p class="review-quote">
-                            “The perfect addition to our living room.
-                            Minimal, comfortable and exactly what we were looking for.”
-                        </p>
-
-                        <div class="review-customer">
-                            <span class="customer-avatar">JA</span>
-
-                            <div>
-                                <strong>James A.</strong>
-                                <small>Verified customer</small>
-                            </div>
-                        </div>
-
-                    </article>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <article class="review-card">
-
-                        <div class="review-stars">★★★★★</div>
-
-                        <p class="review-quote">
-                            “I love the whole Atelier aesthetic.
-                            Everything feels thoughtfully designed and incredibly well made.”
-                        </p>
-
-                        <div class="review-customer">
-                            <span class="customer-avatar">SO</span>
-
-                            <div>
-                                <strong>Sofia O.</strong>
-                                <small>Verified customer</small>
-                            </div>
-                        </div>
-
-                    </article>
-                </div>
-
             </div>
+
         </div>
     </section>
 
-    <!-- NEWSLETTER SECTION -->
+    <!-- Newsletter -->
     <section class="newsletter" id="newsletter">
 
         <div class="newsletter-inner">
@@ -416,14 +387,15 @@
 
                 </div>
 
-                <p class="newsletter-message" id="newsletterMessage" aria-live="polite">
-                </p>
+                <p class="newsletter-message" id="newsletterMessage" aria-live="polite"></p>
 
             </form>
+
         </div>
+
     </section>
 
-    <!-- FOOTER -->
+    <!-- Footer -->
     <footer class="site-footer" id="footer">
 
         <div class="footer-main">
@@ -443,10 +415,10 @@
 
                 <h3>SHOP</h3>
 
-                <a href="#products">PRODUCTS</a>
+                <a href="#products">Products</a>
                 <a href="#categories">Collections</a>
                 <a href="#products">Best Sellers</a>
-                <a href="#newsletter">Gift Cards</a>
+                <a href="#newsletter">Gift Ideas</a>
 
             </div>
 
@@ -466,7 +438,7 @@
                 <h3>COMPANY</h3>
 
                 <a href="#about">About Atelier</a>
-                <a href="#about">Journal</a>
+                <a href="#about">Our Story</a>
                 <a href="https://www.instagram.com/">Instagram</a>
                 <a href="https://www.pinterest.com/">Pinterest</a>
 
@@ -484,18 +456,21 @@
             </div>
 
         </div>
+
     </footer>
 
-    <!-- CART OVERLAY -->
+    <!-- Cart Overlay -->
     <div class="cart-overlay" id="cartOverlay"></div>
 
-    <!-- RIGHT SIDE CART DRAWER -->
+    <!-- Cart Drawer -->
     <aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-labelledby="cartDrawerTitle"
         aria-hidden="true">
 
         <div class="cart-drawer-header">
+
             <div>
                 <p class="cart-eyebrow">YOUR SELECTION</p>
+
                 <h2 id="cartDrawerTitle">
                     Your Cart <span id="drawerItemCount">(0)</span>
                 </h2>
@@ -504,6 +479,7 @@
             <button type="button" class="cart-close" id="closeCartDrawer" aria-label="Close cart">
                 <i class="fa-solid fa-xmark"></i>
             </button>
+
         </div>
 
         <div class="cart-drawer-items" id="cartDrawerItems">
@@ -511,6 +487,7 @@
         </div>
 
         <div class="cart-drawer-footer">
+
             <div class="cart-subtotal-row">
                 <span>Subtotal</span>
                 <strong id="drawerSubtotal">$0.00</strong>
@@ -520,10 +497,12 @@
                 Shipping and taxes calculated at checkout.
             </p>
 
-            <a class="cart-checkout-btn" id="drawerCheckoutButton">
-                Continue to checkout <span>→</span>
+            <a href="cart.html" class="cart-checkout-btn" id="drawerCheckoutButton">
+                Continue to cart <span>→</span>
             </a>
+
         </div>
+
     </aside>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
