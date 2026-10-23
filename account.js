@@ -881,3 +881,29 @@ function initializeProfile() {
     });
   }
 }
+
+const deleteButton = document.getElementById("confirmDeleteAccount");
+
+deleteButton.addEventListener("click", function () {
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+  if (!loggedInUser) {
+    return;
+  }
+
+  users = users.filter(function (user) {
+    return user.email !== loggedInUser.email;
+  });
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+  localStorage.removeItem("loggedInUser");
+
+  const modalElement = document.getElementById("deleteAccountModal");
+  const modal = bootstrap.Modal.getInstance(modalElement);
+
+  modal.hide();
+
+  window.location.href = "index.html";
+});
