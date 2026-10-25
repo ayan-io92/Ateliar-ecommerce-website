@@ -1,6 +1,4 @@
-"use strict";
 
-// HTML elements
 const productsContainer = document.getElementById("products-container");
 
 const searchToggle = document.getElementById("searchToggle");

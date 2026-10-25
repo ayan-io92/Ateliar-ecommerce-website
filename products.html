@@ -135,7 +135,7 @@
             transform: scale(1.04);
         }
 
-        .quick-add-btn {
+        .view-details-btn {
             position: absolute;
             bottom: 10px;
             left: 10px;
@@ -146,20 +146,22 @@
             color: white;
             font-size: 11px;
             letter-spacing: 1.5px;
+            text-align: center;
+            text-decoration: none;
             opacity: 0;
             transform: translateY(10px);
             transition: 0.3s;
-            cursor: pointer;
         }
 
-        .product-image-wrapper:hover .quick-add-btn,
-        .product-image-wrapper:focus-within .quick-add-btn {
+        .product-image-wrapper:hover .view-details-btn,
+        .product-image-wrapper:focus-within .view-details-btn {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .quick-add-btn:hover {
+        .view-details-btn:hover {
             background: #444;
+            color: white;
         }
 
         .product-title {
@@ -232,168 +234,8 @@
             text-decoration: none;
         }
 
-        .cart-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 1998;
-            background: rgba(0, 0, 0, 0.45);
-            opacity: 0;
-            visibility: hidden;
-            transition: 0.3s;
-        }
-
-        .cart-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .cart-drawer {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 420px;
-            max-width: 100%;
-            height: 100vh;
-            background: #fff;
-            z-index: 1999;
-            display: flex;
-            flex-direction: column;
-            transform: translateX(100%);
-            visibility: hidden;
-            transition: 0.3s;
-        }
-
-        .cart-drawer.active {
-            transform: translateX(0);
-            visibility: visible;
-        }
-
-        .cart-drawer-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 25px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .cart-eyebrow {
-            font-size: 10px;
-            letter-spacing: 2px;
-            color: #777;
-            margin-bottom: 8px;
-        }
-
-        .cart-drawer-header h2 {
-            font: 25px Georgia, serif;
-            margin: 0;
-        }
-
-        .cart-close {
-            border: none;
-            background: none;
-            font-size: 23px;
-        }
-
-        .cart-drawer-items {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px 25px;
-        }
-
-        .cart-empty {
-            text-align: center;
-            padding: 40px 0;
-            color: #777;
-        }
-
-        .drawer-item {
-            display: flex;
-            gap: 15px;
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .drawer-item img {
-            width: 85px;
-            height: 95px;
-            object-fit: contain;
-        }
-
-        .drawer-item-details {
-            flex: 1;
-        }
-
-        .drawer-item-title {
-            font-size: 13px;
-            margin-bottom: 8px;
-        }
-
-        .drawer-item-price {
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        .quantity-controls button {
-            background: none;
-            border: 1px solid #ddd;
-            width: 27px;
-            height: 27px;
-        }
-
-        .remove-item {
-            background: none;
-            border: none;
-            color: #777;
-            text-decoration: underline;
-            font-size: 11px;
-            margin-top: 8px;
-        }
-
-        .cart-drawer-footer {
-            padding: 25px;
-            border-top: 1px solid #eee;
-        }
-
-        .cart-subtotal-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
-
-        .cart-shipping-note {
-            color: #777;
-            font-size: 12px;
-        }
-
-        .cart-checkout-btn {
-            display: flex;
-            justify-content: space-between;
-            background: #191919;
-            color: white;
-            padding: 15px;
-            text-decoration: none;
-            font-size: 12px;
-            letter-spacing: 1px;
-        }
-
-        .cart-checkout-btn:hover {
-            background: #444;
-            color: white;
-        }
-
-        body.cart-open {
-            overflow: hidden;
-        }
-
         @media (hover: none) {
-            .quick-add-btn {
+            .view-details-btn {
                 opacity: 1;
                 transform: translateY(0);
             }
@@ -480,12 +322,6 @@
                         <a href="account.html" class="nav-link">ACCOUNT</a>
                     </li>
 
-                    <li class="nav-item">
-                        <a href="#cartDrawer" class="nav-link" id="openCartDrawer">
-                            CART (<span id="cartCount">0</span>)
-                        </a>
-                    </li>
-
                 </ul>
             </div>
         </div>
@@ -562,45 +398,6 @@
         </div>
     </footer>
 
-    <div class="cart-overlay" id="cartOverlay"></div>
-
-    <aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-labelledby="cartDrawerTitle"
-        aria-hidden="true">
-
-        <div class="cart-drawer-header">
-            <div>
-                <p class="cart-eyebrow">YOUR SELECTION</p>
-                <h2 id="cartDrawerTitle">
-                    Your Cart <span id="drawerItemCount">(0)</span>
-                </h2>
-            </div>
-
-            <button type="button" class="cart-close" id="closeCartDrawer" aria-label="Close cart">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-
-        <div class="cart-drawer-items" id="cartDrawerItems">
-            <p class="cart-empty">Your cart is empty.</p>
-        </div>
-
-        <div class="cart-drawer-footer">
-            <div class="cart-subtotal-row">
-                <span>Subtotal</span>
-                <strong id="drawerSubtotal">$0.00</strong>
-            </div>
-
-            <p class="cart-shipping-note">
-                Shipping and taxes calculated at checkout.
-            </p>
-
-            <a href="cart.html" class="cart-checkout-btn">
-                Continue to cart <span>→</span>
-            </a>
-        </div>
-
-    </aside>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
@@ -618,53 +415,7 @@
         const searchForm = document.getElementById("searchForm");
         const closeSearch = document.getElementById("closeSearch");
 
-        const cartCount = document.getElementById("cartCount");
-        const openCartDrawer = document.getElementById("openCartDrawer");
-        const cartDrawer = document.getElementById("cartDrawer");
-        const closeCartDrawer = document.getElementById("closeCartDrawer");
-        const cartOverlay = document.getElementById("cartOverlay");
-        const cartDrawerItems = document.getElementById("cartDrawerItems");
-        const drawerItemCount = document.getElementById("drawerItemCount");
-        const drawerSubtotal = document.getElementById("drawerSubtotal");
-
         let allProducts = [];
-
-        function loadCart() {
-            try {
-                const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
-                return Array.isArray(savedCart) ? savedCart : [];
-            } catch (error) {
-                return [];
-            }
-        }
-
-        function saveCart(cart) {
-            localStorage.setItem("cart", JSON.stringify(cart));
-            updateCartCount();
-            renderCartDrawer();
-        }
-
-        function getQuantity(item) {
-            return Math.max(1, Number(item.quantity) || 1);
-        }
-
-        function getProductId(item) {
-            return Number(item.id || item.productId);
-        }
-
-        function getProductName(item) {
-            return item.title || item.name || "Product";
-        }
-
-        function updateCartCount() {
-            const cart = loadCart();
-
-            const total = cart.reduce(function (sum, item) {
-                return sum + getQuantity(item);
-            }, 0);
-
-            cartCount.textContent = total;
-        }
 
         async function getProducts() {
             productsContainer.innerHTML = `
@@ -758,13 +509,12 @@
                 image.className = "product-image";
                 image.loading = "lazy";
 
-                const quickAdd = document.createElement("button");
-                quickAdd.type = "button";
-                quickAdd.className = "quick-add-btn";
-                quickAdd.dataset.id = product.id;
-                quickAdd.textContent = "+ QUICK ADD";
+                const detailsButton = document.createElement("a");
+                detailsButton.className = "view-details-btn";
+                detailsButton.href = "details.html?id=" + product.id;
+                detailsButton.textContent = "VIEW DETAILS";
 
-                imageWrapper.append(image, quickAdd);
+                imageWrapper.append(image, detailsButton);
 
                 const cardBody = document.createElement("div");
                 cardBody.className = "card-body px-0 pb-0";
@@ -811,183 +561,6 @@
         searchInput.addEventListener("input", filterProducts);
         categoryFilter.addEventListener("change", filterProducts);
 
-        productsContainer.addEventListener("click", function (event) {
-            const button = event.target.closest(".quick-add-btn");
-
-            if (!button) {
-                return;
-            }
-
-            const productId = Number(button.dataset.id);
-
-            const product = allProducts.find(function (item) {
-                return item.id === productId;
-            });
-
-            if (!product) {
-                return;
-            }
-
-            const cart = loadCart();
-
-            const existingProduct = cart.find(function (item) {
-                return getProductId(item) === product.id;
-            });
-
-            if (existingProduct) {
-                existingProduct.quantity = getQuantity(existingProduct) + 1;
-            } else {
-                cart.push({
-                    id: product.id,
-                    productId: product.id,
-                    title: product.title,
-                    name: product.title,
-                    price: Number(product.price),
-                    image: product.image,
-                    quantity: 1
-                });
-            }
-
-            saveCart(cart);
-
-            button.textContent = "ADDED TO CART";
-
-            setTimeout(function () {
-                button.textContent = "+ QUICK ADD";
-            }, 1000);
-        });
-
-        function openCart() {
-            cartDrawer.classList.add("active");
-            cartOverlay.classList.add("active");
-            cartDrawer.setAttribute("aria-hidden", "false");
-            document.body.classList.add("cart-open");
-            renderCartDrawer();
-            closeCartDrawer.focus();
-        }
-
-        function closeCart() {
-            cartDrawer.classList.remove("active");
-            cartOverlay.classList.remove("active");
-            cartDrawer.setAttribute("aria-hidden", "true");
-            document.body.classList.remove("cart-open");
-        }
-
-        openCartDrawer.addEventListener("click", function (event) {
-            event.preventDefault();
-            openCart();
-        });
-
-        closeCartDrawer.addEventListener("click", closeCart);
-        cartOverlay.addEventListener("click", closeCart);
-
-        function renderCartDrawer() {
-            const cart = loadCart();
-
-            const totalQuantity = cart.reduce(function (sum, item) {
-                return sum + getQuantity(item);
-            }, 0);
-
-            const subtotal = cart.reduce(function (sum, item) {
-                return sum + (Number(item.price) || 0) * getQuantity(item);
-            }, 0);
-
-            drawerItemCount.textContent = "(" + totalQuantity + ")";
-            drawerSubtotal.textContent = "$" + subtotal.toFixed(2);
-            cartDrawerItems.innerHTML = "";
-
-            if (cart.length === 0) {
-                cartDrawerItems.innerHTML = '<p class="cart-empty">Your cart is empty.</p>';
-                return;
-            }
-
-            cart.forEach(function (item) {
-                const row = document.createElement("div");
-                row.className = "drawer-item";
-
-                const image = document.createElement("img");
-                image.src = item.image || "";
-                image.alt = getProductName(item);
-
-                const details = document.createElement("div");
-                details.className = "drawer-item-details";
-
-                const title = document.createElement("p");
-                title.className = "drawer-item-title";
-                title.textContent = getProductName(item);
-
-                const price = document.createElement("p");
-                price.className = "drawer-item-price";
-                price.textContent = "$" + (Number(item.price) || 0).toFixed(2);
-
-                const quantityControls = document.createElement("div");
-                quantityControls.className = "quantity-controls";
-
-                const decrease = document.createElement("button");
-                decrease.type = "button";
-                decrease.textContent = "−";
-                decrease.setAttribute("aria-label", "Decrease quantity");
-
-                const quantity = document.createElement("span");
-                quantity.textContent = getQuantity(item);
-
-                const increase = document.createElement("button");
-                increase.type = "button";
-                increase.textContent = "+";
-                increase.setAttribute("aria-label", "Increase quantity");
-
-                decrease.addEventListener("click", function () {
-                    const updatedCart = loadCart();
-                    const found = updatedCart.find(function (product) {
-                        return getProductId(product) === getProductId(item);
-                    });
-
-                    if (found) {
-                        found.quantity = getQuantity(found) - 1;
-
-                        if (found.quantity <= 0) {
-                            const index = updatedCart.indexOf(found);
-                            updatedCart.splice(index, 1);
-                        }
-                    }
-
-                    saveCart(updatedCart);
-                });
-
-                increase.addEventListener("click", function () {
-                    const updatedCart = loadCart();
-                    const found = updatedCart.find(function (product) {
-                        return getProductId(product) === getProductId(item);
-                    });
-
-                    if (found) {
-                        found.quantity = getQuantity(found) + 1;
-                    }
-
-                    saveCart(updatedCart);
-                });
-
-                quantityControls.append(decrease, quantity, increase);
-
-                const remove = document.createElement("button");
-                remove.type = "button";
-                remove.className = "remove-item";
-                remove.textContent = "Remove";
-
-                remove.addEventListener("click", function () {
-                    const updatedCart = loadCart().filter(function (product) {
-                        return getProductId(product) !== getProductId(item);
-                    });
-
-                    saveCart(updatedCart);
-                });
-
-                details.append(title, price, quantityControls, remove);
-                row.append(image, details);
-                cartDrawerItems.appendChild(row);
-            });
-        }
-
         searchToggle.addEventListener("click", function () {
             searchModal.hidden = !searchModal.hidden;
 
@@ -1032,9 +605,8 @@
 
             results.forEach(function (product) {
                 const link = document.createElement("a");
-                link.href = "products.html";
+                link.href = "details.html?id=" + product.id;
                 link.className = "search-result-item";
-                link.dataset.id = product.id;
 
                 const image = document.createElement("img");
                 image.src = product.image;
@@ -1061,34 +633,6 @@
             searchNavbarProducts();
         });
 
-        searchResults.addEventListener("click", function (event) {
-            const result = event.target.closest(".search-result-item");
-
-            if (!result) {
-                return;
-            }
-
-            event.preventDefault();
-
-            const productId = Number(result.dataset.id);
-
-            const product = allProducts.find(function (item) {
-                return item.id === productId;
-            });
-
-            if (product) {
-                searchInput.value = "";
-                categoryFilter.value = "all";
-                showProducts([product]);
-                productCount.textContent = "1 product found";
-                closeNavbarSearch();
-
-                document.querySelector(".container.py-5").scrollIntoView({
-                    behavior: "smooth"
-                });
-            }
-        });
-
         document.addEventListener("click", function (event) {
             if (
                 !searchModal.hidden &&
@@ -1102,20 +646,10 @@
         document.addEventListener("keydown", function (event) {
             if (event.key === "Escape") {
                 closeNavbarSearch();
-                closeCart();
-            }
-        });
-
-        window.addEventListener("storage", function (event) {
-            if (event.key === "cart") {
-                updateCartCount();
-                renderCartDrawer();
             }
         });
 
         getProducts();
-        updateCartCount();
-        renderCartDrawer();
     </script>
 
 </body>
