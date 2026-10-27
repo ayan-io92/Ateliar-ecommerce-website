@@ -13,7 +13,6 @@ const cartDrawer = document.getElementById("cartDrawer");
 const closeCartDrawer = document.getElementById("closeCartDrawer");
 const cartDrawerItems = document.getElementById("cartDrawerItems");
 const drawerItemCount = document.getElementById("drawerItemCount");
-const drawerSubtotal = document.getElementById("drawerSubtotal");
 const drawerCheckoutButton = document.getElementById("drawerCheckoutButton");
 
 const newsletterForm = document.getElementById("newsletterForm");
@@ -69,16 +68,6 @@ function getCartQuantity() {
 
   cart.forEach(function (item) {
     total += item.quantity;
-  });
-
-  return total;
-}
-
-function getCartSubtotal() {
-  let total = 0;
-
-  cart.forEach(function (item) {
-    total += item.price * item.quantity;
   });
 
   return total;
@@ -185,18 +174,14 @@ function renderCartDrawer() {
   cartDrawerItems.innerHTML = "";
 
   const quantity = getCartQuantity();
-  const subtotal = getCartSubtotal();
 
   if (drawerItemCount) {
     drawerItemCount.textContent = "(" + quantity + ")";
   }
 
-  if (drawerSubtotal) {
-    drawerSubtotal.textContent = formatPrice(subtotal);
-  }
-
   if (drawerCheckoutButton) {
     drawerCheckoutButton.classList.toggle("disabled", cart.length === 0);
+
     drawerCheckoutButton.setAttribute(
       "aria-disabled",
       cart.length === 0 ? "true" : "false",
@@ -301,14 +286,12 @@ function changeQuantity(productId, amount) {
     });
   }
 
-  if (saveCart()) {
-    updateCartCount();
-    renderCartDrawer();
-  } else {
+  if (!saveCart()) {
     cart = loadCart();
-    updateCartCount();
-    renderCartDrawer();
   }
+
+  updateCartCount();
+  renderCartDrawer();
 }
 
 function removeFromCart(productId) {
@@ -463,10 +446,12 @@ if (productsContainer) {
 
     if (addButton && addToCart(product)) {
       addButton.innerHTML = '<i class="fa-solid fa-check"></i> ADDED';
+
       addButton.disabled = true;
 
       setTimeout(function () {
         addButton.innerHTML = '<i class="fa-solid fa-plus"></i> QUICK ADD';
+
         addButton.disabled = false;
       }, 1500);
     }

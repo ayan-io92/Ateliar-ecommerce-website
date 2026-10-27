@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | Atelier</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f8f8f5;
+            color: #191919;
+            font-family: "Inter", sans-serif;
+        }
+
+        .hero-navbar {
+            background: #f8f8f5;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font: 34px "DM Serif Display", serif;
+            color: #191919;
+            text-decoration: none;
+        }
+
+        .navbar-nav .nav-link {
+            color: #191919;
+            font-size: 10px;
+            letter-spacing: 1.2px;
+        }
+
+        .search-toggle {
+            border: none;
+            background: transparent;
+        }
+
+        .search-nav-item {
+            position: relative;
+        }
+
+        .search-modal {
+            position: absolute;
+            z-index: 1000;
+            top: calc(100% + 10px);
+            right: 0;
+            width: 320px;
+            max-width: 90vw;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 5px 20px #0002;
+        }
+
+        .search-modal[hidden] {
+            display: none;
+        }
+
+        .search-modal label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .search-input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .search-input-row input {
+            width: 100%;
+            min-width: 0;
+            border: none;
+            outline: none;
+        }
+
+        .search-input-row button {
+            border: none;
+            background: transparent;
+        }
+
+        .search-results {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            color: #191919;
+            text-decoration: none;
+            border-bottom: 1px solid #eee;
+        }
+
+        .search-result-item img {
+            width: 50px;
+            height: 55px;
+            object-fit: contain;
+        }
+
+        .details-section {
+            padding: 55px 0 70px;
+        }
+
+        .breadcrumb-link {
+            color: #777;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .breadcrumb-link:hover {
+            color: #191919;
+        }
+
+        .details-image-box {
+            min-height: 480px;
+            background: white;
+            padding: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .details-image {
+            width: 100%;
+            height: 390px;
+            object-fit: contain;
+        }
+
+        .details-info {
+            padding: 25px 15px 25px 35px;
+        }
+
+        .product-category {
+            color: #888;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .product-title {
+            font: 42px "DM Serif Display", serif;
+            line-height: 1.2;
+            margin: 15px 0;
+        }
+
+        .product-price {
+            font-size: 23px;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+
+        .product-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.9;
+            margin-bottom: 25px;
+        }
+
+        .details-quantity {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            width: fit-content;
+        }
+
+        .details-quantity button {
+            width: 45px;
+            height: 45px;
+            border: none;
+            background: white;
+            font-size: 20px;
+        }
+
+        .details-quantity span {
+            min-width: 40px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .details-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+
+        .add-cart-button {
+            flex: 1;
+            min-height: 47px;
+            padding: 12px 20px;
+            background: #191919;
+            color: white;
+            border: 1px solid #191919;
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        .add-cart-button:hover {
+            background: #444;
+        }
+
+        .details-note {
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #777;
+            font-size: 12px;
+            line-height: 2;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #191919;
+            text-decoration: none;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .site-footer {
+            margin-top: 30px;
+            padding: 45px 8% 20px;
+            background: #191919;
+            color: #f7f5f0;
+        }
+
+        .footer-main {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 30px;
+            padding-bottom: 35px;
+        }
+
+        .footer-logo {
+            color: white;
+            font: 30px "DM Serif Display", serif;
+            text-decoration: none;
+        }
+
+        .footer-main p,
+        .footer-column a,
+        .footer-bottom p,
+        .footer-bottom a {
+            color: #bbb;
+            font-size: 13px;
+        }
+
+        .footer-column h3 {
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .footer-column a {
+            display: block;
+            margin-bottom: 12px;
+            text-decoration: none;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+        }
+
+        .footer-bottom a {
+            margin-left: 15px;
+            text-decoration: none;
+        }
+
+        .cart-overlay {
+            position: fixed;
+            inset: 0;
+            background: #0006;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+        }
+
+        .cart-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 420px;
+            max-width: 100%;
+            height: 100vh;
+            background: white;
+            z-index: 2001;
+            display: flex;
+            flex-direction: column;
+            padding: 25px;
+            transition: right 0.3s;
+        }
+
+        .cart-drawer.open {
+            right: 0;
+        }
+
+        .cart-drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-eyebrow {
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+
+        .cart-close {
+            border: none;
+            background: transparent;
+            font-size: 24px;
+        }
+
+        .cart-drawer-items {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .cart-drawer-footer {
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+
+
+        .cart-shipping-note {
+            font-size: 12px;
+            color: #777;
+            margin-top: 12px;
+        }
+
+        .cart-checkout-btn {
+            display: block;
+            background: #191919;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .cart-checkout-btn:hover {
+            background: #444;
+            color: white;
+        }
+
+        .cart-empty {
+            padding: 25px 0;
+            color: #777;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-item img {
+            width: 70px;
+            height: 80px;
+            object-fit: contain;
+        }
+
+        .cart-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .cart-item-info p {
+            margin-bottom: 7px;
+            font-size: 13px;
+        }
+
+        .cart-quantity {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            width: fit-content;
+            margin: 8px 0;
+        }
+
+        .cart-quantity button {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: white;
+            font-size: 18px;
+        }
+
+        .cart-quantity span {
+            min-width: 30px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .remove-item {
+            border: none;
+            background: none;
+            text-decoration: underline;
+            font-size: 12px;
+        }
+
+        @media (max-width: 991px) {
+            .navbar-nav {
+                align-items: stretch !important;
+            }
+
+            .search-modal {
+                position: static;
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .details-info {
+                padding: 30px 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .details-section {
+                padding: 30px 15px 45px;
+            }
+
+            .details-image-box {
+                min-height: 320px;
+                padding: 25px;
+            }
+
+            .details-image {
+                height: 270px;
+            }
+
+            .product-title {
+                font-size: 34px;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-brand {
+                grid-column: 1 / -1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg hero-navbar">
+        <div class="container-fluid px-4 px-md-5">
+            <a href="home.html" class="navbar-brand logo">Atelier</a>
+
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+                data-bs-target="#mainNav">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4">
+                    <li class="nav-item"><a href="products.html" class="nav-link">PRODUCTS</a></li>
+                    <li class="nav-item"><a href="home.html#categories" class="nav-link">COLLECTIONS</a></li>
+                    <li class="nav-item"><a href="home.html#about" class="nav-link">ABOUT</a></li>
+
+                    <li class="nav-item search-nav-item">
+                        <button type="button" class="nav-link search-toggle" id="searchToggle">
+                            SEARCH <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+
+                        <div class="search-modal" id="searchModal" hidden>
+                            <label for="siteSearchInput">SEARCH ATELIER</label>
+                            <div class="search-input-row">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="search" id="siteSearchInput" placeholder="Search products...">
+                                <button type="button" id="closeSearch"><i class="fa-solid fa-xmark"></i></button>
+                            </div>
+                            <div class="search-results" id="searchResults">
+                                <p>Search for something you love.</p>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="nav-item"><a href="account.html" class="nav-link">ACCOUNT</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" id="openCartDrawer">CART (<span
+                                id="cartCount">0</span>)</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container details-section">
+
+        <a href="products.html" class="breadcrumb-link">
+            Products
+        </a>
+        <span class="text-muted small mx-2">/</span>
+        <span class="small">Product Details</span>
+
+        <div id="detailsContainer" class="mt-4">
+            <div class="text-center py-5">
+                <h4>Loading product...</h4>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-main">
+            <div class="footer-brand">
+                <a href="home.html" class="footer-logo">Atelier</a>
+                <p>Thoughtfully designed essentials for<br>modern living.</p>
+            </div>
+            <div class="footer-column">
+                <h3>SHOP</h3>
+                <a href="products.html">Products</a>
+                <a href="home.html#categories">Collections</a>
+            </div>
+            <div class="footer-column">
+                <h3>HELP</h3>
+                <a href="home.html#footer">Contact</a>
+                <a href="home.html#footer">Shipping</a>
+            </div>
+            <div class="footer-column">
+                <h3>COMPANY</h3>
+                <a href="home.html#about">About Atelier</a>
+                <a href="https://www.instagram.com/">Instagram</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Atelier. All rights reserved.</p>
+            <div><a href="#">Privacy</a><a href="#">Terms</a></div>
+        </div>
+    </footer>
+
+    <div class="cart-overlay" id="cartOverlay"></div>
+
+    <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+        <div class="cart-drawer-header">
+            <div>
+                <p class="cart-eyebrow">YOUR SELECTION</p>
+                <h2>Your Cart <span id="drawerItemCount">(0)</span></h2>
+            </div>
+            <button type="button" class="cart-close" id="closeCartDrawer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="cart-drawer-items" id="cartDrawerItems">
+            <p class="cart-empty">Your cart is empty.</p>
+        </div>
+
+        <div class="cart-drawer-footer">
+
+            <p class="cart-shipping-note">Shipping and taxes calculated at checkout.</p>
+            <a href="checkout.html" class="cart-checkout-btn">Continue to checkout →</a>
+        </div>
+    </aside>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        let currentProduct = null;
+        let detailQuantity = 1;
+        let allProducts = [];
+
+        const detailsContainer = document.getElementById("detailsContainer");
+
+        async function getProduct() {
+            let params = new URLSearchParams(window.location.search);
+            let productId = params.get("id");
+
+            if (!productId) {
+                detailsContainer.innerHTML = `
+                    <div class="text-center py-5">
+                        <h3>Product not found</h3>
+                        <a href="products.html" class="back-link">Back to Products</a>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const response = await fetch("https://fakestoreapi.com/products/" + encodeURIComponent(productId));
+
+                if (!response.ok) {
+                    throw new Error("Product not found");
+                }
+
+                currentProduct = await response.json();
+
+                if (!currentProduct || !currentProduct.id) {
+                    throw new Error("Product not found");
+                }
+
+                showProduct();
+            } catch (error) {
+                detailsContainer.innerHTML = `
+                    <div class="text-center py-5">
+                        <h3>Unable to load product</h3>
+                        <p>Please check your internet connection.</p>
+                        <button class="btn btn-dark" onclick="getProduct()">Try Again</button>
+                        <br>
+                        <a href="products.html" class="back-link">Back to Products</a>
+                    </div>
+                `;
+            }
+        }
+
+        function showProduct() {
+            detailsContainer.innerHTML = "";
+
+            let row = document.createElement("div");
+            row.className = "row align-items-center g-4";
+
+            let imageColumn = document.createElement("div");
+            imageColumn.className = "col-lg-6";
+
+            let imageBox = document.createElement("div");
+            imageBox.className = "details-image-box";
+
+            let image = document.createElement("img");
+            image.className = "details-image";
+            image.src = currentProduct.image;
+            image.alt = currentProduct.title;
+
+            imageBox.appendChild(image);
+            imageColumn.appendChild(imageBox);
+
+            let infoColumn = document.createElement("div");
+            infoColumn.className = "col-lg-6";
+
+            let info = document.createElement("div");
+            info.className = "details-info";
+
+            let category = document.createElement("p");
+            category.className = "product-category";
+            category.textContent = currentProduct.category;
+
+            let title = document.createElement("h1");
+            title.className = "product-title";
+            title.textContent = currentProduct.title;
+
+            let price = document.createElement("p");
+            price.className = "product-price";
+            price.textContent = "$" + Number(currentProduct.price).toFixed(2);
+
+            let description = document.createElement("p");
+            description.className = "product-description";
+            description.textContent = currentProduct.description;
+
+            let quantityLabel = document.createElement("p");
+            quantityLabel.className = "small";
+            quantityLabel.textContent = "Quantity";
+
+            let quantityControl = document.createElement("div");
+            quantityControl.className = "details-quantity";
+
+            let minusButton = document.createElement("button");
+            minusButton.type = "button";
+            minusButton.textContent = "−";
+
+            let quantityText = document.createElement("span");
+            quantityText.textContent = detailQuantity;
+
+            let plusButton = document.createElement("button");
+            plusButton.type = "button";
+            plusButton.textContent = "+";
+
+            minusButton.addEventListener("click", function () {
+                if (detailQuantity > 1) {
+                    detailQuantity--;
+                    quantityText.textContent = detailQuantity;
+                }
+            });
+
+            plusButton.addEventListener("click", function () {
+                detailQuantity++;
+                quantityText.textContent = detailQuantity;
+            });
+
+            quantityControl.append(minusButton, quantityText, plusButton);
+
+            let actions = document.createElement("div");
+            actions.className = "details-actions";
+
+            let addButton = document.createElement("button");
+            addButton.type = "button";
+            addButton.className = "add-cart-button";
+            addButton.innerHTML = '<i class="fa-solid fa-bag-shopping me-2"></i> ADD TO CART';
+
+            addButton.addEventListener("click", function () {
+                addToCart(currentProduct, detailQuantity, addButton);
+            });
+
+            actions.appendChild(quantityControl);
+            actions.appendChild(addButton);
+
+            let note = document.createElement("div");
+            note.className = "details-note";
+            note.innerHTML = `
+          
+            `;
+
+            let backLink = document.createElement("a");
+            backLink.href = "products.html";
+            backLink.className = "back-link";
+            backLink.innerHTML = '<i class="fa-solid fa-arrow-left me-2"></i> Back to Products';
+
+            info.append(category, title, price, description, quantityLabel, actions, note, backLink);
+            infoColumn.appendChild(info);
+
+            row.append(imageColumn, infoColumn);
+            detailsContainer.appendChild(row);
+        }
+
+        function addToCart(product, amount, button) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+            let existingProduct = cart.find(function (item) {
+                return String(item.id || item.productId) === String(product.id);
+            });
+
+            if (existingProduct) {
+                existingProduct.quantity = (Number(existingProduct.quantity) || 1) + amount;
+            } else {
+                cart.push({
+                    id: product.id,
+                    productId: product.id,
+                    title: product.title,
+                    name: product.title,
+                    price: Number(product.price),
+                    image: product.image,
+                    category: product.category,
+                    quantity: amount
+                });
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartCount();
+            renderCartDrawer();
+
+            button.innerHTML = '<i class="fa-solid fa-check me-2"></i> ADDED TO CART';
+            button.disabled = true;
+
+            setTimeout(function () {
+                button.innerHTML = '<i class="fa-solid fa-bag-shopping me-2"></i> ADD TO CART';
+                button.disabled = false;
+            }, 1000);
+        }
+
+        function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let count = 0;
+
+            cart.forEach(function (item) {
+                count += Number(item.quantity) || 1;
+            });
+
+            document.getElementById("cartCount").textContent = count;
+        }
+
+        function renderCartDrawer() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let container = document.getElementById("cartDrawerItems");
+
+            let count = 0;
+
+            container.innerHTML = "";
+
+            if (cart.length === 0) {
+                container.innerHTML = '<p class="cart-empty">Your cart is empty.</p>';
+            }
+
+            cart.forEach(function (item, index) {
+                let amount = Number(item.quantity) || 1;
+                let price = Number(item.price) || 0;
+
+
+                let row = document.createElement("div");
+                row.className = "cart-item";
+
+                let image = document.createElement("img");
+                image.src = item.image || "";
+                image.alt = item.title || item.name || "Product";
+
+                let info = document.createElement("div");
+                info.className = "cart-item-info";
+
+                let title = document.createElement("p");
+                title.textContent = item.title || item.name || "Product";
+
+                let priceText = document.createElement("p");
+                priceText.textContent = "$" + price.toFixed(2);
+
+                let quantityControl = document.createElement("div");
+                quantityControl.className = "cart-quantity";
+
+                let minusButton = document.createElement("button");
+                minusButton.type = "button";
+                minusButton.textContent = "−";
+
+                let quantityText = document.createElement("span");
+                quantityText.textContent = amount;
+
+                let plusButton = document.createElement("button");
+                plusButton.type = "button";
+                plusButton.textContent = "+";
+
+                minusButton.addEventListener("click", function () {
+                    if (amount > 1) {
+                        cart[index].quantity = amount - 1;
+                    } else {
+                        cart.splice(index, 1);
+                    }
+
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCartCount();
+                    renderCartDrawer();
+                });
+
+                plusButton.addEventListener("click", function () {
+                    cart[index].quantity = amount + 1;
+
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCartCount();
+                    renderCartDrawer();
+                });
+
+                quantityControl.append(minusButton, quantityText, plusButton);
+
+                let removeButton = document.createElement("button");
+                removeButton.type = "button";
+                removeButton.className = "remove-item";
+                removeButton.textContent = "Remove";
+
+                removeButton.addEventListener("click", function () {
+                    cart.splice(index, 1);
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCartCount();
+                    renderCartDrawer();
+                });
+
+                info.append(title, priceText, quantityControl, removeButton);
+                row.append(image, info);
+                container.appendChild(row);
+            });
+
+            document.getElementById("drawerItemCount").textContent = "(" + count + ")";
+        }
+
+        const cartDrawer = document.getElementById("cartDrawer");
+        const cartOverlay = document.getElementById("cartOverlay");
+
+        document.getElementById("openCartDrawer").addEventListener("click", function (event) {
+            event.preventDefault();
+            renderCartDrawer();
+            cartDrawer.classList.add("open");
+            cartOverlay.classList.add("open");
+            cartDrawer.setAttribute("aria-hidden", "false");
+        });
+
+        function closeCartDrawer() {
+            cartDrawer.classList.remove("open");
+            cartOverlay.classList.remove("open");
+            cartDrawer.setAttribute("aria-hidden", "true");
+        }
+
+        document.getElementById("closeCartDrawer").addEventListener("click", closeCartDrawer);
+        cartOverlay.addEventListener("click", closeCartDrawer);
+
+        const searchToggle = document.getElementById("searchToggle");
+        const searchModal = document.getElementById("searchModal");
+        const siteSearchInput = document.getElementById("siteSearchInput");
+        const searchResults = document.getElementById("searchResults");
+
+        searchToggle.addEventListener("click", function () {
+            searchModal.hidden = !searchModal.hidden;
+
+            if (!searchModal.hidden) {
+                siteSearchInput.focus();
+                searchProducts();
+            }
+        });
+
+        document.getElementById("closeSearch").addEventListener("click", function () {
+            searchModal.hidden = true;
+        });
+
+        async function searchProducts() {
+            let text = siteSearchInput.value.toLowerCase().trim();
+
+            if (!text) {
+                searchResults.innerHTML = "<p>Search for something you love.</p>";
+                return;
+            }
+
+            if (allProducts.length === 0) {
+                try {
+                    let response = await fetch("https://fakestoreapi.com/products");
+                    if (!response.ok) {
+                        throw new Error("Could not load products");
+                    }
+                    allProducts = await response.json();
+                } catch (error) {
+                    searchResults.innerHTML = "<p>Unable to search products right now.</p>";
+                    return;
+                }
+            }
+
+            let matches = allProducts.filter(function (product) {
+                return product.title.toLowerCase().includes(text) ||
+                    product.category.toLowerCase().includes(text);
+            });
+
+            searchResults.innerHTML = "";
+
+            if (matches.length === 0) {
+                searchResults.innerHTML = "<p>No matching products found.</p>";
+                return;
+            }
+
+            matches.forEach(function (product) {
+                let link = document.createElement("a");
+                link.className = "search-result-item";
+                link.href = "details.html?id=" + product.id;
+
+                let image = document.createElement("img");
+                image.src = product.image;
+                image.alt = product.title;
+
+                let info = document.createElement("div");
+
+                let title = document.createElement("p");
+                title.textContent = product.title;
+
+                let price = document.createElement("strong");
+                price.textContent = "$" + Number(product.price).toFixed(2);
+
+                info.append(title, price);
+                link.append(image, info);
+                searchResults.appendChild(link);
+            });
+        }
+
+        siteSearchInput.addEventListener("input", searchProducts);
+
+        document.addEventListener("click", function (event) {
+            if (!searchModal.hidden &&
+                !searchModal.contains(event.target) &&
+                !searchToggle.contains(event.target)) {
+                searchModal.hidden = true;
+            }
+        });
+
+        updateCartCount();
+        getProduct();
+    </script>
+
+</body>
+
+</html>
