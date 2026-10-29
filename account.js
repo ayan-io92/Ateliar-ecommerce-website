@@ -1,909 +1,465 @@
-let users = getUsers();
-let loggedInUser = null;
-let currentUser = null;
+const usersKey = "users";
+const loggedInKey = "loggedInUser";
 
-// Get saved users
+let currentUser = null;
+let selectedImage = "";
+
 function getUsers() {
   try {
-    const savedUsers = JSON.parse(localStorage.getItem("users")) || [];
-    return Array.isArray(savedUsers) ? savedUsers : [];
+    return JSON.parse(localStorage.getItem(usersKey)) || [];
   } catch (error) {
     return [];
   }
 }
 
-// Save users
-function saveUsers() {
+function getLoggedInUser() {
   try {
-    localStorage.setItem("users", JSON.stringify(users));
-    return true;
+    return JSON.parse(localStorage.getItem(loggedInKey));
   } catch (error) {
-    return false;
+    return localStorage.getItem(loggedInKey);
   }
 }
 
-// Display messages
-function displayMessage(element, message, type) {
-  if (!element) return;
+function findCurrentUser() {
+  const loggedIn = getLoggedInUser();
+  const users = getUsers();
 
-  element.textContent = message;
-  element.className = "status-message mt-3";
+  if (!loggedIn) {
+    return null;
+  }
 
-  element.classList.add(type === "success" ? "text-success" : "text-danger");
-}
+  if (typeof loggedIn === "object") {
+    const email = loggedIn.email;
 
-// Validate password
-function validPassword(password) {
-  return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s])\S{12,}$/.test(
-    password,
+    if (email) {
+      const foundUser = users.find(function (user) {
+        return user.email && user.email.toLowerCase() === email.toLowerCase();
+      });
+
+      if (foundUser) {
+        return foundUser;
+      }
+    }
+
+    return loggedIn;
+  }
+
+  return (
+    users.find(function (user) {
+      return (
+        user.email &&
+        user.email.toLowerCase() === String(loggedIn).toLowerCase()
+      );
+    }) || null
   );
 }
 
-// Check logged-in user
-try {
-  loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-} catch (error) {
-  loggedInUser = null;
+function showMessage(message, title) {
+  document.getElementById("messageModalTitle").textContent = title || "Atelier";
+  document.getElementById("messageModalBody").textContent = message;
+
+  bootstrap.Modal.getOrCreateInstance(
+    document.getElementById("messageModal"),
+  ).show();
 }
 
-if (!loggedInUser || typeof loggedInUser.email !== "string") {
-  window.location.href = "index.html";
-} else {
-  currentUser = users.find(function (user) {
+function getUserImage(user) {
+  if (!user) {
+    return "";
+  }
+
+  return user.profilePicture || user.image || user.picture || "";
+}
+
+function updateImages() {
+  const image = selectedImage || getUserImage(currentUser);
+
+  const sidebarImage = document.getElementById("sidebarImage");
+  const profilePicture = document.getElementById("profilePicture");
+  const accountNavContent = document.getElementById("accountNavContent");
+
+  if (image) {
+    sidebarImage.innerHTML = "";
+    const sidebarImg = document.createElement("img");
+    sidebarImg.src = image;
+    sidebarImg.alt = "Profile picture";
+    sidebarImage.appendChild(sidebarImg);
+
+    profilePicture.innerHTML = "";
+    const profileImg = document.createElement("img");
+    profileImg.src = image;
+    profileImg.alt = "Profile picture";
+    profilePicture.appendChild(profileImg);
+
+    accountNavContent.innerHTML = "";
+    const navImg = document.createElement("img");
+    navImg.src = image;
+    navImg.alt = "Profile";
+    navImg.className = "account-nav-image";
+    accountNavContent.appendChild(navImg);
+  } else {
+    sidebarImage.innerHTML = '<i class="fa-regular fa-user"></i>';
+    profilePicture.innerHTML = '<i class="fa-regular fa-user"></i>';
+    accountNavContent.textContent = "ACCOUNT";
+  }
+}
+
+function updateProfileDisplay() {
+  document.getElementById("sidebarName").textContent =
+    currentUser.name || currentUser.fullName || "My Account";
+
+  document.getElementById("sidebarEmail").textContent = currentUser.email || "";
+
+  document.getElementById("profileName").value =
+    currentUser.name || currentUser.fullName || "";
+
+  document.getElementById("profileEmail").value = currentUser.email || "";
+
+  updateImages();
+}
+
+function openSection(sectionName) {
+  document.querySelectorAll(".content-panel").forEach(function (panel) {
+    panel.classList.remove("active");
+  });
+
+  document
+    .querySelectorAll(".sidebar-link[data-section]")
+    .forEach(function (button) {
+      button.classList.toggle("active", button.dataset.section === sectionName);
+    });
+
+  const selectedPanel = document.getElementById(sectionName + "Panel");
+
+  if (selectedPanel) {
+    selectedPanel.classList.add("active");
+  }
+
+  if (sectionName === "orders") {
+    showOrders();
+  }
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+}
+
+document
+  .querySelectorAll(".sidebar-link[data-section]")
+  .forEach(function (button) {
+    button.addEventListener("click", function () {
+      openSection(button.dataset.section);
+    });
+  });
+
+document.querySelectorAll("[data-open-section]").forEach(function (button) {
+  button.addEventListener("click", function () {
+    openSection(button.dataset.openSection);
+  });
+});
+
+function saveUser(updatedUser) {
+  const users = getUsers();
+
+  const userIndex = users.findIndex(function (user) {
     return (
-      user &&
-      typeof user.email === "string" &&
-      user.email.toLowerCase() === loggedInUser.email.toLowerCase()
+      user.email &&
+      currentUser.email &&
+      user.email.toLowerCase() === currentUser.email.toLowerCase()
     );
   });
 
-  if (!currentUser) {
-    localStorage.removeItem("loggedInUser");
-    window.location.href = "index.html";
+  if (userIndex !== -1) {
+    users[userIndex] = updatedUser;
+    localStorage.setItem(usersKey, JSON.stringify(users));
   }
+
+  localStorage.setItem(loggedInKey, JSON.stringify(updatedUser));
+  currentUser = updatedUser;
 }
 
-// Stop running the remaining code if the session is invalid
-if (loggedInUser && currentUser) {
-  initializeProfile();
-}
+document.getElementById("uploadButton").addEventListener("click", function () {
+  document.getElementById("imageUpload").click();
+});
 
-function initializeProfile() {
-  // Profile elements
-  const profileForm = document.getElementById("profileForm");
-  const profileName = document.getElementById("profileName");
-  const profileEmail = document.getElementById("profileEmail");
-  const profileMessage = document.getElementById("profileMessage");
+document.getElementById("imageUpload").addEventListener("change", function () {
+  const file = this.files[0];
 
-  const imageUpload = document.getElementById("imageUpload");
-  const profilePicture = document.getElementById("profilePicture");
-
-  // Password elements
-  const passwordForm = document.getElementById("passwordForm");
-  const currentPassword = document.getElementById("currentPassword");
-  const newPassword = document.getElementById("newPassword");
-  const confirmPassword = document.getElementById("confirmPassword");
-  const passwordMessage = document.getElementById("passwordMessage");
-
-  const logoutButton = document.getElementById("logoutButton");
-  const deleteButton = document.getElementById("deleteButton");
-
-  // Keep password fields empty and prevent unwanted autofill
-  if (passwordForm) {
-    passwordForm.setAttribute("autocomplete", "off");
-
-    [currentPassword, newPassword, confirmPassword].forEach(function (input) {
-      if (!input) return;
-
-      input.value = "";
-      input.setAttribute("autocomplete", "new-password");
-    });
-  }
-
-  // Load profile information
-  function loadProfile() {
-    if (profileName) {
-      profileName.value = currentUser.username || "";
-    }
-
-    if (profileEmail) {
-      profileEmail.value = currentUser.email || "";
-    }
-
-    if (!profilePicture) return;
-
-    profilePicture.innerHTML = "";
-
-    if (currentUser.profilePicture) {
-      const image = document.createElement("img");
-      image.src = currentUser.profilePicture;
-      image.alt = "Profile picture";
-
-      profilePicture.appendChild(image);
-    } else {
-      const plusIcon = document.createElement("span");
-      plusIcon.id = "plusIcon";
-      plusIcon.textContent = "+";
-
-      profilePicture.appendChild(plusIcon);
-    }
-  }
-
-  loadProfile();
-
-  // Save profile information
-  if (profileForm) {
-    profileForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      users = getUsers();
-
-      currentUser = users.find(function (user) {
-        return (
-          user &&
-          typeof user.email === "string" &&
-          user.email.toLowerCase() === loggedInUser.email.toLowerCase()
-        );
-      });
-
-      if (!currentUser) {
-        displayMessage(profileMessage, "Please sign in again.", "error");
-        return;
-      }
-
-      const username = profileName.value.trim();
-      const email = profileEmail.value.trim().toLowerCase();
-
-      if (!username || !email) {
-        displayMessage(profileMessage, "Please fill in all fields.", "error");
-        return;
-      }
-
-      if (!/^[\p{L}][\p{L}\s'-]*$/u.test(username)) {
-        displayMessage(profileMessage, "Please enter a valid name.", "error");
-        return;
-      }
-
-      const emailExists = users.some(function (user) {
-        return (
-          user &&
-          typeof user.email === "string" &&
-          user.email.toLowerCase() === email &&
-          user.email.toLowerCase() !== currentUser.email.toLowerCase()
-        );
-      });
-
-      if (emailExists) {
-        displayMessage(
-          profileMessage,
-          "This email is already registered.",
-          "error",
-        );
-        return;
-      }
-
-      const oldUsername = currentUser.username;
-      const oldEmail = currentUser.email;
-
-      currentUser.username = username;
-      currentUser.email = email;
-
-      if (!saveUsers()) {
-        currentUser.username = oldUsername;
-        currentUser.email = oldEmail;
-
-        displayMessage(
-          profileMessage,
-          "Unable to save changes. Please try again.",
-          "error",
-        );
-        return;
-      }
-
-      loggedInUser.username = username;
-      loggedInUser.email = email;
-
-      try {
-        localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
-      } catch (error) {
-        displayMessage(
-          profileMessage,
-          "Profile saved, but session details could not be updated.",
-          "error",
-        );
-        return;
-      }
-
-      displayMessage(
-        profileMessage,
-        "Your profile has been updated successfully.",
-        "success",
-      );
-    });
-  }
-
-  // Upload profile picture
-  if (imageUpload) {
-    imageUpload.addEventListener("change", function () {
-      const file = imageUpload.files[0];
-
-      if (!file) return;
-
-      if (!file.type.startsWith("image/")) {
-        alert("Please select a valid image.");
-        imageUpload.value = "";
-        return;
-      }
-
-      if (file.size > 1024 * 1024) {
-        alert("Please select an image smaller than 1 MB.");
-        imageUpload.value = "";
-        return;
-      }
-
-      const reader = new FileReader();
-
-      reader.onload = function (event) {
-        const oldPicture = currentUser.profilePicture;
-
-        currentUser.profilePicture = event.target.result;
-
-        if (!saveUsers()) {
-          currentUser.profilePicture = oldPicture;
-
-          displayMessage(
-            profileMessage,
-            "Unable to save the profile picture.",
-            "error",
-          );
-          return;
-        }
-
-        loadProfile();
-
-        displayMessage(
-          profileMessage,
-          "Profile picture updated successfully.",
-          "success",
-        );
-      };
-
-      reader.readAsDataURL(file);
-    });
-  }
-
-  // Show and hide password
-  window.togglePassword = function (inputId, button) {
-    const passwordBox = button.closest(".password-field");
-
-    const input = passwordBox
-      ? passwordBox.querySelector("input")
-      : document.getElementById(inputId);
-
-    if (!input) return;
-
-    if (input.type === "password") {
-      input.type = "text";
-      button.textContent = "Hide";
-    } else {
-      input.type = "password";
-      button.textContent = "Show";
-    }
-  };
-
-  // Reset password fields and Show/Hide buttons
-  function clearPasswordFields() {
-    if (passwordForm) {
-      passwordForm.reset();
-    }
-
-    document.querySelectorAll(".password-field").forEach(function (field) {
-      const input = field.querySelector("input");
-      const button = field.querySelector(".show-password");
-
-      if (input) {
-        input.value = "";
-        input.type = "password";
-      }
-
-      if (button) {
-        button.textContent = "Show";
-      }
-    });
-  }
-
-  // Change password
-  if (passwordForm) {
-    passwordForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      users = getUsers();
-
-      currentUser = users.find(function (user) {
-        return (
-          user &&
-          typeof user.email === "string" &&
-          user.email.toLowerCase() === loggedInUser.email.toLowerCase()
-        );
-      });
-
-      if (!currentUser) {
-        displayMessage(passwordMessage, "Please sign in again.", "error");
-        return;
-      }
-
-      const oldPassword = currentPassword.value;
-      const updatedPassword = newPassword.value;
-      const confirmedPassword = confirmPassword.value;
-
-      if (!oldPassword) {
-        displayMessage(
-          passwordMessage,
-          "Please enter your current password.",
-          "error",
-        );
-        return;
-      }
-
-      if (oldPassword !== currentUser.password) {
-        displayMessage(
-          passwordMessage,
-          "Your current password is incorrect.",
-          "error",
-        );
-        return;
-      }
-
-      if (!validPassword(updatedPassword)) {
-        displayMessage(
-          passwordMessage,
-          "Password must be at least 12 characters and include uppercase, lowercase, a number, and a special character.",
-          "error",
-        );
-        return;
-      }
-
-      if (updatedPassword === oldPassword) {
-        displayMessage(
-          passwordMessage,
-          "Choose a password different from your current password.",
-          "error",
-        );
-        return;
-      }
-
-      if (updatedPassword !== confirmedPassword) {
-        displayMessage(
-          passwordMessage,
-          "New password and confirmation do not match.",
-          "error",
-        );
-        return;
-      }
-
-      const oldSavedPassword = currentUser.password;
-
-      currentUser.password = updatedPassword;
-
-      if (!saveUsers()) {
-        currentUser.password = oldSavedPassword;
-
-        displayMessage(
-          passwordMessage,
-          "Unable to change your password. Please try again.",
-          "error",
-        );
-        return;
-      }
-
-      clearPasswordFields();
-
-      displayMessage(
-        passwordMessage,
-        "Your password has been changed successfully.",
-        "success",
-      );
-    });
-  }
-
-  // Also clear password fields when the page is loaded
-  clearPasswordFields();
-
-  // Logout
-  if (logoutButton) {
-    logoutButton.addEventListener("click", function () {
-      const confirmed = confirm("Are you sure you want to log out?");
-
-      if (!confirmed) return;
-
-      localStorage.removeItem("loggedInUser");
-      window.location.href = "index.html";
-    });
-  }
-
-  // Delete account
-  if (deleteButton) {
-    deleteButton.addEventListener("click", function () {
-      const confirmed = confirm(
-        "Are you sure you want to delete your account?",
-      );
-
-      if (!confirmed) return;
-
-      users = getUsers();
-
-      const updatedUsers = users.filter(function (user) {
-        return (
-          user &&
-          typeof user.email === "string" &&
-          user.email.toLowerCase() !== loggedInUser.email.toLowerCase()
-        );
-      });
-      ("use strict");
-
-      // Get saved users
-      function getUsers() {
-        try {
-          const savedUsers = JSON.parse(localStorage.getItem("users")) || [];
-          return Array.isArray(savedUsers) ? savedUsers : [];
-        } catch (error) {
-          return [];
-        }
-      }
-
-      // Save users
-      function saveUsers() {
-        try {
-          localStorage.setItem("users", JSON.stringify(users));
-          return true;
-        } catch (error) {
-          return false;
-        }
-      }
-
-      // Get HTML elements
-      const profileForm = document.getElementById("profileForm");
-      const profileName = document.getElementById("profileName");
-      const profileEmail = document.getElementById("profileEmail");
-      const profilePicture = document.getElementById("profilePicture");
-      const imageUpload = document.getElementById("imageUpload");
-      const profileMessage = document.getElementById("profileMessage");
-
-      const passwordForm = document.getElementById("passwordForm");
-      const currentPassword = document.getElementById("currentPassword");
-      const newPassword = document.getElementById("newPassword");
-      const confirmPassword = document.getElementById("confirmPassword");
-      const passwordMessage = document.getElementById("passwordMessage");
-
-      const logoutButton = document.getElementById("logoutButton");
-      const deleteButton = document.getElementById("deleteButton");
-
-      const deleteModal = document.getElementById("deleteModal");
-      const cancelDeleteButton = document.getElementById("cancelDeleteButton");
-      const confirmDeleteButton = document.getElementById(
-        "confirmDeleteButton",
-      );
-
-      // Load users and logged-in user
-      let users = getUsers();
-      let loggedInUser = null;
-
-      try {
-        loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-      } catch (error) {
-        loggedInUser = null;
-      }
-
-      // Check whether a user is logged in
-      if (!loggedInUser || !loggedInUser.email) {
-        window.location.href = "index.html";
-      }
-
-      // Find the current user
-      function getCurrentUser() {
-        return users.find(function (user) {
-          return (
-            user &&
-            user.email &&
-            user.email.toLowerCase() === loggedInUser.email.toLowerCase()
-          );
-        });
-      }
-
-      let currentUser = getCurrentUser();
-
-      // If the saved account does not exist, return to login
-      if (!currentUser) {
-        localStorage.removeItem("loggedInUser");
-        window.location.href = "index.html";
-      }
-
-      // Display a message
-      function displayMessage(element, message, color) {
-        if (!element) {
-          return;
-        }
-
-        element.textContent = message;
-        element.style.color = color;
-      }
-
-      // Check password strength
-      function validPassword(password) {
-        const passwordPattern =
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s])\S{12,}$/;
-
-        return passwordPattern.test(password);
-      }
-
-      // Update the saved login information
-      function updateLoggedInUser() {
-        const sessionUser = {
-          username: currentUser.username,
-          email: currentUser.email,
-        };
-
-        if (currentUser.profilePicture) {
-          sessionUser.profilePicture = currentUser.profilePicture;
-        }
-
-        localStorage.setItem("loggedInUser", JSON.stringify(sessionUser));
-      }
-
-      // Show or hide a password
-      function togglePassword(inputId, button) {
-        const passwordInput = document.getElementById(inputId);
-
-        if (!passwordInput || !button) {
-          return;
-        }
-
-        if (passwordInput.type === "password") {
-          passwordInput.type = "text";
-          button.textContent = "Hide";
-        } else {
-          passwordInput.type = "password";
-          button.textContent = "Show";
-        }
-      }
-
-      // Make the function available to the HTML Show buttons
-      window.togglePassword = togglePassword;
-
-      // Load profile information
-      function loadProfile() {
-        if (!currentUser) {
-          return;
-        }
-
-        if (profileName) {
-          profileName.value = currentUser.username || currentUser.name || "";
-        }
-
-        if (profileEmail) {
-          profileEmail.value = currentUser.email || "";
-        }
-
-        if (currentUser.profilePicture && profilePicture) {
-          profilePicture.style.backgroundImage =
-            'url("' + currentUser.profilePicture + '")';
-
-          profilePicture.style.backgroundSize = "cover";
-          profilePicture.style.backgroundPosition = "center";
-
-          const plusIcon = document.getElementById("plusIcon");
-
-          if (plusIcon) {
-            plusIcon.style.display = "none";
-          }
-        }
-      }
-
-      loadProfile();
-
-      // Save profile changes
-      if (profileForm) {
-        profileForm.addEventListener("submit", function (event) {
-          event.preventDefault();
-
-          const name = profileName.value.trim();
-          const email = profileEmail.value.trim().toLowerCase();
-
-          if (!name || !email) {
-            displayMessage(
-              profileMessage,
-              "Please enter your name and email.",
-              "#b76565",
-            );
-            return;
-          }
-
-          const emailExists = users.some(function (user) {
-            return (
-              user &&
-              user.email &&
-              user.email.toLowerCase() === email &&
-              user.email.toLowerCase() !== currentUser.email.toLowerCase()
-            );
-          });
-
-          if (emailExists) {
-            displayMessage(
-              profileMessage,
-              "This email is already used by another account.",
-              "#b76565",
-            );
-            return;
-          }
-
-          currentUser.username = name;
-          currentUser.name = name;
-          currentUser.email = email;
-
-          if (!saveUsers()) {
-            displayMessage(
-              profileMessage,
-              "Unable to save your changes. Please try again.",
-              "#b76565",
-            );
-            return;
-          }
-
-          loggedInUser = {
-            username: name,
-            email: email,
-          };
-
-          updateLoggedInUser();
-
-          displayMessage(
-            profileMessage,
-            "Your profile has been updated successfully.",
-            "#467653",
-          );
-        });
-      }
-
-      // Upload profile picture
-      if (imageUpload) {
-        imageUpload.addEventListener("change", function () {
-          const file = imageUpload.files[0];
-
-          if (!file) {
-            return;
-          }
-
-          if (!file.type.startsWith("image/")) {
-            displayMessage(
-              profileMessage,
-              "Please choose an image file.",
-              "#b76565",
-            );
-            imageUpload.value = "";
-            return;
-          }
-
-          const reader = new FileReader();
-
-          reader.onload = function (event) {
-            currentUser.profilePicture = event.target.result;
-
-            if (!saveUsers()) {
-              displayMessage(
-                profileMessage,
-                "Unable to save the profile picture.",
-                "#b76565",
-              );
-              return;
-            }
-
-            updateLoggedInUser();
-
-            if (profilePicture) {
-              profilePicture.style.backgroundImage =
-                'url("' + event.target.result + '")';
-
-              profilePicture.style.backgroundSize = "cover";
-              profilePicture.style.backgroundPosition = "center";
-            }
-
-            const plusIcon = document.getElementById("plusIcon");
-
-            if (plusIcon) {
-              plusIcon.style.display = "none";
-            }
-
-            displayMessage(
-              profileMessage,
-              "Profile picture updated successfully.",
-              "#467653",
-            );
-          };
-
-          reader.onerror = function () {
-            displayMessage(
-              profileMessage,
-              "Unable to read this image. Please try another one.",
-              "#b76565",
-            );
-          };
-
-          reader.readAsDataURL(file);
-        });
-      }
-
-      // Change password
-      if (passwordForm) {
-        passwordForm.addEventListener("submit", function (event) {
-          event.preventDefault();
-
-          const oldPassword = currentPassword.value;
-          const newPass = newPassword.value;
-          const confirmPass = confirmPassword.value;
-
-          if (oldPassword !== currentUser.password) {
-            displayMessage(
-              passwordMessage,
-              "Your current password is incorrect.",
-              "#b76565",
-            );
-            return;
-          }
-
-          if (!validPassword(newPass)) {
-            displayMessage(
-              passwordMessage,
-              "Use at least 12 characters, including uppercase, lowercase, a number and a special character. Do not use spaces.",
-              "#b76565",
-            );
-            return;
-          }
-
-          if (newPass !== confirmPass) {
-            displayMessage(
-              passwordMessage,
-              "The new passwords do not match.",
-              "#b76565",
-            );
-            return;
-          }
-
-          if (oldPassword === newPass) {
-            displayMessage(
-              passwordMessage,
-              "Your new password must be different.",
-              "#b76565",
-            );
-            return;
-          }
-
-          currentUser.password = newPass;
-
-          if (!saveUsers()) {
-            currentUser.password = oldPassword;
-
-            displayMessage(
-              passwordMessage,
-              "Unable to change your password. Please try again.",
-              "#b76565",
-            );
-            return;
-          }
-
-          passwordForm.reset();
-
-          displayMessage(
-            passwordMessage,
-            "Your password has been changed successfully.",
-            "#467653",
-          );
-        });
-      }
-
-      // Log out
-      if (logoutButton) {
-        logoutButton.addEventListener("click", function () {
-          localStorage.removeItem("loggedInUser");
-          window.location.href = "index.html";
-        });
-      }
-
-      // Open the delete account modal
-      if (deleteButton && deleteModal) {
-        deleteButton.addEventListener("click", function () {
-          deleteModal.hidden = false;
-
-          if (cancelDeleteButton) {
-            cancelDeleteButton.focus();
-          }
-        });
-      }
-
-      // Close modal with Cancel
-      if (cancelDeleteButton && deleteModal) {
-        cancelDeleteButton.addEventListener("click", function () {
-          deleteModal.hidden = true;
-          deleteButton.focus();
-        });
-      }
-
-      // Close modal by clicking outside it
-      if (deleteModal) {
-        deleteModal.addEventListener("click", function (event) {
-          if (event.target === deleteModal) {
-            deleteModal.hidden = true;
-
-            if (deleteButton) {
-              deleteButton.focus();
-            }
-          }
-        });
-      }
-
-      // Confirm account deletion
-      if (confirmDeleteButton && deleteModal) {
-        confirmDeleteButton.addEventListener("click", function () {
-          users = getUsers();
-
-          const updatedUsers = users.filter(function (user) {
-            return (
-              user &&
-              typeof user.email === "string" &&
-              user.email.toLowerCase() !== loggedInUser.email.toLowerCase()
-            );
-          });
-
-          try {
-            localStorage.setItem("users", JSON.stringify(updatedUsers));
-            localStorage.removeItem("loggedInUser");
-
-            window.location.href = "index.html";
-          } catch (error) {
-            deleteModal.hidden = true;
-
-            displayMessage(
-              profileMessage,
-              "Unable to delete your account. Please try again.",
-              "#b76565",
-            );
-          }
-        });
-      }
-
-      try {
-        localStorage.setItem("users", JSON.stringify(updatedUsers));
-        localStorage.removeItem("loggedInUser");
-
-        window.location.href = "index.html";
-      } catch (error) {
-        alert("Unable to delete your account. Please try again.");
-      }
-    });
-  }
-}
-
-const deleteButton = document.getElementById("confirmDeleteAccount");
-
-deleteButton.addEventListener("click", function () {
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-
-  if (!loggedInUser) {
+  if (!file) {
     return;
   }
 
-  users = users.filter(function (user) {
-    return user.email !== loggedInUser.email;
+  if (!file.type.startsWith("image/")) {
+    showMessage("Please select a valid image.");
+    this.value = "";
+    return;
+  }
+
+  if (file.size > 2 * 1024 * 1024) {
+    showMessage("Please choose an image smaller than 2 MB.");
+    this.value = "";
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function () {
+    selectedImage = reader.result;
+    updateImages();
+  };
+
+  reader.readAsDataURL(file);
+});
+
+document
+  .getElementById("removeImageButton")
+  .addEventListener("click", function () {
+    selectedImage = "";
+    currentUser.profilePicture = "";
+    currentUser.image = "";
+    updateImages();
+    document.getElementById("imageUpload").value = "";
   });
 
-  localStorage.setItem("users", JSON.stringify(users));
+document
+  .getElementById("profileForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
 
-  localStorage.removeItem("loggedInUser");
+    const name = document.getElementById("profileName").value.trim();
+    const email = document.getElementById("profileEmail").value.trim();
+    const message = document.getElementById("profileMessage");
 
-  const modalElement = document.getElementById("deleteAccountModal");
-  const modal = bootstrap.Modal.getInstance(modalElement);
+    if (!name || !email) {
+      message.textContent = "Please fill in all fields.";
+      message.style.color = "#b76565";
+      return;
+    }
 
-  modal.hide();
+    const users = getUsers();
 
-  window.location.href = "index.html";
+    const emailExists = users.some(function (user) {
+      return (
+        user.email &&
+        user.email.toLowerCase() === email.toLowerCase() &&
+        user.email.toLowerCase() !==
+          String(currentUser.email || "").toLowerCase()
+      );
+    });
+
+    if (emailExists) {
+      message.textContent = "This email is already registered.";
+      message.style.color = "#b76565";
+      return;
+    }
+
+    const oldEmail = currentUser.email;
+
+    currentUser.name = name;
+    currentUser.fullName = name;
+    currentUser.email = email;
+
+    if (selectedImage) {
+      currentUser.profilePicture = selectedImage;
+      currentUser.image = selectedImage;
+    }
+
+    const userIndex = users.findIndex(function (user) {
+      return (
+        user.email &&
+        oldEmail &&
+        user.email.toLowerCase() === oldEmail.toLowerCase()
+      );
+    });
+
+    if (userIndex !== -1) {
+      users[userIndex] = currentUser;
+      localStorage.setItem(usersKey, JSON.stringify(users));
+    }
+
+    localStorage.setItem(loggedInKey, JSON.stringify(currentUser));
+
+    updateProfileDisplay();
+
+    message.textContent = "Your information has been saved.";
+    message.style.color = "green";
+  });
+
+document.querySelectorAll(".show-password").forEach(function (button) {
+  button.addEventListener("click", function () {
+    const input = document.getElementById(this.dataset.password);
+
+    if (input.type === "password") {
+      input.type = "text";
+      this.textContent = "Hide";
+    } else {
+      input.type = "password";
+      this.textContent = "Show";
+    }
+  });
 });
+
+document
+  .getElementById("passwordForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const currentPassword = document.getElementById("currentPassword").value;
+    const newPassword = document.getElementById("newPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    const message = document.getElementById("passwordMessage");
+
+    if (newPassword.length < 8) {
+      message.textContent =
+        "Your new password must have at least 8 characters.";
+      message.style.color = "#b76565";
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      message.textContent = "The new passwords do not match.";
+      message.style.color = "#b76565";
+      return;
+    }
+
+    if (currentPassword === newPassword) {
+      message.textContent = "Choose a different new password.";
+      message.style.color = "#b76565";
+      return;
+    }
+
+    if (String(currentUser.password || "") !== currentPassword) {
+      message.textContent = "Your current password is incorrect.";
+      message.style.color = "#b76565";
+      return;
+    }
+
+    currentUser.password = newPassword;
+    saveUser(currentUser);
+
+    this.reset();
+
+    document.querySelectorAll(".show-password").forEach(function (button) {
+      button.textContent = "Show";
+    });
+
+    message.textContent = "Your password has been changed.";
+    message.style.color = "green";
+  });
+
+function showOrders() {
+  const container = document.getElementById("ordersContainer");
+  let orders = [];
+
+  try {
+    orders = JSON.parse(localStorage.getItem("orders")) || [];
+  } catch (error) {
+    orders = [];
+  }
+
+  orders = orders.filter(function (order) {
+    const orderEmail = order.email || (order.customer && order.customer.email);
+
+    return (
+      orderEmail &&
+      currentUser.email &&
+      orderEmail.toLowerCase() === currentUser.email.toLowerCase()
+    );
+  });
+
+  container.innerHTML = "";
+
+  if (orders.length === 0) {
+    container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-box-open d-block"></i>
+                        <h3>No orders yet.</h3>
+                        <p>Your orders will appear here when available.</p>
+                        <a href="products.html" class="dark-link">Explore products →</a>
+                    </div>
+                `;
+    return;
+  }
+
+  orders.forEach(function (order, index) {
+    const card = document.createElement("div");
+    card.className = "order-card";
+
+    const title = document.createElement("h3");
+    title.textContent = "Order #" + (order.id || order.orderId || index + 1);
+
+    const date = document.createElement("p");
+    date.textContent =
+      "Date: " + (order.date || order.createdAt || "Not available");
+
+    const total = document.createElement("p");
+    total.textContent =
+      "Total: $" + Number(order.total || order.grandTotal || 0).toFixed(2);
+
+    const status = document.createElement("span");
+    status.className = "order-status";
+    status.textContent = order.status || "Order placed";
+
+    card.append(title, date, total, status);
+    container.appendChild(card);
+  });
+}
+
+function logout() {
+  localStorage.removeItem(loggedInKey);
+  window.location.href = "index.html";
+}
+
+document.getElementById("logoutButton").addEventListener("click", logout);
+document.getElementById("sidebarLogout").addEventListener("click", logout);
+
+document
+  .getElementById("confirmDeleteAccount")
+  .addEventListener("click", function () {
+    const users = getUsers();
+
+    const updatedUsers = users.filter(function (user) {
+      return (
+        !user.email ||
+        !currentUser.email ||
+        user.email.toLowerCase() !== currentUser.email.toLowerCase()
+      );
+    });
+
+    localStorage.setItem(usersKey, JSON.stringify(updatedUsers));
+    localStorage.removeItem(loggedInKey);
+
+    bootstrap.Modal.getOrCreateInstance(
+      document.getElementById("deleteAccountModal"),
+    ).hide();
+
+    window.location.href = "index.html";
+  });
+
+function updateCartCount() {
+  let cart = [];
+
+  try {
+    cart = JSON.parse(localStorage.getItem("cart")) || [];
+  } catch (error) {
+    cart = [];
+  }
+
+  let count = 0;
+
+  cart.forEach(function (item) {
+    count += Number(item.quantity) || 1;
+  });
+
+  document.getElementById("cartCount").textContent = count;
+}
+
+currentUser = findCurrentUser();
+
+if (!currentUser) {
+  window.location.href = "index.html";
+} else {
+  updateProfileDisplay();
+  updateCartCount();
+}
