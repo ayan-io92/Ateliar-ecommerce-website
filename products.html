@@ -121,99 +121,6 @@
             font: 46px "DM Serif Display", serif;
         }
 
-        .account-layout {
-            max-width: 1250px;
-            margin: 55px auto 90px;
-            padding: 0 25px;
-            display: grid;
-            grid-template-columns: 255px 1fr;
-            gap: 45px;
-            align-items: start;
-        }
-
-        .sidebar {
-            background: white;
-            border: 1px solid #e7e7e2;
-            padding: 25px 18px;
-        }
-
-        .sidebar-profile {
-            text-align: center;
-            padding-bottom: 25px;
-            border-bottom: 1px solid #e9e9e4;
-            margin-bottom: 20px;
-        }
-
-        .sidebar-image {
-            width: 85px;
-            height: 85px;
-            border-radius: 50%;
-            background: #eeede6;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 13px;
-            overflow: hidden;
-            font-size: 27px;
-            color: #777;
-        }
-
-        .sidebar-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .sidebar-profile h3 {
-            font-size: 16px;
-            margin-bottom: 6px;
-            overflow-wrap: anywhere;
-        }
-
-        .sidebar-profile p {
-            color: #888;
-            font-size: 12px;
-            overflow-wrap: anywhere;
-            margin-bottom: 0;
-        }
-
-        .sidebar-heading {
-            font-size: 10px;
-            letter-spacing: 1.5px;
-            color: #888;
-            margin: 25px 10px 12px;
-        }
-
-        .sidebar-link {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 13px 12px;
-            border: none;
-            background: transparent;
-            color: #555;
-            text-align: left;
-            font-size: 13px;
-            cursor: pointer;
-            margin-bottom: 4px;
-        }
-
-        .sidebar-link i {
-            width: 18px;
-            text-align: center;
-        }
-
-        .sidebar-link:hover,
-        .sidebar-link.active {
-            background: #f2f1ec;
-            color: #191919;
-        }
-
-        .sidebar-link.active {
-            font-weight: 600;
-        }
-
         .filter-input {
             min-height: 45px;
             border: 1px solid #ddd;
@@ -223,17 +130,16 @@
 
         .product-card {
             height: 100%;
+            padding-bottom: 20px;
             background: white;
             border: 1px solid #eee;
-            padding-bottom: 20px;
         }
 
         .product-image-wrapper {
-            position: relative;
             height: 260px;
             padding: 25px;
-            background: white;
             overflow: hidden;
+            background: white;
         }
 
         .product-image-wrapper img {
@@ -259,24 +165,24 @@
         }
 
         .product-name {
+            min-height: 48px;
             font-size: 15px;
             font-weight: 500;
             line-height: 1.6;
-            min-height: 48px;
         }
 
         .product-price {
+            margin: 12px 0;
             font-size: 17px;
             font-weight: 600;
-            margin: 12px 0;
         }
 
         .quantity-control,
         .cart-quantity {
             display: flex;
             align-items: center;
-            border: 1px solid #ddd;
             width: fit-content;
+            border: 1px solid #ddd;
         }
 
         .quantity-control button,
@@ -307,12 +213,12 @@
         .add-cart-button {
             flex: 1;
             min-height: 37px;
+            padding: 10px;
             border: 1px solid #191919;
             background: #191919;
             color: white;
             font-size: 10px;
             letter-spacing: 1px;
-            padding: 10px;
         }
 
         .add-cart-button:hover {
@@ -320,16 +226,20 @@
             color: white;
         }
 
+        .add-cart-button:disabled {
+            opacity: 0.7;
+        }
+
         .view-details-btn {
             display: block;
             margin-top: 12px;
-            text-align: center;
+            padding: 10px;
             border: 1px solid #ddd;
             color: #191919;
+            text-align: center;
             text-decoration: none;
             font-size: 10px;
             letter-spacing: 1px;
-            padding: 10px;
         }
 
         .view-details-btn:hover {
@@ -366,8 +276,8 @@
         }
 
         .footer-column h3 {
-            font-size: 13px;
             margin-bottom: 18px;
+            font-size: 13px;
         }
 
         .footer-column a {
@@ -393,8 +303,8 @@
         .cart-overlay {
             position: fixed;
             inset: 0;
-            background: #0006;
             z-index: 2000;
+            background: #0006;
             opacity: 0;
             visibility: hidden;
             transition: 0.3s;
@@ -409,14 +319,14 @@
             position: fixed;
             top: 0;
             right: -450px;
-            width: 420px;
-            max-width: 100%;
-            height: 100vh;
-            background: white;
             z-index: 2001;
             display: flex;
             flex-direction: column;
+            width: 420px;
+            max-width: 100%;
+            height: 100vh;
             padding: 25px;
+            background: white;
             transition: right 0.3s;
         }
 
@@ -426,15 +336,20 @@
 
         .cart-drawer-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
             padding-bottom: 20px;
             border-bottom: 1px solid #ddd;
         }
 
         .cart-eyebrow {
+            margin-bottom: 5px;
             font-size: 10px;
             letter-spacing: 1px;
+        }
+
+        .cart-drawer-header h2 {
+            font: 27px "DM Serif Display", serif;
         }
 
         .cart-close {
@@ -446,33 +361,6 @@
         .cart-drawer-items {
             flex: 1;
             overflow-y: auto;
-        }
-
-        .cart-drawer-footer {
-            padding-top: 20px;
-            border-top: 1px solid #ddd;
-        }
-
-
-        .cart-shipping-note {
-            font-size: 12px;
-            color: #777;
-            margin-top: 12px;
-        }
-
-        .cart-checkout-btn {
-            display: block;
-            background: #191919;
-            color: white;
-            text-decoration: none;
-            text-align: center;
-            padding: 15px;
-            margin-top: 15px;
-        }
-
-        .cart-checkout-btn:hover {
-            background: #444;
-            color: white;
         }
 
         .cart-empty {
@@ -514,6 +402,40 @@
             font-size: 12px;
         }
 
+        .cart-drawer-footer {
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .cart-subtotal {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .cart-shipping-note {
+            margin-top: 12px;
+            color: #777;
+            font-size: 12px;
+        }
+
+        .cart-checkout-btn {
+            display: block;
+            margin-top: 15px;
+            padding: 15px;
+            background: #191919;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .cart-checkout-btn:hover {
+            background: #444;
+            color: white;
+        }
+
         @media (max-width: 991px) {
             .navbar-nav {
                 align-items: stretch !important;
@@ -550,320 +472,74 @@
 
     <nav class="navbar navbar-expand-lg hero-navbar">
         <div class="container-fluid px-4 px-md-5">
+
             <a href="home.html" class="navbar-brand logo">Atelier</a>
 
             <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
-                data-bs-target="#mainNav">
+                data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fa-solid fa-bars"></i>
             </button>
 
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4">
-                    <li class="nav-item"><a href="products.html" class="nav-link">PRODUCTS</a></li>
-                    <li class="nav-item"><a href="home.html#categories" class="nav-link">COLLECTIONS</a></li>
-                    <li class="nav-item"><a href="home.html#about" class="nav-link">ABOUT</a></li>
+
+                    <li class="nav-item">
+                        <a href="products.html" class="nav-link">PRODUCTS</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="home.html#categories" class="nav-link">COLLECTIONS</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="home.html#about" class="nav-link">ABOUT</a>
+                    </li>
 
                     <li class="nav-item search-nav-item">
-                        <button type="button" class="nav-link search-toggle" id="searchToggle">
+                        <button type="button" class="nav-link search-toggle" id="searchToggle" aria-expanded="false"
+                            aria-controls="searchModal">
                             SEARCH <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
 
                         <div class="search-modal" id="searchModal" hidden>
-                            <label for="siteSearchInput">SEARCH ATELIER</label>
-                            <div class="search-input-row">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                <input type="search" id="siteSearchInput" placeholder="Search products...">
-                                <button type="button" id="closeSearch"><i class="fa-solid fa-xmark"></i></button>
-                            </div>
-                            <div class="search-results" id="searchResults">
+                            <form id="searchForm" role="search">
+                                <label for="siteSearchInput">SEARCH ATELIER</label>
+
+                                <div class="search-input-row">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                                    <input type="search" id="siteSearchInput"
+                                        placeholder="Search products, categories..." autocomplete="off">
+
+                                    <button type="button" id="closeSearch" aria-label="Close search">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <div id="searchResults" class="search-results" aria-live="polite">
                                 <p>Search for something you love.</p>
                             </div>
                         </div>
                     </li>
 
-                    <li class="nav-item"><a href="#" class="nav-link" id="openCartDrawer">CART (<span
-                                id="cartCount">0</span>)</a></li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="cartLink" aria-expanded="false">
+                            CART (<span id="cartCount">0</span>)
+                        </a>
                     </li>
+
                     <li class="nav-item">
                         <a href="account.html" class="nav-link">ACCOUNT</a>
                     </li>
+
                 </ul>
             </div>
         </div>
     </nav>
-    <main class="account-layout">
 
-        <aside class="sidebar">
-
-            <div class="sidebar-profile">
-                <div class="sidebar-image" id="sidebarImage">
-                    <i class="fa-regular fa-user"></i>
-                </div>
-
-                <div>
-                    <h3 id="sidebarName">My Account</h3>
-                    <p id="sidebarEmail">Manage your account</p>
-                </div>
-            </div>
-
-            <p class="sidebar-heading">MY ACCOUNT</p>
-
-            <button type="button" class="sidebar-link active" data-section="about">
-                <i class="fa-regular fa-user"></i>
-                About
-            </button>
-
-            <button type="button" class="sidebar-link" data-section="manage">
-                <i class="fa-regular fa-id-card"></i>
-                Manage Account
-            </button>
-
-            <button type="button" class="sidebar-link" data-section="security">
-                <i class="fa-solid fa-lock"></i>
-                Security
-            </button>
-
-            <button type="button" class="sidebar-link" data-section="orders">
-                <i class="fa-solid fa-box"></i>
-                Orders
-            </button>
-
-
-        </aside>
-
-        <div class="account-content">
-
-            <section class="content-panel active" id="aboutPanel">
-
-                <header class="page-heading">
-                    <p class="eyebrow">ATELIER / MY ACCOUNT</p>
-                    <h1 class="page-title">Welcome back.</h1>
-                    <p class="page-description">
-                        Manage your personal information, security and orders.
-                    </p>
-                </header>
-
-                <div class="overview-grid">
-
-                    <div class="overview-card">
-                        <i class="fa-regular fa-user"></i>
-                        <h3>Personal Information</h3>
-                        <p>Update your name, email and profile picture.</p>
-                        <button type="button" class="text-link" data-open-section="manage">
-                            Manage account →
-                        </button>
-                    </div>
-
-                    <div class="overview-card">
-                        <i class="fa-solid fa-shield-halved"></i>
-                        <h3>Account Security</h3>
-                        <p>Change your password and protect your account.</p>
-                        <button type="button" class="text-link" data-open-section="security">
-                            Manage security →
-                        </button>
-                    </div>
-
-                    <div class="overview-card">
-                        <i class="fa-solid fa-box-open"></i>
-                        <h3>My Orders</h3>
-                        <p>View your available order information.</p>
-                        <button type="button" class="text-link" data-open-section="orders">
-                            View orders →
-                        </button>
-                    </div>
-
-                    <div class="overview-card">
-                        <i class="fa-solid fa-store"></i>
-                        <h3>Discover Atelier</h3>
-                        <p>Explore our collection of everyday essentials.</p>
-                        <a href="products.html" class="text-link">Shop products →</a>
-                    </div>
-
-                </div>
-
-                <div class="settings-card mt-4">
-                    <h2 class="card-heading">Account actions</h2>
-                    <p class="card-description">
-                        Sign out of your account or delete your account.
-                    </p>
-
-                    <div class="account-actions">
-                        <button type="button" class="logout-button" id="logoutButton">
-                            <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
-                            Logout
-                        </button>
-
-                        <button type="button" class="delete-button" data-bs-toggle="modal"
-                            data-bs-target="#deleteAccountModal">
-                            <i class="fa-regular fa-trash-can me-2"></i>
-                            Delete account
-                        </button>
-                    </div>
-                </div>
-
-            </section>
-
-            <section class="content-panel" id="managePanel">
-
-                <header class="page-heading">
-                    <p class="eyebrow">MY ACCOUNT / PROFILE</p>
-                    <h1 class="page-title">Manage account.</h1>
-                    <p class="page-description">
-                        Update your personal information below.
-                    </p>
-                </header>
-
-                <div class="settings-card">
-
-                    <h2 class="card-heading">Personal information</h2>
-                    <p class="card-description">
-                        Your profile information is used for your account.
-                    </p>
-
-                    <div class="profile-picture-section">
-
-                        <div class="profile-picture" id="profilePicture">
-                            <i class="fa-regular fa-user"></i>
-                        </div>
-
-                        <div>
-                            <h3 class="upload-heading">Profile picture</h3>
-                            <p class="upload-description">
-                                Choose an image from your device.
-                            </p>
-
-                            <input type="file" id="imageUpload" accept="image/*" hidden>
-
-                            <button type="button" class="upload-button" id="uploadButton">
-                                <i class="fa-solid fa-upload me-2"></i>
-                                Upload image
-                            </button>
-
-                            <button type="button" class="upload-button ms-1" id="removeImageButton">
-                                Remove
-                            </button>
-                        </div>
-
-                    </div>
-
-                    <form id="profileForm">
-
-                        <div class="field-group">
-                            <label for="profileName" class="field-label">Full name</label>
-                            <input type="text" id="profileName" class="profile-input" placeholder="Enter your name"
-                                required>
-                        </div>
-
-                        <div class="field-group">
-                            <label for="profileEmail" class="field-label">Email address</label>
-                            <input type="email" id="profileEmail" class="profile-input" placeholder="Enter your email"
-                                required>
-                        </div>
-
-                        <button type="submit" class="main-button">
-                            <span>Save changes</span>
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-
-                        <p id="profileMessage" class="status-message" role="status"></p>
-
-                    </form>
-
-                </div>
-
-            </section>
-
-            <section class="content-panel" id="securityPanel">
-
-                <header class="page-heading">
-                    <p class="eyebrow">MY ACCOUNT / SECURITY</p>
-                    <h1 class="page-title">Account security.</h1>
-                    <p class="page-description">
-                        Change your password to keep your account secure.
-                    </p>
-                </header>
-
-                <div class="settings-card">
-
-                    <h2 class="card-heading">Change password</h2>
-                    <p class="card-description">
-                        Enter your current password and choose a new one.
-                    </p>
-
-                    <form id="passwordForm">
-
-                        <div class="field-group">
-                            <label for="currentPassword" class="field-label">
-                                Current password
-                            </label>
-
-                            <div class="password-field">
-                                <input type="password" id="currentPassword" class="password-input"
-                                    placeholder="Current password" autocomplete="current-password" required>
-
-                                <button type="button" class="show-password"
-                                    data-password="currentPassword">Show</button>
-                            </div>
-                        </div>
-
-                        <div class="field-group">
-                            <label for="newPassword" class="field-label">
-                                New password
-                            </label>
-
-                            <div class="password-field">
-                                <input type="password" id="newPassword" class="password-input"
-                                    placeholder="New password" autocomplete="new-password" required>
-
-                                <button type="button" class="show-password" data-password="newPassword">Show</button>
-                            </div>
-                        </div>
-
-                        <div class="field-group">
-                            <label for="confirmPassword" class="field-label">
-                                Confirm new password
-                            </label>
-
-                            <div class="password-field">
-                                <input type="password" id="confirmPassword" class="password-input"
-                                    placeholder="Confirm new password" autocomplete="new-password" required>
-
-                                <button type="button" class="show-password"
-                                    data-password="confirmPassword">Show</button>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="main-button">
-                            <span>Change password</span>
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-
-                        <p id="passwordMessage" class="status-message" role="status"></p>
-
-                    </form>
-
-                </div>
-
-            </section>
-
-            <section class="content-panel" id="ordersPanel">
-
-                <header class="page-heading">
-                    <p class="eyebrow">MY ACCOUNT / ORDERS</p>
-                    <h1 class="page-title">My orders.</h1>
-                    <p class="page-description">
-                        Check your order history and order information.
-                    </p>
-                </header>
-
-                <div id="ordersContainer"></div>
-
-            </section>
-
-        </div>
-
-    </main>
     <main class="container">
+
         <div class="page-heading text-center">
             <p class="text-uppercase small">THE ATELIER COLLECTION</p>
             <h1>All Products</h1>
@@ -875,6 +551,7 @@
                 <input type="search" id="searchInput" class="form-control filter-input"
                     placeholder="Search products...">
             </div>
+
             <div class="col-md-4">
                 <select id="categoryFilter" class="form-select filter-input">
                     <option value="all">All Categories</option>
@@ -884,30 +561,37 @@
 
         <p id="productCount">Loading products...</p>
         <div class="row g-4" id="productsContainer"></div>
+
     </main>
 
     <footer class="site-footer">
         <div class="footer-main">
+
             <div class="footer-brand">
                 <a href="home.html" class="footer-logo">Atelier</a>
                 <p>Thoughtfully designed essentials for<br>modern living.</p>
             </div>
+
             <div class="footer-column">
                 <h3>SHOP</h3>
                 <a href="products.html">Products</a>
                 <a href="home.html#categories">Collections</a>
             </div>
+
             <div class="footer-column">
                 <h3>HELP</h3>
                 <a href="home.html#footer">Contact</a>
                 <a href="home.html#footer">Shipping</a>
             </div>
+
             <div class="footer-column">
                 <h3>COMPANY</h3>
                 <a href="home.html#about">About Atelier</a>
                 <a href="https://www.instagram.com/">Instagram</a>
             </div>
+
         </div>
+
         <div class="footer-bottom">
             <p>© 2026 Atelier. All rights reserved.</p>
             <div><a href="#">Privacy</a><a href="#">Terms</a></div>
@@ -917,22 +601,37 @@
     <div class="cart-overlay" id="cartOverlay"></div>
 
     <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+
         <div class="cart-drawer-header">
             <div>
                 <p class="cart-eyebrow">YOUR SELECTION</p>
-                <h2>CART (<span id="cartCount">0</span>)</h2>
+                <h2>Your Cart <span id="drawerItemCount">(0)</span></h2>
             </div>
-            <button type="button" class="cart-close" id="closeCartDrawer"><i class="fa-solid fa-xmark"></i></button>
+
+            <button type="button" class="cart-close" id="closeCartDrawer" aria-label="Close cart">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
         </div>
 
         <div class="cart-drawer-items" id="cartDrawerItems">
             <p class="cart-empty">Your cart is empty.</p>
         </div>
 
+        <div class="cart-drawer-footer">
+            <div class="cart-subtotal">
+                <span>Subtotal</span>
+                <span id="drawerSubtotal">$0.00</span>
+            </div>
 
-        <p class="cart-shipping-note">Shipping and taxes calculated at checkout.</p>
-        <a href="checkout.html" class="cart-checkout-btn">Continue to checkout →</a>
+            <p class="cart-shipping-note">
+                Shipping and taxes calculated at checkout.
+            </p>
+
+            <a href="checkout.html" class="cart-checkout-btn" id="checkoutButton">
+                Continue to checkout →
+            </a>
         </div>
+
     </aside>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
@@ -945,6 +644,28 @@
         const productCount = document.getElementById("productCount");
         const searchInput = document.getElementById("searchInput");
         const categoryFilter = document.getElementById("categoryFilter");
+
+        const cartDrawer = document.getElementById("cartDrawer");
+        const cartOverlay = document.getElementById("cartOverlay");
+        const cartLink = document.getElementById("cartLink");
+
+        const searchToggle = document.getElementById("searchToggle");
+        const searchModal = document.getElementById("searchModal");
+        const siteSearchInput = document.getElementById("siteSearchInput");
+        const searchResults = document.getElementById("searchResults");
+
+        function getCart() {
+            try {
+                let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                return Array.isArray(cart) ? cart : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
 
         async function getProducts() {
             productCount.textContent = "Loading products...";
@@ -967,9 +688,20 @@
 
                 loadCategories();
                 showProducts();
+                searchProducts();
+
             } catch (error) {
                 productCount.textContent = "Products unavailable";
-                productsContainer.innerHTML = '<div class="col-12 text-center py-5"><h4>Unable to load products</h4><p>Check your internet connection.</p><button class="btn btn-dark" onclick="getProducts()">Try Again</button></div>';
+
+                productsContainer.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <h4>Unable to load products</h4>
+                        <p>Check your internet connection and try again.</p>
+                        <button class="btn btn-dark" id="retryButton">Try Again</button>
+                    </div>
+                `;
+
+                document.getElementById("retryButton").addEventListener("click", getProducts);
             }
         }
 
@@ -997,10 +729,12 @@
             let category = categoryFilter.value;
 
             let filteredProducts = allProducts.filter(function (product) {
-                let matchesSearch = product.title.toLowerCase().includes(search) ||
+                let matchesSearch =
+                    product.title.toLowerCase().includes(search) ||
                     product.category.toLowerCase().includes(search);
 
-                let matchesCategory = category === "all" || product.category === category;
+                let matchesCategory =
+                    category === "all" || product.category === category;
 
                 return matchesSearch && matchesCategory;
             });
@@ -1009,7 +743,12 @@
             productCount.textContent = filteredProducts.length + " products";
 
             if (filteredProducts.length === 0) {
-                productsContainer.innerHTML = '<div class="col-12 text-center py-5"><h4>No products found</h4></div>';
+                productsContainer.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <h4>No products found</h4>
+                        <p>Try another search or category.</p>
+                    </div>
+                `;
                 return;
             }
 
@@ -1027,6 +766,7 @@
                 image.src = product.image;
                 image.alt = product.title;
                 image.loading = "lazy";
+
                 imageWrapper.appendChild(image);
 
                 let info = document.createElement("div");
@@ -1053,6 +793,7 @@
                 let minus = document.createElement("button");
                 minus.type = "button";
                 minus.textContent = "−";
+                minus.setAttribute("aria-label", "Decrease quantity");
 
                 let quantityText = document.createElement("span");
                 quantityText.textContent = quantities[product.id];
@@ -1060,6 +801,7 @@
                 let plus = document.createElement("button");
                 plus.type = "button";
                 plus.textContent = "+";
+                plus.setAttribute("aria-label", "Increase quantity");
 
                 minus.addEventListener("click", function () {
                     if (quantities[product.id] > 1) {
@@ -1099,14 +841,15 @@
         }
 
         function addToCart(product, amount, button) {
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let cart = getCart();
 
             let existingProduct = cart.find(function (item) {
                 return String(item.id || item.productId) === String(product.id);
             });
 
             if (existingProduct) {
-                existingProduct.quantity = (Number(existingProduct.quantity) || 1) + amount;
+                existingProduct.quantity =
+                    (Number(existingProduct.quantity) || 1) + amount;
             } else {
                 cart.push({
                     id: product.id,
@@ -1120,8 +863,12 @@
                 });
             }
 
-            localStorage.setItem("cart", JSON.stringify(cart));
+            saveCart(cart);
             updateCartCount();
+
+            if (cartDrawer.classList.contains("open")) {
+                renderCartDrawer();
+            }
 
             button.textContent = "ADDED";
             button.disabled = true;
@@ -1133,7 +880,7 @@
         }
 
         function updateCartCount() {
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let cart = getCart();
             let count = 0;
 
             cart.forEach(function (item) {
@@ -1141,11 +888,13 @@
             });
 
             document.getElementById("cartCount").textContent = count;
+            document.getElementById("drawerItemCount").textContent = "(" + count + ")";
         }
 
         function renderCartDrawer() {
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let cart = getCart();
             let container = document.getElementById("cartDrawerItems");
+            let subtotal = 0;
             let count = 0;
 
             container.innerHTML = "";
@@ -1155,8 +904,11 @@
             }
 
             cart.forEach(function (item, index) {
-                let amount = Number(item.quantity) || 1;
+                let amount = Math.max(1, Number(item.quantity) || 1);
                 let price = Number(item.price) || 0;
+
+                subtotal += price * amount;
+                count += amount;
 
                 let row = document.createElement("div");
                 row.className = "cart-item";
@@ -1180,6 +932,7 @@
                 let minusButton = document.createElement("button");
                 minusButton.type = "button";
                 minusButton.textContent = "−";
+                minusButton.setAttribute("aria-label", "Decrease cart quantity");
 
                 let quantityText = document.createElement("span");
                 quantityText.textContent = amount;
@@ -1187,6 +940,7 @@
                 let plusButton = document.createElement("button");
                 plusButton.type = "button";
                 plusButton.textContent = "+";
+                plusButton.setAttribute("aria-label", "Increase cart quantity");
 
                 minusButton.addEventListener("click", function () {
                     if (amount > 1) {
@@ -1195,15 +949,14 @@
                         cart.splice(index, 1);
                     }
 
-                    localStorage.setItem("cart", JSON.stringify(cart));
+                    saveCart(cart);
                     updateCartCount();
                     renderCartDrawer();
                 });
 
                 plusButton.addEventListener("click", function () {
                     cart[index].quantity = amount + 1;
-
-                    localStorage.setItem("cart", JSON.stringify(cart));
+                    saveCart(cart);
                     updateCartCount();
                     renderCartDrawer();
                 });
@@ -1217,7 +970,7 @@
 
                 removeButton.addEventListener("click", function () {
                     cart.splice(index, 1);
-                    localStorage.setItem("cart", JSON.stringify(cart));
+                    saveCart(cart);
                     updateCartCount();
                     renderCartDrawer();
                 });
@@ -1228,35 +981,47 @@
             });
 
             document.getElementById("drawerItemCount").textContent = "(" + count + ")";
+            document.getElementById("drawerSubtotal").textContent = "$" + subtotal.toFixed(2);
+
+            let checkoutButton = document.getElementById("checkoutButton");
+            checkoutButton.style.opacity = cart.length === 0 ? "0.5" : "1";
+            checkoutButton.setAttribute("aria-disabled", cart.length === 0 ? "true" : "false");
         }
 
-        const cartDrawer = document.getElementById("cartDrawer");
-        const cartOverlay = document.getElementById("cartOverlay");
-
-        document.getElementById("openCartDrawer").addEventListener("click", function (event) {
-            event.preventDefault();
+        function openCartDrawer() {
             renderCartDrawer();
             cartDrawer.classList.add("open");
             cartOverlay.classList.add("open");
             cartDrawer.setAttribute("aria-hidden", "false");
-        });
+            cartLink.setAttribute("aria-expanded", "true");
+        }
 
         function closeCartDrawer() {
             cartDrawer.classList.remove("open");
             cartOverlay.classList.remove("open");
             cartDrawer.setAttribute("aria-hidden", "true");
+            cartLink.setAttribute("aria-expanded", "false");
         }
+
+        cartLink.addEventListener("click", function (event) {
+            event.preventDefault();
+            openCartDrawer();
+        });
 
         document.getElementById("closeCartDrawer").addEventListener("click", closeCartDrawer);
         cartOverlay.addEventListener("click", closeCartDrawer);
 
-        const searchToggle = document.getElementById("searchToggle");
-        const searchModal = document.getElementById("searchModal");
-        const siteSearchInput = document.getElementById("siteSearchInput");
-        const searchResults = document.getElementById("searchResults");
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                closeCartDrawer();
+                searchModal.hidden = true;
+                searchToggle.setAttribute("aria-expanded", "false");
+            }
+        });
 
         searchToggle.addEventListener("click", function () {
             searchModal.hidden = !searchModal.hidden;
+            searchToggle.setAttribute("aria-expanded", String(!searchModal.hidden));
 
             if (!searchModal.hidden) {
                 siteSearchInput.focus();
@@ -1266,6 +1031,7 @@
 
         document.getElementById("closeSearch").addEventListener("click", function () {
             searchModal.hidden = true;
+            searchToggle.setAttribute("aria-expanded", "false");
         });
 
         function searchProducts() {
@@ -1311,98 +1077,29 @@
             });
         }
 
-        const sidebarImage = document.getElementById("sidebarImage");
-        const profilePicture = document.getElementById("profilePicture");
-        const accountNavContent = document.getElementById("accountNavContent");
-
-        if (image) {
-            sidebarImage.innerHTML = "";
-            const sidebarImg = document.createElement("img");
-            sidebarImg.src = image;
-            sidebarImg.alt = "Profile picture";
-            sidebarImage.appendChild(sidebarImg);
-
-            profilePicture.innerHTML = "";
-            const profileImg = document.createElement("img");
-            profileImg.src = image;
-            profileImg.alt = "Profile picture";
-            profilePicture.appendChild(profileImg);
-
-            accountNavContent.innerHTML = "";
-            const navImg = document.createElement("img");
-            navImg.src = image;
-            navImg.alt = "Profile";
-            navImg.className = "account-nav-image";
-            accountNavContent.appendChild(navImg);
-        } else {
-            sidebarImage.innerHTML = '<i class="fa-regular fa-user"></i>';
-            profilePicture.innerHTML = '<i class="fa-regular fa-user"></i>';
-            accountNavContent.textContent = "ACCOUNT";
-        }
-
-
-        function updateProfileDisplay() {
-            document.getElementById("sidebarName").textContent =
-                currentUser.name || currentUser.fullName || "My Account";
-
-            document.getElementById("sidebarEmail").textContent = currentUser.email || "";
-
-            document.getElementById("profileName").value =
-                currentUser.name || currentUser.fullName || "";
-
-            document.getElementById("profileEmail").value = currentUser.email || "";
-
-            updateImages();
-        }
-
-        function openSection(sectionName) {
-            document.querySelectorAll(".content-panel").forEach(function (panel) {
-                panel.classList.remove("active");
-            });
-
-            document
-                .querySelectorAll(".sidebar-link[data-section]")
-                .forEach(function (button) {
-                    button.classList.toggle("active", button.dataset.section === sectionName);
-                });
-
-            const selectedPanel = document.getElementById(sectionName + "Panel");
-
-            if (selectedPanel) {
-                selectedPanel.classList.add("active");
-            }
-
-            if (sectionName === "orders") {
-                showOrders();
-            }
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-            });
-        }
-
-        document
-            .querySelectorAll(".sidebar-link[data-section]")
-            .forEach(function (button) {
-                button.addEventListener("click", function () {
-                    openSection(button.dataset.section);
-                });
-            });
-
         searchInput.addEventListener("input", showProducts);
         categoryFilter.addEventListener("change", showProducts);
         siteSearchInput.addEventListener("input", searchProducts);
 
         document.addEventListener("click", function (event) {
-            if (!searchModal.hidden &&
+            if (
+                !searchModal.hidden &&
                 !searchModal.contains(event.target) &&
-                !searchToggle.contains(event.target)) {
+                !searchToggle.contains(event.target)
+            ) {
                 searchModal.hidden = true;
+                searchToggle.setAttribute("aria-expanded", "false");
+            }
+        });
+
+        document.getElementById("checkoutButton").addEventListener("click", function (event) {
+            if (getCart().length === 0) {
+                event.preventDefault();
             }
         });
 
         updateCartCount();
+        renderCartDrawer();
         getProducts();
     </script>
 

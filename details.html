@@ -481,45 +481,82 @@
 
     <nav class="navbar navbar-expand-lg hero-navbar">
         <div class="container-fluid px-4 px-md-5">
+
             <a href="home.html" class="navbar-brand logo">Atelier</a>
 
             <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
-                data-bs-target="#mainNav">
+                data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fa-solid fa-bars"></i>
             </button>
 
             <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4">
-                    <li class="nav-item"><a href="products.html" class="nav-link">PRODUCTS</a></li>
-                    <li class="nav-item"><a href="home.html#categories" class="nav-link">COLLECTIONS</a></li>
-                    <li class="nav-item"><a href="home.html#about" class="nav-link">ABOUT</a></li>
 
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4">
+
+                    <li class="nav-item">
+                        <a href="home.html#products" class="nav-link">PRODUCTS</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="home.html#categories" class="nav-link">COLLECTIONS</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="home.html#about" class="nav-link">ABOUT</a>
+                    </li>
+
+                    <!-- Search -->
                     <li class="nav-item search-nav-item">
-                        <button type="button" class="nav-link search-toggle" id="searchToggle">
-                            SEARCH <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <button type="button" class="nav-link search-toggle" id="searchToggle" aria-expanded="false"
+                            aria-controls="searchModal">
+
+                            SEARCH
+                            <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
 
                         <div class="search-modal" id="searchModal" hidden>
-                            <label for="siteSearchInput">SEARCH ATELIER</label>
-                            <div class="search-input-row">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                <input type="search" id="siteSearchInput" placeholder="Search products...">
-                                <button type="button" id="closeSearch"><i class="fa-solid fa-xmark"></i></button>
-                            </div>
-                            <div class="search-results" id="searchResults">
+
+                            <form id="searchForm" role="search">
+
+                                <label for="siteSearchInput">SEARCH ATELIER</label>
+
+                                <div class="search-input-row">
+
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                                    <input type="search" id="siteSearchInput"
+                                        placeholder="Search products, categories..." autocomplete="off">
+
+                                    <button type="button" id="closeSearch" aria-label="Close search">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                            <div id="searchResults" class="search-results" aria-live="polite">
                                 <p>Search for something you love.</p>
                             </div>
+
                         </div>
+
                     </li>
 
-                    <li class="nav-item"><a href="#" class="nav-link" id="openCartDrawer">CART (<span
-                                id="cartCount">0</span>)</a></li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link" id="cartLink" aria-expanded="false">
+                            CART (<span id="cartCount">0</span>)
+                        </a>
                     </li>
+
                     <li class="nav-item">
                         <a href="account.html" class="nav-link">ACCOUNT</a>
                     </li>
                 </ul>
+
             </div>
+
         </div>
     </nav>
 

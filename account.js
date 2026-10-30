@@ -1,133 +1,193 @@
-const usersKey = "users";
-const loggedInKey = "loggedInUser";
+const sidebarLinks = document.querySelectorAll(".sidebar-link");
+const contentPanels = document.querySelectorAll(".content-panel");
 
-let currentUser = null;
+const sidebarName = document.getElementById("sidebarName");
+const sidebarEmail = document.getElementById("sidebarEmail");
+const sidebarImage = document.getElementById("sidebarImage");
+const profilePicture = document.getElementById("profilePicture");
+
+const profileForm = document.getElementById("profileForm");
+const profileName = document.getElementById("profileName");
+const profileEmail = document.getElementById("profileEmail");
+const profileMessage = document.getElementById("profileMessage");
+
+const imageUpload = document.getElementById("imageUpload");
+const uploadButton = document.getElementById("uploadButton");
+const removeImageButton = document.getElementById("removeImageButton");
+
+const passwordForm = document.getElementById("passwordForm");
+const currentPassword = document.getElementById("currentPassword");
+const newPassword = document.getElementById("newPassword");
+const confirmPassword = document.getElementById("confirmPassword");
+const passwordMessage = document.getElementById("passwordMessage");
+
+const ordersContainer = document.getElementById("ordersContainer");
+
+const logoutButton = document.getElementById("logoutButton");
+const confirmDeleteAccount = document.getElementById("confirmDeleteAccount");
+
+const messageModal = document.getElementById("messageModal");
+const messageModalTitle = document.getElementById("messageModalTitle");
+const messageModalBody = document.getElementById("messageModalBody");
+
+const cartCount = document.getElementById("cartCount");
+const cartLink = document.getElementById("cartLink");
+
 let selectedImage = "";
+let currentUser = null;
 
-function getUsers() {
+// Get saved data from localStorage
+function getData(key, defaultValue) {
   try {
-    return JSON.parse(localStorage.getItem(usersKey)) || [];
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : defaultValue;
   } catch (error) {
-    return [];
+    return defaultValue;
   }
 }
 
-function getLoggedInUser() {
-  try {
-    return JSON.parse(localStorage.getItem(loggedInKey));
-  } catch (error) {
-    return localStorage.getItem(loggedInKey);
-  }
+// Save data in localStorage
+function saveData(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
 }
 
-function findCurrentUser() {
-  const loggedIn = getLoggedInUser();
-  const users = getUsers();
+// Show a message using the Bootstrap modal
+function showMessage(title, message) {
+  messageModalTitle.textContent = title;
+  messageModalBody.textContent = message;
 
-  if (!loggedIn) {
+  const modal = bootstrap.Modal.getOrCreateInstance(messageModal);
+  modal.show();
+}
+
+// Get the logged-in user
+function getCurrentUser() {
+  const savedUser = localStorage.getItem("loggedInUser");
+
+  if (!savedUser) {
     return null;
   }
 
-  if (typeof loggedIn === "object") {
-    const email = loggedIn.email;
+  try {
+    const parsedUser = JSON.parse(savedUser);
 
-    if (email) {
-      const foundUser = users.find(function (user) {
-        return user.email && user.email.toLowerCase() === email.toLowerCase();
-      });
-
-      if (foundUser) {
-        return foundUser;
-      }
+    if (typeof parsedUser === "object" && parsedUser !== null) {
+      return parsedUser;
     }
 
-    return loggedIn;
-  }
-
-  return (
-    users.find(function (user) {
+    if (typeof parsedUser === "string") {
+      const users = getData("users", []);
       return (
-        user.email &&
-        user.email.toLowerCase() === String(loggedIn).toLowerCase()
+        users.find(function (user) {
+          return user.email.toLowerCase() === parsedUser.toLowerCase();
+        }) || null
       );
-    }) || null
-  );
-}
+    }
+  } catch (error) {
+    const users = getData("users", []);
 
-function showMessage(message, title) {
-  document.getElementById("messageModalTitle").textContent = title || "Atelier";
-  document.getElementById("messageModalBody").textContent = message;
-
-  bootstrap.Modal.getOrCreateInstance(
-    document.getElementById("messageModal"),
-  ).show();
-}
-
-function getUserImage(user) {
-  if (!user) {
-    return "";
+    return (
+      users.find(function (user) {
+        return user.email.toLowerCase() === savedUser.toLowerCase();
+      }) || null
+    );
   }
 
-  return user.profilePicture || user.image || user.picture || "";
+  return null;
 }
 
-function updateImages() {
-  const image = selectedImage || getUserImage(currentUser);
+// Find the saved user in the users array
+function getSavedUser() {
+  const users = getData("users", []);
 
-  const sidebarImage = document.getElementById("sidebarImage");
-  const profilePicture = document.getElementById("profilePicture");
-  const accountNavContent = document.getElementById("accountNavContent");
-
-  if (image) {
-    sidebarImage.innerHTML = "";
-    const sidebarImg = document.createElement("img");
-    sidebarImg.src = image;
-    sidebarImg.alt = "Profile picture";
-    sidebarImage.appendChild(sidebarImg);
-
-    profilePicture.innerHTML = "";
-    const profileImg = document.createElement("img");
-    profileImg.src = image;
-    profileImg.alt = "Profile picture";
-    profilePicture.appendChild(profileImg);
-
-    accountNavContent.innerHTML = "";
-    const navImg = document.createElement("img");
-    navImg.src = image;
-    navImg.alt = "Profile";
-    navImg.className = "account-nav-image";
-    accountNavContent.appendChild(navImg);
-  } else {
-    sidebarImage.innerHTML = '<i class="fa-regular fa-user"></i>';
-    profilePicture.innerHTML = '<i class="fa-regular fa-user"></i>';
-    accountNavContent.textContent = "ACCOUNT";
-  }
+  return users.find(function (user) {
+    return user.email.toLowerCase() === currentUser.email.toLowerCase();
+  });
 }
 
-function updateProfileDisplay() {
-  document.getElementById("sidebarName").textContent =
-    currentUser.name || currentUser.fullName || "My Account";
+// Save updated user information
+function updateUser(updatedUser) {
+  const users = getData("users", []);
 
-  document.getElementById("sidebarEmail").textContent = currentUser.email || "";
-
-  document.getElementById("profileName").value =
-    currentUser.name || currentUser.fullName || "";
-
-  document.getElementById("profileEmail").value = currentUser.email || "";
-
-  updateImages();
-}
-
-function openSection(sectionName) {
-  document.querySelectorAll(".content-panel").forEach(function (panel) {
-    panel.classList.remove("active");
+  const userIndex = users.findIndex(function (user) {
+    return user.email.toLowerCase() === currentUser.email.toLowerCase();
   });
 
-  document
-    .querySelectorAll(".sidebar-link[data-section]")
-    .forEach(function (button) {
-      button.classList.toggle("active", button.dataset.section === sectionName);
-    });
+  if (userIndex !== -1) {
+    users[userIndex] = updatedUser;
+    saveData("users", users);
+  }
+
+  currentUser = updatedUser;
+  saveData("loggedInUser", updatedUser);
+}
+
+// Show the profile picture or default icon
+function displayImage(container, image) {
+  container.innerHTML = "";
+
+  if (image) {
+    const img = document.createElement("img");
+    img.src = image;
+    img.alt = "Profile picture";
+
+    container.appendChild(img);
+  } else {
+    const icon = document.createElement("i");
+    icon.className = "fa-regular fa-user";
+
+    container.appendChild(icon);
+  }
+}
+
+// Load profile information
+function loadProfile() {
+  if (!currentUser) {
+    return;
+  }
+
+  profileName.value = currentUser.name || "";
+  profileEmail.value = currentUser.email || "";
+
+  sidebarName.textContent = currentUser.name || "My Account";
+  sidebarEmail.textContent = currentUser.email || "";
+
+  selectedImage = currentUser.picture || "";
+
+  displayImage(profilePicture, selectedImage);
+  displayImage(sidebarImage, selectedImage);
+}
+
+// Check whether the user is logged in
+function checkLogin() {
+  currentUser = getCurrentUser();
+
+  if (!currentUser || !currentUser.email) {
+    showMessage("Login required", "Please log in to access your account.");
+
+    setTimeout(function () {
+      window.location.href = "index.html";
+    }, 1200);
+
+    return false;
+  }
+
+  return true;
+}
+
+// Change account sections
+function openSection(sectionName) {
+  sidebarLinks.forEach(function (link) {
+    link.classList.remove("active");
+
+    if (link.dataset.section === sectionName) {
+      link.classList.add("active");
+    }
+  });
+
+  contentPanels.forEach(function (panel) {
+    panel.classList.remove("active");
+  });
 
   const selectedPanel = document.getElementById(sectionName + "Panel");
 
@@ -136,69 +196,106 @@ function openSection(sectionName) {
   }
 
   if (sectionName === "orders") {
-    showOrders();
+    loadOrders();
   }
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
 }
 
-document
-  .querySelectorAll(".sidebar-link[data-section]")
-  .forEach(function (button) {
-    button.addEventListener("click", function () {
-      openSection(button.dataset.section);
-    });
+// Sidebar navigation
+sidebarLinks.forEach(function (link) {
+  link.addEventListener("click", function () {
+    openSection(link.dataset.section);
   });
+});
 
+// Open sections from overview cards
 document.querySelectorAll("[data-open-section]").forEach(function (button) {
   button.addEventListener("click", function () {
     openSection(button.dataset.openSection);
   });
 });
 
-function saveUser(updatedUser) {
-  const users = getUsers();
+// Save profile information
+profileForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  if (!currentUser) {
+    return;
+  }
+
+  const name = profileName.value.trim();
+  const email = profileEmail.value.trim().toLowerCase();
+
+  if (!name || !email) {
+    profileMessage.textContent = "Please fill in all fields.";
+    profileMessage.style.color = "#bd3333";
+    return;
+  }
+
+  const users = getData("users", []);
+
+  const emailExists = users.some(function (user) {
+    return (
+      user.email.toLowerCase() === email &&
+      user.email.toLowerCase() !== currentUser.email.toLowerCase()
+    );
+  });
+
+  if (emailExists) {
+    profileMessage.textContent = "This email is already registered.";
+    profileMessage.style.color = "#bd3333";
+    return;
+  }
+
+  const oldEmail = currentUser.email;
+
+  const updatedUser = {
+    ...currentUser,
+    name: name,
+    email: email,
+    picture: selectedImage,
+  };
 
   const userIndex = users.findIndex(function (user) {
-    return (
-      user.email &&
-      currentUser.email &&
-      user.email.toLowerCase() === currentUser.email.toLowerCase()
-    );
+    return user.email.toLowerCase() === oldEmail.toLowerCase();
   });
 
   if (userIndex !== -1) {
     users[userIndex] = updatedUser;
-    localStorage.setItem(usersKey, JSON.stringify(users));
+    saveData("users", users);
   }
 
-  localStorage.setItem(loggedInKey, JSON.stringify(updatedUser));
   currentUser = updatedUser;
-}
+  saveData("loggedInUser", updatedUser);
 
-document.getElementById("uploadButton").addEventListener("click", function () {
-  document.getElementById("imageUpload").click();
+  sidebarName.textContent = name;
+  sidebarEmail.textContent = email;
+
+  profileMessage.textContent = "Your profile has been updated successfully.";
+  profileMessage.style.color = "green";
 });
 
-document.getElementById("imageUpload").addEventListener("change", function () {
-  const file = this.files[0];
+// Open image selector
+uploadButton.addEventListener("click", function () {
+  imageUpload.click();
+});
+
+// Upload a profile picture
+imageUpload.addEventListener("change", function () {
+  const file = imageUpload.files[0];
 
   if (!file) {
     return;
   }
 
   if (!file.type.startsWith("image/")) {
-    showMessage("Please select a valid image.");
-    this.value = "";
+    showMessage("Invalid file", "Please select an image file.");
+    imageUpload.value = "";
     return;
   }
 
   if (file.size > 2 * 1024 * 1024) {
-    showMessage("Please choose an image smaller than 2 MB.");
-    this.value = "";
+    showMessage("Image too large", "Please select an image smaller than 2 MB.");
+    imageUpload.value = "";
     return;
   }
 
@@ -206,260 +303,322 @@ document.getElementById("imageUpload").addEventListener("change", function () {
 
   reader.onload = function () {
     selectedImage = reader.result;
-    updateImages();
+
+    displayImage(profilePicture, selectedImage);
+    displayImage(sidebarImage, selectedImage);
+
+    if (currentUser) {
+      currentUser.picture = selectedImage;
+      saveData("loggedInUser", currentUser);
+    }
+
+    profileMessage.textContent =
+      "Image selected. Save changes to keep it in your account.";
+    profileMessage.style.color = "green";
   };
 
   reader.readAsDataURL(file);
 });
 
-document
-  .getElementById("removeImageButton")
-  .addEventListener("click", function () {
-    selectedImage = "";
-    currentUser.profilePicture = "";
-    currentUser.image = "";
-    updateImages();
-    document.getElementById("imageUpload").value = "";
-  });
+// Remove profile picture
+removeImageButton.addEventListener("click", function () {
+  selectedImage = "";
 
-document
-  .getElementById("profileForm")
-  .addEventListener("submit", function (event) {
-    event.preventDefault();
+  displayImage(profilePicture, "");
+  displayImage(sidebarImage, "");
 
-    const name = document.getElementById("profileName").value.trim();
-    const email = document.getElementById("profileEmail").value.trim();
-    const message = document.getElementById("profileMessage");
+  if (currentUser) {
+    currentUser.picture = "";
+    saveData("loggedInUser", currentUser);
+  }
 
-    if (!name || !email) {
-      message.textContent = "Please fill in all fields.";
-      message.style.color = "#b76565";
-      return;
-    }
+  imageUpload.value = "";
 
-    const users = getUsers();
+  profileMessage.textContent = "Profile picture removed.";
+  profileMessage.style.color = "green";
+});
 
-    const emailExists = users.some(function (user) {
-      return (
-        user.email &&
-        user.email.toLowerCase() === email.toLowerCase() &&
-        user.email.toLowerCase() !==
-          String(currentUser.email || "").toLowerCase()
-      );
-    });
-
-    if (emailExists) {
-      message.textContent = "This email is already registered.";
-      message.style.color = "#b76565";
-      return;
-    }
-
-    const oldEmail = currentUser.email;
-
-    currentUser.name = name;
-    currentUser.fullName = name;
-    currentUser.email = email;
-
-    if (selectedImage) {
-      currentUser.profilePicture = selectedImage;
-      currentUser.image = selectedImage;
-    }
-
-    const userIndex = users.findIndex(function (user) {
-      return (
-        user.email &&
-        oldEmail &&
-        user.email.toLowerCase() === oldEmail.toLowerCase()
-      );
-    });
-
-    if (userIndex !== -1) {
-      users[userIndex] = currentUser;
-      localStorage.setItem(usersKey, JSON.stringify(users));
-    }
-
-    localStorage.setItem(loggedInKey, JSON.stringify(currentUser));
-
-    updateProfileDisplay();
-
-    message.textContent = "Your information has been saved.";
-    message.style.color = "green";
-  });
-
+// Show or hide passwords
 document.querySelectorAll(".show-password").forEach(function (button) {
   button.addEventListener("click", function () {
-    const input = document.getElementById(this.dataset.password);
+    const input = document.getElementById(button.dataset.password);
 
     if (input.type === "password") {
       input.type = "text";
-      this.textContent = "Hide";
+      button.textContent = "Hide";
     } else {
       input.type = "password";
-      this.textContent = "Show";
+      button.textContent = "Show";
     }
   });
 });
 
-document
-  .getElementById("passwordForm")
-  .addEventListener("submit", function (event) {
-    event.preventDefault();
+// Change password
+passwordForm.addEventListener("submit", function (event) {
+  event.preventDefault();
 
-    const currentPassword = document.getElementById("currentPassword").value;
-    const newPassword = document.getElementById("newPassword").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
-    const message = document.getElementById("passwordMessage");
-
-    if (newPassword.length < 8) {
-      message.textContent =
-        "Your new password must have at least 8 characters.";
-      message.style.color = "#b76565";
-      return;
-    }
-
-    if (newPassword !== confirmPassword) {
-      message.textContent = "The new passwords do not match.";
-      message.style.color = "#b76565";
-      return;
-    }
-
-    if (currentPassword === newPassword) {
-      message.textContent = "Choose a different new password.";
-      message.style.color = "#b76565";
-      return;
-    }
-
-    if (String(currentUser.password || "") !== currentPassword) {
-      message.textContent = "Your current password is incorrect.";
-      message.style.color = "#b76565";
-      return;
-    }
-
-    currentUser.password = newPassword;
-    saveUser(currentUser);
-
-    this.reset();
-
-    document.querySelectorAll(".show-password").forEach(function (button) {
-      button.textContent = "Show";
-    });
-
-    message.textContent = "Your password has been changed.";
-    message.style.color = "green";
-  });
-
-function showOrders() {
-  const container = document.getElementById("ordersContainer");
-  let orders = [];
-
-  try {
-    orders = JSON.parse(localStorage.getItem("orders")) || [];
-  } catch (error) {
-    orders = [];
-  }
-
-  orders = orders.filter(function (order) {
-    const orderEmail = order.email || (order.customer && order.customer.email);
-
-    return (
-      orderEmail &&
-      currentUser.email &&
-      orderEmail.toLowerCase() === currentUser.email.toLowerCase()
-    );
-  });
-
-  container.innerHTML = "";
-
-  if (orders.length === 0) {
-    container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fa-solid fa-box-open d-block"></i>
-                        <h3>No orders yet.</h3>
-                        <p>Your orders will appear here when available.</p>
-                        <a href="products.html" class="dark-link">Explore products →</a>
-                    </div>
-                `;
+  if (!currentUser) {
     return;
   }
 
-  orders.forEach(function (order, index) {
-    const card = document.createElement("div");
-    card.className = "order-card";
+  const oldPassword = currentPassword.value;
+  const password = newPassword.value;
+  const confirm = confirmPassword.value;
 
-    const title = document.createElement("h3");
-    title.textContent = "Order #" + (order.id || order.orderId || index + 1);
+  if (oldPassword !== currentUser.password) {
+    passwordMessage.textContent = "Your current password is incorrect.";
+    passwordMessage.style.color = "#bd3333";
+    return;
+  }
+
+  if (
+    password.length < 12 ||
+    !/[A-Z]/.test(password) ||
+    !/[a-z]/.test(password) ||
+    !/[0-9]/.test(password) ||
+    !/[^A-Za-z0-9]/.test(password) ||
+    /\s/.test(password)
+  ) {
+    passwordMessage.textContent =
+      "Use at least 12 characters, including uppercase, lowercase, a number and a special character.";
+
+    passwordMessage.style.color = "#bd3333";
+    return;
+  }
+
+  if (password !== confirm) {
+    passwordMessage.textContent = "The new passwords do not match.";
+    passwordMessage.style.color = "#bd3333";
+    return;
+  }
+
+  if (oldPassword === password) {
+    passwordMessage.textContent = "Choose a different password.";
+    passwordMessage.style.color = "#bd3333";
+    return;
+  }
+
+  currentUser.password = password;
+  updateUser(currentUser);
+
+  passwordForm.reset();
+
+  document.querySelectorAll(".show-password").forEach(function (button) {
+    button.textContent = "Show";
+  });
+
+  passwordMessage.textContent = "Your password has been changed successfully.";
+  passwordMessage.style.color = "green";
+});
+
+// Load orders belonging to the logged-in user
+function loadOrders() {
+  ordersContainer.innerHTML = "";
+
+  const orders = getData("orders", []);
+
+  const userOrders = orders.filter(function (order) {
+    const orderEmail = order.email || order.customerEmail || "";
+
+    return orderEmail.toLowerCase() === currentUser.email.toLowerCase();
+  });
+
+  if (userOrders.length === 0) {
+    ordersContainer.innerHTML = `
+            <div class="empty-state">
+                <i class="fa-solid fa-box-open"></i>
+                <h3>No orders yet.</h3>
+                <p>Your orders will appear here when you place an order.</p>
+                <a href="products.html" class="dark-link">Explore products</a>
+            </div>
+        `;
+    return;
+  }
+
+  userOrders.forEach(function (order) {
+    const orderCard = document.createElement("div");
+    orderCard.className = "order-card";
+
+    const heading = document.createElement("h3");
+    heading.textContent = "Order #" + (order.id || order.orderId || "N/A");
 
     const date = document.createElement("p");
     date.textContent =
-      "Date: " + (order.date || order.createdAt || "Not available");
-
-    const total = document.createElement("p");
-    total.textContent =
-      "Total: $" + Number(order.total || order.grandTotal || 0).toFixed(2);
+      "Date: " + (order.date || order.orderDate || "Not available");
 
     const status = document.createElement("span");
     status.className = "order-status";
-    status.textContent = order.status || "Order placed";
+    status.textContent = order.status || "Processing";
 
-    card.append(title, date, total, status);
-    container.appendChild(card);
+    const total = document.createElement("p");
+    const amount = Number(order.total || order.totalAmount || 0);
+    total.textContent = "Total: $" + amount.toFixed(2);
+
+    orderCard.appendChild(heading);
+    orderCard.appendChild(date);
+    orderCard.appendChild(status);
+    orderCard.appendChild(total);
+
+    ordersContainer.appendChild(orderCard);
   });
 }
 
-function logout() {
-  localStorage.removeItem(loggedInKey);
-  window.location.href = "index.html";
-}
-
-document.getElementById("logoutButton").addEventListener("click", logout);
-document.getElementById("sidebarLogout").addEventListener("click", logout);
-
-document
-  .getElementById("confirmDeleteAccount")
-  .addEventListener("click", function () {
-    const users = getUsers();
-
-    const updatedUsers = users.filter(function (user) {
-      return (
-        !user.email ||
-        !currentUser.email ||
-        user.email.toLowerCase() !== currentUser.email.toLowerCase()
-      );
-    });
-
-    localStorage.setItem(usersKey, JSON.stringify(updatedUsers));
-    localStorage.removeItem(loggedInKey);
-
-    bootstrap.Modal.getOrCreateInstance(
-      document.getElementById("deleteAccountModal"),
-    ).hide();
-
-    window.location.href = "index.html";
-  });
-
+// Update cart count
 function updateCartCount() {
-  let cart = [];
+  const cart = getData("cart", []);
 
-  try {
-    cart = JSON.parse(localStorage.getItem("cart")) || [];
-  } catch (error) {
-    cart = [];
-  }
-
-  let count = 0;
+  let totalItems = 0;
 
   cart.forEach(function (item) {
-    count += Number(item.quantity) || 1;
+    totalItems += Number(item.quantity) || 1;
   });
 
-  document.getElementById("cartCount").textContent = count;
+  cartCount.textContent = totalItems;
 }
 
-currentUser = findCurrentUser();
+// Open cart page
+cartLink.href = "cart.html";
 
-if (!currentUser) {
-  window.location.href = "index.html";
-} else {
-  updateProfileDisplay();
+cartLink.addEventListener("click", function (event) {
+  event.preventDefault();
+  window.location.href = "cart.html";
+});
+
+// Logout
+logoutButton.addEventListener("click", function () {
+  showMessage("Logout", "You have been logged out.");
+
+  localStorage.removeItem("loggedInUser");
+
+  setTimeout(function () {
+    window.location.href = "home.html";
+  }, 1000);
+});
+
+// Delete account
+confirmDeleteAccount.addEventListener("click", function () {
+  if (!currentUser) {
+    return;
+  }
+
+  const users = getData("users", []);
+
+  const updatedUsers = users.filter(function (user) {
+    return user.email.toLowerCase() !== currentUser.email.toLowerCase();
+  });
+
+  saveData("users", updatedUsers);
+  localStorage.removeItem("loggedInUser");
+
+  const deleteModal = bootstrap.Modal.getInstance(
+    document.getElementById("deleteAccountModal"),
+  );
+
+  if (deleteModal) {
+    deleteModal.hide();
+  }
+
+  showMessage("Account deleted", "Your account has been deleted successfully.");
+
+  setTimeout(function () {
+    window.location.href = "home.html";
+  }, 1200);
+});
+
+// Search products
+const searchToggle = document.getElementById("searchToggle");
+const searchModal = document.getElementById("searchModal");
+const siteSearchInput = document.getElementById("siteSearchInput");
+const searchResults = document.getElementById("searchResults");
+const searchForm = document.getElementById("searchForm");
+const closeSearch = document.getElementById("closeSearch");
+
+let allProducts = [];
+
+if (searchToggle && searchModal) {
+  searchToggle.addEventListener("click", function () {
+    searchModal.hidden = !searchModal.hidden;
+    searchToggle.setAttribute("aria-expanded", !searchModal.hidden);
+
+    if (!searchModal.hidden) {
+      siteSearchInput.focus();
+    }
+  });
+}
+
+if (closeSearch) {
+  closeSearch.addEventListener("click", function () {
+    searchModal.hidden = true;
+    searchToggle.setAttribute("aria-expanded", "false");
+  });
+}
+
+if (searchForm) {
+  searchForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    searchProducts();
+  });
+}
+
+if (siteSearchInput) {
+  siteSearchInput.addEventListener("input", searchProducts);
+}
+
+function searchProducts() {
+  if (!siteSearchInput || !searchResults) {
+    return;
+  }
+
+  const searchText = siteSearchInput.value.trim().toLowerCase();
+
+  if (!searchText) {
+    searchResults.innerHTML = "<p>Search for something you love.</p>";
+    return;
+  }
+
+  const matchingProducts = allProducts.filter(function (product) {
+    return (
+      product.title.toLowerCase().includes(searchText) ||
+      (product.category || "").toLowerCase().includes(searchText)
+    );
+  });
+
+  searchResults.innerHTML = "";
+
+  if (matchingProducts.length === 0) {
+    searchResults.textContent = "No products found.";
+    return;
+  }
+
+  matchingProducts.slice(0, 6).forEach(function (product) {
+    const link = document.createElement("a");
+
+    link.href = "details.html?id=" + encodeURIComponent(product.id);
+    link.className = "search-result-item";
+    link.textContent = product.title;
+
+    searchResults.appendChild(link);
+  });
+}
+
+fetch("https://fakestoreapi.com/products")
+  .then(function (response) {
+    if (!response.ok) {
+      throw new Error("Unable to load products.");
+    }
+
+    return response.json();
+  })
+  .then(function (products) {
+    allProducts = products;
+  })
+  .catch(function () {
+    allProducts = [];
+  });
+
+// Start the account page
+if (checkLogin()) {
+  loadProfile();
+  loadOrders();
   updateCartCount();
 }
